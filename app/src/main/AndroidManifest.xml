@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.DevAsh.recbusiness">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature
+        android:name="android.hardware.fingerprint"
+        android:required="false" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Registration.UploadProfilePicture"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".Home.Recovery.NewPassword"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.Recovery.RecoveryOtp"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.Recovery.RecoveryOptions"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.WebView"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.ChangePassword"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Home.Transactions.Successful" />
+        <activity android:name=".Home.Profile" />
+        <activity android:name=".Home.QrScanner" />
+        <activity android:name=".Home.Transactions.AddingOptions" />
+        <activity
+            android:name=".Home.Transactions.AddMoney"
+            android:windowSoftInputMode="adjustResize" />
+
+        <receiver android:name=".Sync.RebootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".Home.Transactions.TransactionDetails" />
+        <activity
+            android:name=".Home.Transactions.PasswordPrompt"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.Transactions.AmountPrompt"
+            android:windowSoftInputMode="adjustResize" />
+
+        <service
+            android:name=".Sync.SocketService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Home.Transactions.SingleObjectTransaction" />
+        <activity
+            android:name=".Home.Transactions.SendMoney"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".Home.AllTransactions" />
+        <activity
+            android:name=".Registration.Register"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Home.HomePage" />
+        <activity
+            android:name=".Registration.Otp"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Registration.Login"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".fcm.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

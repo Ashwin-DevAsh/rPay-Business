@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/archivo_black</item>
+        <item>@font/asset</item>
+        <item>@font/audiowide</item>
+        <item>@font/poppins</item>
+        <item>@font/rammetto_one</item>
+    </array>
+</resources>

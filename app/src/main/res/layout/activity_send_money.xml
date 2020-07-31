@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home.Transactions.SendMoney">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent">
+        <com.agrawalsuneet.dotsloader.loaders.TashieLoader
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tashieloader_animDelay="100"
+            app:tashieloader_animDur="500"
+            app:tashieloader_dotsColor="@color/highlightButton"
+            app:tashieloader_dotsDist="5dp"
+            app:tashieloader_dotsRadius="10dp"
+            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"
+            app:tashieloader_noOfDots="4" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/mainContent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/appBar"
+            android:layout_height="60dp">
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:textSize="20dp"
+                android:paddingTop="5dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:clickable="false"
+                android:focusable="false"
+                android:text="Send Money"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:paddingHorizontal="18dp"
+                android:src="@drawable/back"
+                android:id="@+id/back"
+                android:clickable="true"
+                android:layout_marginHorizontal="5dp"
+                android:focusable="true"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+
+            android:background="@color/colorPrimary"
+            android:scrollbars="vertical"
+            android:layout_below="@+id/appBar"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:translationZ="10dp"
+                        android:hint="Search"
+                        android:id="@+id/search"
+                        android:singleLine="true"
+                        android:paddingLeft="20dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:background="@drawable/edit_text"
+                        android:layout_centerInParent="true"
+                        android:layout_height="50dp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="25dp"
+                        android:text="All People"
+                        android:textStyle="bold"
+                        android:id="@+id/peopleHeading"
+                        android:textColor="@color/textDark"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/usersContainer"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

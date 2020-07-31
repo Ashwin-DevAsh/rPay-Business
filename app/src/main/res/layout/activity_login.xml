@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:background="@color/colorPrimaryDark"
+    tools:context=".Registration.Login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent">
+        <com.agrawalsuneet.dotsloader.loaders.TashieLoader
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tashieloader_animDelay="100"
+            app:tashieloader_animDur="500"
+            app:tashieloader_dotsColor="@color/highlightButton"
+            app:tashieloader_dotsDist="5dp"
+            app:tashieloader_dotsRadius="10dp"
+            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"
+            app:tashieloader_noOfDots="4" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/mainContent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:text="Enter your phone number"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/textNormal"
+                android:text="Make sure you can receive SMS to this number so that we can send you a code"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="25dp"
+                android:background="@drawable/edit_text"
+                android:layout_marginTop="100dp"
+                android:weightSum="100"
+                android:paddingLeft="20dp"
+                android:layout_height="50dp">
+                <EditText
+                    android:layout_weight="83"
+                    android:focusable="false"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:text="+91"
+                    android:letterSpacing="0.2"
+                    android:inputType="none"
+                    android:layout_height="match_parent"/>
+                <EditText
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_weight="19"
+                    android:maxLength="10"
+                    android:letterSpacing="0.2"
+                    android:id="@+id/phoneNumber"
+                    android:inputType="number"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="60dp"
+            app:cardElevation="10dp"
+            android:background="?android:attr/windowBackground"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:translationZ="200dp"
+                app:elevation="200dp"
+                android:elevation="200dp"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical"
+                    android:translationZ="200dp"
+                    app:elevation="200dp"
+                    android:elevation="200dp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Cancel"
+                            android:gravity="center"
+                            android:id="@+id/cancel"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_marginHorizontal="30dp"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginVertical="12dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Send OTP"
+                            android:id="@+id/sendOtp"
+                            android:paddingTop="2dp"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_ripple_gradient"
+                            android:layout_height="match_parent"/>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

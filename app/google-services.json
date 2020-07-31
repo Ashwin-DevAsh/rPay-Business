@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "837379086844",
+    "firebase_url": "https://rec-wallet.firebaseio.com",
+    "project_id": "rec-wallet",
+    "storage_bucket": "rec-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837379086844:android:d58bc0f31525c4cb57ba79",
+        "android_client_info": {
+          "package_name": "com.DevAsh.recbusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837379086844-v51a7b1g4ggtrpmrl1qq6ph0l1qi89rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmzzNRFvheOBCHusknAcmCubmiJuXi78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837379086844-v51a7b1g4ggtrpmrl1qq6ph0l1qi89rq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837379086844:android:1f7dfaf793bd23da57ba79",
+        "android_client_info": {
+          "package_name": "com.DevAsh.recwallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837379086844-v51a7b1g4ggtrpmrl1qq6ph0l1qi89rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmzzNRFvheOBCHusknAcmCubmiJuXi78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837379086844-v51a7b1g4ggtrpmrl1qq6ph0l1qi89rq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

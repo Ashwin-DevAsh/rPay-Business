@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="170dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="end"
+        android:background="@android:color/transparent"
+        android:id="@+id/container"
+        android:layout_marginHorizontal="20dp"
+        android:layout_height="150dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/contentWidget"
+            android:background="@drawable/transaction_send_ripple"
+            android:minWidth="160dp"
+            android:layout_height="130dp">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/amount"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#B3000000"
+                    android:background="@android:color/transparent"
+                    android:text="10,000"
+                    android:textSize="35sp"
+                    android:layout_height="60dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#B3000000"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+
+                    android:text="RC"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:minWidth="160dp"
+                android:layout_marginHorizontal="5dp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Paid 28 March"
+                    android:id="@+id/time"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#B3000000"
+                    android:layout_height="30dp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/forward"
+                    android:layout_height="30dp"/>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
