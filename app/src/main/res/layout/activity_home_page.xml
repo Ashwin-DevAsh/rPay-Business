@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="250dp"
-                        android:text="Hii, Uservdjehvxievxhjevxjhevn"
+                        android:text="Hii, DevAsh"
                         android:textStyle="bold"
                         android:id="@+id/greetings"
                         android:textSize="30dp"
@@ -174,14 +174,107 @@
             android:layout_width="match_parent"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:background="@drawable/container_background"
-            android:layout_height="355dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:background="@drawable/container_background"
-                android:id="@+id/merchantHolder"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="match_parent"/>
+            android:layout_height="140dp">
+
+            <LinearLayout
+               android:layout_margin="10dp"
+               android:gravity="center"
+               android:orientation="vertical"
+               android:layout_width="100dp"
+               android:layout_height="100dp">
+               <androidx.cardview.widget.CardView
+                   android:layout_width="65dp"
+                   app:cardElevation="0dp"
+                   app:cardCornerRadius="32.5dp"
+                   android:layout_height="65dp">
+                   <ImageView
+                       android:layout_width="match_parent"
+                       android:padding="22.5dp"
+                       android:tint="@android:color/white"
+                       android:background="@color/highlightButton"
+                       android:src="@drawable/merchant"
+                       android:layout_height="match_parent"/>
+               </androidx.cardview.widget.CardView>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:text="My Store"
+                   android:textStyle="bold"
+                   android:layout_marginTop="10dp"
+                   android:textSize="10dp"
+                   android:textColor="@android:color/black"
+                   android:layout_height="wrap_content"/>
+
+           </LinearLayout>
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:id="@+id/sendMoney"
+                android:orientation="vertical"
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="65dp"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="32.5dp"
+                    android:layout_height="65dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:padding="15dp"
+                        android:tint="@android:color/white"
+                        android:background="@color/highlightButton"
+                        android:src="@drawable/pay"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Pay Money"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:textSize="10dp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="100dp"
+                android:id="@+id/buyMoney"
+                android:layout_height="100dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="65dp"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="32.5dp"
+                    android:layout_height="65dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:padding="18dp"
+                        android:tint="@android:color/white"
+                        android:background="@color/highlightButton"
+                        android:src="@drawable/wallet"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Add Money"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:textSize="10dp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:background="@drawable/container_background"-->
+<!--                android:id="@+id/merchantHolder"-->
+<!--                android:nestedScrollingEnabled="false"-->
+<!--                android:layout_height="match_parent"/>-->
         </LinearLayout>
 
         <androidx.cardview.widget.CardView

@@ -54,7 +54,7 @@ class HomePage : AppCompatActivity() {
         setContentView(R.layout.activity_home_page)
 
 
-        merchantHolder.layoutManager = GridLayoutManager(context, 3)
+//        merchantHolder.layoutManager = GridLayoutManager(context, 3)
 //        recent.layoutManager = GridLayoutManager(context, 3)
 
         val bottomDown: Animation = AnimationUtils.loadAnimation(
@@ -85,17 +85,17 @@ class HomePage : AppCompatActivity() {
             }
         }
 
-        merchantHolder.adapter = MerchantViewAdapter(arrayListOf(
-            Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
-            Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
-            Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
-            Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
-            Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
-            Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
-            Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
-            Merchant("zerox","@zerox","@zerox",R.drawable.xrox),
-            Merchant("More","1234567890","1234567890",R.drawable.more)
-            ),context,BottomSheetMerchant(context))
+//        merchantHolder.adapter = MerchantViewAdapter(arrayListOf(
+//            Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
+//            Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
+//            Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
+//            Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
+//            Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
+//            Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
+//            Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
+//            Merchant("zerox","@zerox","@zerox",R.drawable.xrox),
+//            Merchant("More","1234567890","1234567890",R.drawable.more)
+//            ),context,BottomSheetMerchant(context))
 //        peopleViewAdapter = PeopleViewAdapter(arrayListOf(),this,BottomSheetPeople(context))
 //        recent.adapter = peopleViewAdapter
 
@@ -185,9 +185,13 @@ class HomePage : AppCompatActivity() {
             startActivity(Intent(context,Profile::class.java))
         }
 
-//        pay.setOnClickListener{
-//            startActivity(Intent(context, SendMoney::class.java))
-//        }
+        sendMoney.setOnClickListener{
+            startActivity(Intent(context, SendMoney::class.java))
+        }
+
+        buyMoney.setOnClickListener{
+            startActivity(Intent(context, AddMoney::class.java))
+        }
 
         scan.setOnClickListener{
             val permissions = arrayOf(android.Manifest.permission.CAMERA)
@@ -227,40 +231,40 @@ class HomePage : AppCompatActivity() {
         startActivity(startMain)
     }
 
-    class BottomSheetMerchant(val context:Context):BottomSheet{
-        val mBottomSheetDialog = BottomSheetDialog(context)
-        val sheetView: View = LayoutInflater.from(context).inflate(R.layout.all_merchants, null)
-        init {
-            val merchantContainer = sheetView.findViewById<RecyclerView>(R.id.merchantContainer)
-            merchantContainer.layoutManager = GridLayoutManager(context, 3)
-            merchantContainer.adapter = MerchantViewAdapter(arrayListOf(
-                Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
-                Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
-                Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
-                Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
-                Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
-                Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
-                Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
-                Merchant("zerox","@zerox","@zerox",R.drawable.xrox),
-                Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
-                Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
-                Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
-                Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
-                Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
-                Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
-                Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
-                Merchant("zerox","@zerox","@zerox",R.drawable.xrox)
-            ),context,this)
-            mBottomSheetDialog.setContentView(sheetView)
-        }
-        override fun openBottomSheet(){
-            mBottomSheetDialog.show()
-        }
-
-        override fun closeBottomSheet() {
-            mBottomSheetDialog.cancel()
-        }
-    }
+//    class BottomSheetMerchant(val context:Context):BottomSheet{
+//        val mBottomSheetDialog = BottomSheetDialog(context)
+//        val sheetView: View = LayoutInflater.from(context).inflate(R.layout.all_merchants, null)
+//        init {
+//            val merchantContainer = sheetView.findViewById<RecyclerView>(R.id.merchantContainer)
+//            merchantContainer.layoutManager = GridLayoutManager(context, 3)
+//            merchantContainer.adapter = MerchantViewAdapter(arrayListOf(
+//                Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
+//                Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
+//                Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
+//                Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
+//                Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
+//                Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
+//                Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
+//                Merchant("zerox","@zerox","@zerox",R.drawable.xrox),
+//                Merchant("Hut Cafe","@hutcafe","@hutcafe",R.drawable.hut_cafe),
+//                Merchant("Tamil cafe","@tamilcafe","@tamilcafe",R.drawable.tamil_cafe),
+//                Merchant("Rec Mart","@recmart","@recmart",R.drawable.rec_mart),
+//                Merchant("A2Z","@a2z","@a2z",R.drawable.ug),
+//                Merchant("CCD","@ccd","@ccd",R.drawable.ccd),
+//                Merchant("Rec bill","@recbill","@recbill",R.drawable.rec_bill),
+//                Merchant("Fine Payment","@finepayment","@finepayment",R.drawable.fine),
+//                Merchant("zerox","@zerox","@zerox",R.drawable.xrox)
+//            ),context,this)
+//            mBottomSheetDialog.setContentView(sheetView)
+//        }
+//        override fun openBottomSheet(){
+//            mBottomSheetDialog.show()
+//        }
+//
+//        override fun closeBottomSheet() {
+//            mBottomSheetDialog.cancel()
+//        }
+//    }
 
 
 
