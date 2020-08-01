@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.DevAsh.recbusiness.Context.DetailsContext
@@ -100,8 +101,9 @@ class HomePage : AppCompatActivity() {
              openTimeSheet()
         }
 
-
-
+        viewPayments.setOnClickListener{
+             BottomSheetPeople(context, ArrayList(recentPaymentsAdapter.items)).openBottomSheet()
+        }
     }
 
    private fun updatePayments(index:Int = StateContext.timeIndex){
@@ -113,12 +115,9 @@ class HomePage : AppCompatActivity() {
             balance.text = currentBalance
         }
 
-
-
         val paymentsObserver = Observer<ArrayList<Transaction>> {updatedList->
           updatePaymentsListener(updatedList)
         }
-
 
 
         greetings.text=(getText())
@@ -126,17 +125,17 @@ class HomePage : AppCompatActivity() {
         StateContext.model.allTransactions.observe(this,paymentsObserver)
     }
 
-    private fun updatePaymentsListener(updatedList:ArrayList<Transaction> =StateContext.model.allTransactions.value!!){
+    private fun updatePaymentsListener(updatedList:ArrayList<Transaction> = StateContext.model.allTransactions.value!!):ArrayList<Transaction>{
         val updateListTemp = arrayListOf<Transaction>()
         for(i in updatedList){
-            if(i.type=="Received" && !i.isGenerated && filterWithTimeStamp(i.timeStamp.toString())){
-                updateListTemp.add(i)
-            }
-            if(updateListTemp.size==5){
-                break
+            if(i.type=="Received" && !i.isGenerated){
+                if( filterWithTimeStamp(i.timeStamp.toString()))
+                  updateListTemp.add(i)
+                else
+                    break
             }
         }
-        if(updatedList.size>0){
+        if(updateListTemp.size>0){
             noPayments.visibility=View.GONE
             recentPaymentsContainer.visibility = View.VISIBLE
         }else{
@@ -146,6 +145,7 @@ class HomePage : AppCompatActivity() {
 
         recentPaymentsAdapter.updateList(updateListTemp)
         recentPayments.smoothScrollToPosition(0)
+        return updateListTemp
     }
 
     private fun filterWithTimeStamp(timestampString: String):Boolean{
@@ -207,7 +207,6 @@ class HomePage : AppCompatActivity() {
             return name
         }
     }
-
 
     override fun onBackPressed() {
         val startMain = Intent(Intent.ACTION_MAIN)
@@ -291,9 +290,31 @@ class HomePage : AppCompatActivity() {
 
 
     }
+
+
 }
 
-class RecentPaymentsAdapter(private var items : List<Transaction>, val context: Context) : RecyclerView.Adapter<RecentActivityViewHolder>() {
+class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>):BottomSheet{
+    private val mBottomSheetDialog = BottomSheetDialog(context)
+    private val sheetView: View = LayoutInflater.from(context).inflate(R.layout.payments_bottom_sheet, null)
+    init {
+        val peopleContainer = sheetView.findViewById<RecyclerView>(R.id.recentPayments)
+        peopleContainer.adapter = RecentPaymentsAdapter(transactions,context,this)
+        peopleContainer.layoutManager = LinearLayoutManager(context)
+        mBottomSheetDialog.setContentView(sheetView)
+    }
+    override fun openBottomSheet(){
+        mBottomSheetDialog.show()
+    }
+
+    override fun closeBottomSheet() {
+        mBottomSheetDialog.cancel()
+    }
+}
+
+
+
+class RecentPaymentsAdapter( var items : List<Transaction>, val context: Context, private val openSheet: BottomSheet?=null) : RecyclerView.Adapter<RecentActivityViewHolder>() {
 
     private var colorIndex = 0
 
@@ -303,7 +324,7 @@ class RecentPaymentsAdapter(private var items : List<Transaction>, val context: 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentActivityViewHolder {
-        return RecentActivityViewHolder(LayoutInflater.from(context).inflate(R.layout.widget_listtile_transactions_home, parent, false),context)
+        return RecentActivityViewHolder(LayoutInflater.from(context).inflate(R.layout.widget_listtile_transactions_home, parent, false),context,openSheet = openSheet)
     }
 
     override fun onBindViewHolder(holder: RecentActivityViewHolder, position: Int) {
@@ -363,7 +384,7 @@ class RecentPaymentsAdapter(private var items : List<Transaction>, val context: 
 
 }
 
-class RecentActivityViewHolder (view: View,context: Context,var item:Transaction?=null,var color:String?=null) : RecyclerView.ViewHolder(view) {
+class RecentActivityViewHolder (view: View,context: Context,var item:Transaction?=null,var color:String?=null,openSheet: BottomSheet?=null) : RecyclerView.ViewHolder(view) {
     val title = view.findViewById(R.id.title) as TextView
     val subtitle = view.findViewById(R.id.subtitle) as TextView
     val badge = view.findViewById(R.id.badge) as TextView
@@ -375,6 +396,12 @@ class RecentActivityViewHolder (view: View,context: Context,var item:Transaction
             TransactionContext.selectedTransaction = item
             TransactionContext.avatarColor = color!!
             context.startActivity(Intent(context, TransactionDetails::class.java))
+            openSheet?.closeBottomSheet()
         }
     }
+}
+
+interface BottomSheet{
+    fun openBottomSheet()
+    fun closeBottomSheet()
 }

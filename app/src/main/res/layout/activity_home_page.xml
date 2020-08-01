@@ -74,102 +74,7 @@
             </RelativeLayout>
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_weight="20"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_height="match_parent">-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:layout_marginBottom="20dp"-->
-<!--                android:layout_marginHorizontal="15dp"-->
-<!--                android:translationZ="10dp"-->
-<!--                android:weightSum="100"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:background="@drawable/button_ripple_gradient"-->
-<!--                android:layout_height="115dp">-->
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_weight="50"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:layout_height="match_parent">-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:background="@drawable/home_module_ripple"-->
-<!--                        android:layout_height="wrap_content">-->
-<!--                        <ImageView-->
-<!--                            android:layout_marginBottom="10dp"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:background="@android:color/transparent"-->
-<!--                            android:src="@drawable/send_money"-->
-<!--                            android:layout_height="40dp"/>-->
-<!--                        <TextView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:background="@android:color/transparent"-->
-<!--                            android:gravity="center"-->
-<!--                            android:textColor="@android:color/white"-->
-<!--                            android:text="Pay Money"-->
-<!--                            android:layout_height="wrap_content"/>-->
-<!--                    </LinearLayout>-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:focusable="true"-->
-<!--                        android:id="@+id/sendMoney"-->
-<!--                        android:clickable="true"-->
-<!--                        android:background="@android:color/transparent"-->
-<!--                        android:layout_height="match_parent">-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </RelativeLayout>-->
-
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="1dp"-->
-<!--                    android:background="@color/colorPrimary"-->
-<!--                    android:layout_height="80dp"/>-->
-
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_weight="50"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:layout_height="match_parent">-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:background="@drawable/home_module_ripple"-->
-<!--                        android:layout_height="wrap_content">-->
-<!--                        <ImageView-->
-<!--                            android:layout_marginBottom="10dp"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:background="@android:color/transparent"-->
-<!--                            android:src="@drawable/purchase"-->
-<!--                            android:layout_height="40dp"/>-->
-<!--                        <TextView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:background="@android:color/transparent"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="Add Money"-->
-<!--                            android:textColor="@android:color/white"-->
-<!--                            android:layout_height="wrap_content"/>-->
-<!--                    </LinearLayout>-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:focusable="true"-->
-<!--                        android:id="@+id/buyMoney"-->
-<!--                        android:clickable="true"-->
-<!--                        android:background="@android:color/transparent"-->
-<!--                        android:layout_height="match_parent">-->
-<!--                    </LinearLayout>-->
-<!--                </RelativeLayout>-->
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
 
 
 
@@ -327,20 +232,20 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:id="@+id/recentPayments"
-                    android:layoutAnimation="@anim/recycler_view_animation"
                     android:nestedScrollingEnabled="false"
                     android:layout_height="wrap_content"
                     android:minHeight="70.5dp"/>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:gravity="center"
+                android:id="@+id/viewPayments"
                 android:layout_height="50dp">
                 <TextView
                     android:textStyle="bold"
                     android:textColor="@color/textDark"
                     android:layout_width="match_parent"
                     android:gravity="center"
-                    android:text="See all Payments"
+                    android:text="View more"
                     android:layout_height="match_parent"/>
             </androidx.cardview.widget.CardView>
 
@@ -372,6 +277,7 @@
             </LinearLayout>
 
         </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -454,33 +360,105 @@
 
     </ScrollView>
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginBottom="15dp"-->
-<!--        app:cardCornerRadius="20dp"-->
-<!--        android:background="@android:color/transparent"-->
-<!--        android:foreground="@android:color/transparent"-->
-<!--        app:cardBackgroundColor="@android:color/transparent"-->
-<!--        android:id="@+id/scanContainer"-->
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        app:cardCornerRadius="25dp"
+        android:background="@android:color/transparent"
+        android:foreground="@android:color/transparent"
+        app:cardBackgroundColor="@android:color/transparent"
+        android:id="@+id/scanContainer"
 
-<!--        android:layout_alignParentBottom="true">-->
-<!--        <TextView-->
-<!--            android:layout_width="100dp"-->
-<!--            android:text="SCAN"-->
-<!--            android:focusable="true"-->
-<!--            android:clickable="true"-->
-<!--            android:id="@+id/scan"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textSize="13dp"-->
-<!--            android:paddingTop="2dp"-->
-<!--            android:gravity="center"-->
-<!--            android:translationZ="200dp"-->
-<!--            android:textColor="@android:color/white"-->
-<!--            android:background="@drawable/button_ripple_gradient"-->
-<!--            />-->
-<!--    </androidx.cardview.widget.CardView>-->
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_marginBottom="20dp"
+                android:weightSum="100"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:background="@drawable/button_ripple_gradient"
+                android:layout_height="50dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:background="@android:color/transparent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/home_module_ripple"
+                        android:layout_height="wrap_content">
+
+                      <ImageView
+                          android:layout_width="50dp"
+                          android:padding="12dp"
+                          android:tint="@color/white"
+                          android:src="@drawable/qrcode"
+                          android:layout_height="50dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:id="@+id/qrCode"
+                        android:clickable="true"
+                        android:background="@android:color/transparent"
+                        android:layout_height="match_parent">
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="30dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:background="@android:color/transparent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/home_module_ripple"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:padding="13dp"
+                            android:tint="@color/white"
+                            android:src="@drawable/qrscan"
+                            android:layout_height="50dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:focusable="true"
+                        android:id="@+id/scan"
+                        android:clickable="true"
+                        android:background="@android:color/transparent"
+                        android:layout_height="match_parent">
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

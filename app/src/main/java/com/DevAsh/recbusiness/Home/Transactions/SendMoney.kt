@@ -119,14 +119,13 @@ class SendMoney : AppCompatActivity() {
             .getAsJSONArray(object :JSONArrayRequestListener{
                 override fun onResponse(response: JSONArray?) {
                       if(response!=null)
-
                       for(i in 0 until response.length()){
                           val user = Contacts(
                                response.getJSONObject(i)["name"].toString()
                               ,"+"+response.getJSONObject(i)["number"].toString()
                               ,response.getJSONObject(i)["id"].toString()
                           )
-                          if(user.number!="+"+DetailsContext.phoneNumber) TransactionContext.allUsers.add(user)
+                          if(user.id!=DetailsContext.id) TransactionContext.allUsers.add(user)
                       }
                         usersContainer.layoutManager = LinearLayoutManager(context)
                         userAdapter = UserAdapter(TransactionContext.allUsers,context)
