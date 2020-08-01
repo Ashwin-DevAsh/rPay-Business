@@ -8,6 +8,7 @@ object StateContext {
 
     val model: BalanceViewModel = BalanceViewModel()
     var currentBalance = 0
+    var timeIndex=0
 
     init {
         model.allTransactions.value = ArrayList()

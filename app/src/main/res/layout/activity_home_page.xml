@@ -20,6 +20,8 @@
         android:layout_below="@+id/appBar"
        >
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -170,6 +172,7 @@
 <!--        </LinearLayout>-->
 
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginHorizontal="15dp"
@@ -177,7 +180,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:background="@drawable/container_background"
-            android:layout_height="140dp">
+            android:layout_height="125dp">
 
             <LinearLayout
                android:layout_margin="10dp"
@@ -186,10 +189,10 @@
                android:layout_width="100dp"
                android:layout_height="100dp">
                <androidx.cardview.widget.CardView
-                   android:layout_width="65dp"
+                   android:layout_width="60dp"
                    app:cardElevation="0dp"
-                   app:cardCornerRadius="32.5dp"
-                   android:layout_height="65dp">
+                   app:cardCornerRadius="30dp"
+                   android:layout_height="60dp">
                    <ImageView
                        android:layout_width="match_parent"
                        android:padding="22.5dp"
@@ -216,13 +219,13 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp">
                 <androidx.cardview.widget.CardView
-                    android:layout_width="65dp"
+                    android:layout_width="60dp"
                     app:cardElevation="0dp"
-                    app:cardCornerRadius="32.5dp"
-                    android:layout_height="65dp">
+                    app:cardCornerRadius="30dp"
+                    android:layout_height="60dp">
                     <ImageView
                         android:layout_width="match_parent"
-                        android:padding="15dp"
+                        android:padding="17dp"
                         android:tint="@android:color/white"
                         android:background="@color/highlightButton"
                         android:src="@drawable/pay"
@@ -246,13 +249,13 @@
                 android:id="@+id/buyMoney"
                 android:layout_height="100dp">
                 <androidx.cardview.widget.CardView
-                    android:layout_width="65dp"
+                    android:layout_width="60dp"
                     app:cardElevation="0dp"
-                    app:cardCornerRadius="32.5dp"
-                    android:layout_height="65dp">
+                    app:cardCornerRadius="30dp"
+                    android:layout_height="60dp">
                     <ImageView
                         android:layout_width="match_parent"
-                        android:padding="18dp"
+                        android:padding="19dp"
                         android:tint="@android:color/white"
                         android:background="@color/highlightButton"
                         android:src="@drawable/wallet"
@@ -269,31 +272,116 @@
 
             </LinearLayout>
 
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:background="@drawable/container_background"-->
-<!--                android:id="@+id/merchantHolder"-->
-<!--                android:nestedScrollingEnabled="false"-->
-<!--                android:layout_height="match_parent"/>-->
+
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"
+        <LinearLayout
             android:layout_marginHorizontal="15dp"
-            android:layout_height="100dp">
-            <com.synnapps.carouselview.CarouselView
-                android:id="@+id/carouselView"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="20dp"
+            android:background="@drawable/container_background"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:id="@+id/setTime"
+                android:layout_marginTop="3dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/timeline"
+                    android:layout_width="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:text="Past 1 Hour"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:padding="2dp"
+                    android:layout_marginBottom="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/dropdown"
+                    android:layout_height="16dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/container_background"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:id="@+id/recentPaymentsContainer"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:id="@+id/recentPayments"
+                    android:layoutAnimation="@anim/recycler_view_animation"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70.5dp"/>
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:background="@android:color/white"
-                android:layout_height="match_parent"
-                app:slideInterval="5000"
-                app:indicatorVisibility="gone"
-              />
-        </androidx.cardview.widget.CardView>
+                android:gravity="center"
+                android:layout_height="50dp">
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="@color/textDark"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:text="See all Payments"
+                    android:layout_height="match_parent"/>
+            </androidx.cardview.widget.CardView>
+
+
+
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/noPayments"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:padding="40dp"
+                    android:src="@drawable/empty"
+                    android:layout_height="352.5dp"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:textStyle="bold"
+                        android:textColor="@color/textDark"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:text="No Payment Yet"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+
+
+
+
+
 
 
 
@@ -358,41 +446,41 @@
 
 <!--        </LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"/>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="25dp"/>-->
 
     </LinearLayout>
 
     </ScrollView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_height="40dp"
-        android:layout_marginBottom="15dp"
-        app:cardCornerRadius="20dp"
-        android:background="@android:color/transparent"
-        android:foreground="@android:color/transparent"
-        app:cardBackgroundColor="@android:color/transparent"
-        android:id="@+id/scanContainer"
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        app:cardCornerRadius="20dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:foreground="@android:color/transparent"-->
+<!--        app:cardBackgroundColor="@android:color/transparent"-->
+<!--        android:id="@+id/scanContainer"-->
 
-        android:layout_alignParentBottom="true">
-        <TextView
-            android:layout_width="100dp"
-            android:text="SCAN"
-            android:focusable="true"
-            android:clickable="true"
-            android:id="@+id/scan"
-            android:layout_height="40dp"
-            android:textStyle="bold"
-            android:textSize="13dp"
-            android:paddingTop="2dp"
-            android:gravity="center"
-            android:translationZ="200dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_ripple_gradient"
-            />
-    </androidx.cardview.widget.CardView>
+<!--        android:layout_alignParentBottom="true">-->
+<!--        <TextView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:text="SCAN"-->
+<!--            android:focusable="true"-->
+<!--            android:clickable="true"-->
+<!--            android:id="@+id/scan"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="13dp"-->
+<!--            android:paddingTop="2dp"-->
+<!--            android:gravity="center"-->
+<!--            android:translationZ="200dp"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:background="@drawable/button_ripple_gradient"-->
+<!--            />-->
+<!--    </androidx.cardview.widget.CardView>-->
 
 </RelativeLayout>

@@ -13,6 +13,7 @@ import com.DevAsh.recbusiness.Context.TransactionContext
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
+import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
 import com.DevAsh.recbusiness.Models.Merchant
 import com.DevAsh.recbusiness.Models.Transaction
@@ -98,39 +99,8 @@ class SplashScreen : AppCompatActivity() {
                                 StateContext.currentBalance = balance!!
                                 val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                 StateContext.setBalanceToModel(formatter.format(balance))
-                                val transactionObjectArray = response?.getJSONArray("Transactions")
-                                val transactions = ArrayList<Transaction>()
-                                println(response)
-                                for (i in 0 until transactionObjectArray!!.length()) {
-                                    val name = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                                                 transactionObjectArray.getJSONObject(i)["ToName"].toString()
-                                                       else transactionObjectArray.getJSONObject(i)["FromName"].toString()
-                                    val number = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                                                 transactionObjectArray.getJSONObject(i)["To"].toString()
-                                                       else transactionObjectArray.getJSONObject(i)["From"].toString()
-
-                                    val merchant = Merchant(name, "+${number.split("@")[number.split("@").size-1]}","$number")
-                                    if(!transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated"))
-                                        StateContext.addRecentContact(merchant)
-                                    transactions.add(
-                                        0, Transaction(
-                                            name = name,
-                                            id = number,
-                                            amount = transactionObjectArray.getJSONObject(i)["Amount"].toString(),
-                                            time = dateToString(
-                                                transactionObjectArray.getJSONObject(
-                                                    i
-                                                )["TransactionTime"].toString()
-                                            ),
-                                            type = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                                  "Send"
-                                            else "Received",
-                                            transactionId =  transactionObjectArray.getJSONObject(i)["TransactionID"].toString(),
-                                            isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated")
-                                        )
-                                    )
-                                }
-                                StateContext.initAllTransaction(transactions)
+                                val transactionObjectArray = response.getJSONArray("Transactions")
+                                TransactionsHelper.addTransaction(transactionObjectArray)
                                 startActivity(Intent(context, HomePage::class.java))
                                 finish()
                             }

@@ -14,4 +14,7 @@
     <color name="lightbackground">#10035aa6</color>
     <color name="textDark">#02335E</color>
     <color name="red">@android:color/holo_red_dark</color>
+    <color name="white">@android:color/white</color>
 </resources>
+
+<!--    #0ba360→#3cba92-->

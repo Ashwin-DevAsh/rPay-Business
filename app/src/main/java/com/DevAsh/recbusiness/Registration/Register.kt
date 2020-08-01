@@ -83,9 +83,9 @@ class Register : AppCompatActivity() {
                 Handler().postDelayed({
                     mainContent.visibility = INVISIBLE
                 },300)
-                val jwt = Jwts.builder().claim("name", name)
+                val jwt = Jwts.builder().claim("name", storeName)
                     .claim("number", RegistrationContext.countryCode+RegistrationContext.phoneNumber)
-                    .claim("id", "rpay@${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
+                    .claim("id", "rbusiness@${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
                     .signWith(SignatureAlgorithm.HS256, ApiContext.qrKey)
                     .compact()
                     AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/addMerchant")

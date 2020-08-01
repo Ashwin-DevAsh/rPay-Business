@@ -36,8 +36,13 @@ class Successful : AppCompatActivity() {
 
     override fun onBackPressed() {
         if(type=="addMoney"){
-            startActivity(Intent(this,HomePage::class.java))
-            finish()
+            try{
+                startActivity(Intent(this,HomePage::class.java))
+                finish()
+            }catch (e:Throwable){
+                println(e)
+            }
+
         }else{
             super.onBackPressed()
         }

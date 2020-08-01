@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/oneHour"
+            android:background="@color/lightbackground"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 1 Hour"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/threeHour"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 3 Hours"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/fiveHour"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 5 Hours"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/today"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Today"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/threeDay"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 3 days"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/sevenDay"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 7 days"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/oneMonth"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 1 month"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/sixMonth"
+            android:layout_height="55dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:text="Past 6 month"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ios_forward_arrow"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
