@@ -68,7 +68,12 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
-        extraValues  = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
+        try{
+            extraValues  = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
+
+        }catch (e:Throwable){
+            extraValues=ExtraValues()
+        }
         StateContext.timeIndex = extraValues.timeIndex
         timeline.text = time[StateContext.timeIndex]
 
