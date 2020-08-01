@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,6 @@ import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Home.Transactions.AddMoney
 import com.DevAsh.recbusiness.Home.Transactions.SendMoney
 import com.DevAsh.recbusiness.Home.Transactions.TransactionDetails
-import com.DevAsh.recbusiness.Models.Merchant
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -31,6 +29,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomePage : AppCompatActivity() {
@@ -97,7 +100,7 @@ class HomePage : AppCompatActivity() {
              openTimeSheet()
         }
 
-        updatePayments()
+
 
     }
 
@@ -113,29 +116,59 @@ class HomePage : AppCompatActivity() {
 
 
         val paymentsObserver = Observer<ArrayList<Transaction>> {updatedList->
-            val updateListTemp = arrayListOf<Transaction>()
-            for(i in updatedList){
-                if(i.type=="Received" && !i.isGenerated){
-                   updateListTemp.add(i)
-                }
-                if(updateListTemp.size==5){
-                    break
-                }
-            }
-            if(updateListTemp.size>0){
-                noPayments.visibility=View.GONE
-                recentPaymentsContainer.visibility = View.VISIBLE
-            }else{
-                noPayments.visibility=View.VISIBLE
-                recentPaymentsContainer.visibility = View.GONE
-            }
-            recentPaymentsAdapter.updateList(updateListTemp)
-            recentPayments.smoothScrollToPosition(0)
+          updatePaymentsListener(updatedList)
         }
+
+
 
         greetings.text=(getText())
         StateContext.model.currentBalance.observe(this,balanceObserver)
         StateContext.model.allTransactions.observe(this,paymentsObserver)
+    }
+
+    private fun updatePaymentsListener(updatedList:ArrayList<Transaction> =StateContext.model.allTransactions.value!!){
+        val updateListTemp = arrayListOf<Transaction>()
+        for(i in updatedList){
+            if(i.type=="Received" && !i.isGenerated && filterWithTimeStamp(i.timeStamp.toString())){
+                updateListTemp.add(i)
+            }
+            if(updateListTemp.size==5){
+                break
+            }
+        }
+        if(updatedList.size>0){
+            noPayments.visibility=View.GONE
+            recentPaymentsContainer.visibility = View.VISIBLE
+        }else{
+            noPayments.visibility=View.VISIBLE
+            recentPaymentsContainer.visibility = View.GONE
+        }
+
+        recentPaymentsAdapter.updateList(updateListTemp)
+        recentPayments.smoothScrollToPosition(0)
+    }
+
+    private fun filterWithTimeStamp(timestampString: String):Boolean{
+
+        val compareTime = mapOf(
+            0 to Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(1)),
+            1 to Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(3)),
+            2 to Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(5)),
+            3 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)),
+            4 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)),
+            5 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)),
+            6 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30)),
+            7 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30*6))
+        )
+
+
+        val time = timestampString.replace("T"," ").substring(0,timestampString.lastIndex)
+        val parser = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val transactionTime: Date = parser.parse(time)
+        if(transactionTime.after(compareTime[StateContext.timeIndex])){
+            return true
+        }
+        return false
     }
 
 
@@ -206,59 +239,49 @@ class HomePage : AppCompatActivity() {
             updateBackground( sheetView.sixMonth,7)
         }
 
+        fun onClick(index: Int){
+            StateContext.timeIndex=index
+            updatePayments(index)
+            mBottomSheetDialog.cancel()
+            setBackground()
+            updatePaymentsListener()
+        }
+
         setBackground()
 
 
         sheetView.oneHour.setOnClickListener{
-            StateContext.timeIndex=0
-            updatePayments(0)
-            mBottomSheetDialog.cancel()
-            setBackground()
+          onClick(0)
         }
         sheetView.threeHour.setOnClickListener{
-            StateContext.timeIndex=1
-            updatePayments(1)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(1)
+
 
         }
         sheetView.fiveHour.setOnClickListener{
-            StateContext.timeIndex=2
-            updatePayments(2)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(2)
 
         }
         sheetView.today.setOnClickListener{
-            StateContext.timeIndex=3
-            updatePayments(3)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(3)
+
 
         }
         sheetView.threeDay.setOnClickListener{
-            StateContext.timeIndex=4
-            updatePayments(4)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(4)
+
         }
         sheetView.sevenDay.setOnClickListener{
-            StateContext.timeIndex=5
-            updatePayments(5)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(5)
+
         }
         sheetView.oneMonth.setOnClickListener{
-            StateContext.timeIndex=6
-            updatePayments(6)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(6)
+
         }
         sheetView.sixMonth.setOnClickListener{
-            StateContext.timeIndex=7
-            updatePayments(7)
-            mBottomSheetDialog.cancel()
-            setBackground()
+            onClick(7)
+
         }
 
 

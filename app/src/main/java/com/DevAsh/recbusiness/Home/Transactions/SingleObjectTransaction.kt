@@ -140,7 +140,8 @@ class SingleObjectTransaction : AppCompatActivity() {
                                         "Send"
                                     else "Received",
                                     transactionId =  transactionObjectArray.getJSONObject(i)["TransactionID"].toString(),
-                                    isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated")
+                                    isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated"),
+                                    timeStamp = transactionObjectArray.getJSONObject(i).get("TimeStamp")
                                 )
                             )
                         }

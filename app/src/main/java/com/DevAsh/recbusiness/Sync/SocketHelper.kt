@@ -3,6 +3,7 @@ package com.DevAsh.recbusiness.Sync
 import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
+import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.SplashScreen
 import com.androidnetworking.AndroidNetworking
@@ -64,31 +65,7 @@ object SocketHelper {
                     StateContext.setBalanceToModel(formatter.format(balance))
                     StateContext.currentBalance= balance!!
                     val transactionObjectArray = response?.getJSONArray("Transactions")
-                    val transactions = ArrayList<Transaction>()
-                    for (i in 0 until transactionObjectArray!!.length()) {
-                        transactions.add(
-                            0, Transaction(
-                                name = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                    transactionObjectArray.getJSONObject(i)["ToName"].toString()
-                                else transactionObjectArray.getJSONObject(i)["FromName"].toString(),
-                                id = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                    transactionObjectArray.getJSONObject(i)["To"].toString()
-                                else transactionObjectArray.getJSONObject(i)["From"].toString(),
-                                amount = transactionObjectArray.getJSONObject(i)["Amount"].toString(),
-                                time = SplashScreen.dateToString(
-                                    transactionObjectArray.getJSONObject(
-                                        i
-                                    )["TransactionTime"].toString()
-                                ),
-                                type = if (transactionObjectArray.getJSONObject(i)["From"] == DetailsContext.id)
-                                    "Send"
-                                else "Received",
-                                transactionId =  transactionObjectArray.getJSONObject(i)["TransactionID"].toString(),
-                                isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated")
-                            )
-                        )
-                    }
-                    StateContext.initAllTransaction(transactions)
+                    TransactionsHelper.addTransaction(transactionObjectArray)
                 }
                 override fun onError(anError: ANError?) {
                     println(anError)

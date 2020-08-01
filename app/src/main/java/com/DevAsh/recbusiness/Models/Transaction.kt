@@ -1,5 +1,7 @@
 package com.DevAsh.recbusiness.Models
 
+
+
 class Transaction(
     var name: String,
     var id: String,
@@ -7,5 +9,6 @@ class Transaction(
     var amount: String,
     var type: String,
     var transactionId:String,
-    var isGenerated:Boolean
+    var isGenerated:Boolean,
+    var timeStamp:Any
 )
