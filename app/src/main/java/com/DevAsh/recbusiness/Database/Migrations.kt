@@ -51,6 +51,11 @@ open class Migrations : RealmMigration {
                 val extraValues= schema.create("ExtraValues")
                 extraValues.addField("isEnteredPasswordOnce",Boolean::class.javaObjectType)
             }
+            10L ->{
+                schema.get("ExtraValues")?.addField("timeIndex",Integer::class.javaObjectType)?.transform {
+                    obj -> obj.set("timeIndex",0)
+                }
+            }
         }
 
     }

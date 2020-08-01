@@ -1,9 +1,11 @@
 package com.DevAsh.recbusiness
 
+import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.telephony.TelephonyManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.DevAsh.recbusiness.Context.ApiContext
@@ -15,8 +17,6 @@ import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
-import com.DevAsh.recbusiness.Models.Merchant
-import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.Registration.Login
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -24,6 +24,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.jacksonandroidnetworking.JacksonParserFactory
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.ParseException

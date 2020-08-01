@@ -8,9 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,15 +23,18 @@ import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
 import com.DevAsh.recbusiness.Context.TransactionContext
 import com.DevAsh.recbusiness.Context.UiContext
+import com.DevAsh.recbusiness.Database.ExtraValues
 import com.DevAsh.recbusiness.Home.Transactions.AddMoney
 import com.DevAsh.recbusiness.Home.Transactions.SendMoney
 import com.DevAsh.recbusiness.Home.Transactions.TransactionDetails
 import com.DevAsh.recbusiness.Models.Transaction
+import com.DevAsh.recbusiness.MyStore.MyStoreHome
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.iid.FirebaseInstanceId
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
 import java.text.SimpleDateFormat
@@ -53,13 +60,17 @@ class HomePage : AppCompatActivity() {
     )
 
     lateinit var recentPaymentsAdapter: RecentPaymentsAdapter
-
+    lateinit var extraValues: ExtraValues
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
+
+        extraValues  = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
+        StateContext.timeIndex = extraValues.timeIndex
+        timeline.text = time[StateContext.timeIndex]
 
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
@@ -76,7 +87,6 @@ class HomePage : AppCompatActivity() {
         recentPaymentsAdapter = RecentPaymentsAdapter(arrayListOf(),this)
         recentPayments.layoutManager=LinearLayoutManager(this)
         recentPayments.adapter = recentPaymentsAdapter
-
         loadObservers()
 
         balance.setOnClickListener{
@@ -102,7 +112,55 @@ class HomePage : AppCompatActivity() {
         }
 
         viewPayments.setOnClickListener{
-             BottomSheetPeople(context, ArrayList(recentPaymentsAdapter.items)).openBottomSheet()
+             BottomSheetPeople(context, updatePaymentsListener()).openBottomSheet()
+        }
+
+        scan.setOnClickListener{
+            val permissions = arrayOf(android.Manifest.permission.CAMERA)
+            if(packageManager.checkPermission(android.Manifest.permission.CAMERA,context.packageName)==PackageManager.PERMISSION_GRANTED ){
+                startActivity(Intent(context, QrScanner::class.java))
+            }else{
+                ActivityCompat.requestPermissions(this, permissions,1)
+            }
+
+        }
+
+        qrCode.setOnClickListener{
+            startActivity(Intent(context, DisplayQrcode::class.java))
+        }
+
+        myStore.setOnClickListener{
+            startActivity(Intent(this,MyStoreHome::class.java))
+        }
+
+        hideButton()
+
+    }
+
+    private fun hideButton(){
+        val hiddenPanel = findViewById<CardView>(R.id.scanContainer)
+        val bottomDown: Animation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.button_down
+        )
+        val bottomUp: Animation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.button_up
+        )
+        scroller.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY >200) {
+                if(hiddenPanel.visibility==View.VISIBLE){
+                    hiddenPanel.startAnimation(bottomDown)
+                    hiddenPanel.visibility=View.GONE
+                }
+
+            }
+            if(scrollY < 200){
+                if(hiddenPanel.visibility==View.GONE){
+                    hiddenPanel.visibility=View.VISIBLE
+                    hiddenPanel.startAnimation(bottomUp)
+                }
+            }
         }
     }
 
@@ -119,7 +177,6 @@ class HomePage : AppCompatActivity() {
           updatePaymentsListener(updatedList)
         }
 
-
         greetings.text=(getText())
         StateContext.model.currentBalance.observe(this,balanceObserver)
         StateContext.model.allTransactions.observe(this,paymentsObserver)
@@ -134,6 +191,7 @@ class HomePage : AppCompatActivity() {
                 else
                     break
             }
+
         }
         if(updateListTemp.size>0){
             noPayments.visibility=View.GONE
@@ -143,7 +201,15 @@ class HomePage : AppCompatActivity() {
             recentPaymentsContainer.visibility = View.GONE
         }
 
-        recentPaymentsAdapter.updateList(updateListTemp)
+
+        if(updateListTemp.size<5){
+            recentPaymentsAdapter.updateList(updateListTemp)
+        }else{
+            recentPaymentsAdapter.updateList(ArrayList(updateListTemp.subList(0,5)))
+
+        }
+
+
         recentPayments.smoothScrollToPosition(0)
         return updateListTemp
     }
@@ -161,7 +227,6 @@ class HomePage : AppCompatActivity() {
             7 to Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30*6))
         )
 
-
         val time = timestampString.replace("T"," ").substring(0,timestampString.lastIndex)
         val parser = SimpleDateFormat("yyyy-MM-dd HH:mm")
         val transactionTime: Date = parser.parse(time)
@@ -178,10 +243,10 @@ class HomePage : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-         if(requestCode==0){
-                if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
-                    startActivity(Intent(context, SendMoney::class.java))
-                }
+        if(requestCode==0){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
+                startActivity(Intent(context, SendMoney::class.java))
+            }
         }else if(requestCode==1){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
                 startActivity(Intent(context, QrScanner::class.java))
@@ -240,6 +305,9 @@ class HomePage : AppCompatActivity() {
 
         fun onClick(index: Int){
             StateContext.timeIndex=index
+            Realm.getDefaultInstance().executeTransactionAsync{realm->
+                realm.where(ExtraValues::class.java).findFirst()?.timeIndex=index
+            }
             updatePayments(index)
             mBottomSheetDialog.cancel()
             setBackground()
@@ -314,7 +382,8 @@ class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>)
 
 
 
-class RecentPaymentsAdapter( var items : List<Transaction>, val context: Context, private val openSheet: BottomSheet?=null) : RecyclerView.Adapter<RecentActivityViewHolder>() {
+class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context, private val openSheet: BottomSheet?=null) : RecyclerView.Adapter<RecentActivityViewHolder>() {
+
 
     private var colorIndex = 0
 
