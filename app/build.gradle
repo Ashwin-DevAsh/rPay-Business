@@ -74,4 +74,7 @@ dependencies {
     //Optional for phone number hint
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
 }

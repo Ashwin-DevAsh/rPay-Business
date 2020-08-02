@@ -13,34 +13,42 @@
         android:id="@+id/card"
         android:elevation="0dp"
         android:translationZ="0dp"
-        app:cardElevation="0dp"
         android:layout_centerInParent="true"
         android:layout_height="50dp">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <ImageView
                 android:layout_width="match_parent"
-                android:src="@drawable/more"
-                android:id="@+id/avatar"
-                android:tint="@android:color/white"
-                android:background="@color/highlightButton"
-                android:padding="15dp"
+                android:id="@+id/profile"
+                android:visibility="invisible"
                 android:layout_height="match_parent"/>
-
-            <TextView
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:id="@+id/badge"
-                android:gravity="center"
-                android:scaleType="fitXY"
-                android:padding="15dp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_height="match_parent"/>
+                android:id="@+id/avatarContainer"
+                android:layout_height="match_parent">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:src="@drawable/more"
+                    android:id="@+id/avatar"
+                    android:tint="@android:color/white"
+                    android:background="@color/highlightButton"
+                    android:padding="15dp"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/badge"
+                    android:gravity="center"
+                    android:scaleType="fitXY"
+                    android:padding="15dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
         </FrameLayout>
-
 
     </androidx.cardview.widget.CardView>
 

@@ -91,11 +91,30 @@
             android:gravity="center"
             android:id="@+id/qrContent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="200dp"
+            <FrameLayout
+                android:layout_width="250dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:id="@+id/qr"
-                android:layout_height="200dp"/>
+                android:layout_height="250dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:id="@+id/qr"
+                    android:layout_height="match_parent"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="55dp"
+                    app:cardCornerRadius="27.5dp"
+                    android:layout_gravity="center"
+                    android:layout_height="55dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:id="@+id/profilePicture"
+                        android:scaleType="fitXY"
+                        android:background="@color/colorPrimary"
+                        android:src="@drawable/profile"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:gravity="center"

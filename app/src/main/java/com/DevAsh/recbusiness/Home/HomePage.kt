@@ -19,10 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.DevAsh.recbusiness.Context.DetailsContext
-import com.DevAsh.recbusiness.Context.StateContext
-import com.DevAsh.recbusiness.Context.TransactionContext
-import com.DevAsh.recbusiness.Context.UiContext
+import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Database.ExtraValues
 import com.DevAsh.recbusiness.Home.Transactions.AddMoney
 import com.DevAsh.recbusiness.Home.Transactions.SendMoney
@@ -37,6 +34,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
+import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -68,11 +66,11 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
-        try{
-            extraValues  = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
-
+        extraValues = try{
+            Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
         }catch (e:Throwable){
-            extraValues=ExtraValues()
+            println(e)
+            ExtraValues()
         }
         StateContext.timeIndex = extraValues.timeIndex
         timeline.text = time[StateContext.timeIndex]
@@ -88,6 +86,8 @@ class HomePage : AppCompatActivity() {
                     SocketHelper.connect()
                 }
             })
+
+        loadProfilePicture()
 
         recentPaymentsAdapter = RecentPaymentsAdapter(arrayListOf(),this)
         recentPayments.layoutManager=LinearLayoutManager(this)
@@ -242,6 +242,23 @@ class HomePage : AppCompatActivity() {
     }
 
 
+    private fun loadProfilePicture(){
+        UiContext.loadProfileImage(
+            context,
+            DetailsContext.id,
+            object :LoadProfileCallBack{
+                override fun onSuccess() {
+
+                }
+
+                override fun onFailure() {
+
+                }
+            },
+            profile,
+            R.drawable.profile
+        )
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -285,6 +302,16 @@ class HomePage : AppCompatActivity() {
         startActivity(startMain)
     }
 
+    override fun onResume() {
+        if(UiContext.isProfilePictureChanged){
+            println("Uploaded")
+            UiContext.UpdateImage(profile)
+            UiContext.isProfilePictureChanged=false
+        }
+        super.onResume()
+    }
+
+
     private fun openTimeSheet(){
         val mBottomSheetDialog = BottomSheetDialog(context)
         val sheetView: View = LayoutInflater.from(context).inflate(R.layout.set_time_bottomsheet, null)
@@ -311,7 +338,14 @@ class HomePage : AppCompatActivity() {
         fun onClick(index: Int){
             StateContext.timeIndex=index
             Realm.getDefaultInstance().executeTransactionAsync{realm->
-                realm.where(ExtraValues::class.java).findFirst()?.timeIndex=index
+                val extraValues = realm.where(ExtraValues::class.java).findFirst()
+                if(extraValues!=null ){
+                  extraValues.timeIndex=index
+                }else{
+                    val newExtraValues = ExtraValues()
+                    newExtraValues.timeIndex = StateContext.timeIndex
+                    realm.insert(newExtraValues)
+                }
             }
             updatePayments(index)
             mBottomSheetDialog.cancel()
@@ -356,13 +390,12 @@ class HomePage : AppCompatActivity() {
 
         }
 
-
-
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
 
     }
+
 
 
 }
@@ -424,6 +457,20 @@ class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context,
             colorIndex = (colorIndex+1)% UiContext.colors.size
         }
 
+        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+            override fun onSuccess() {
+                holder.badge.visibility=View.GONE
+                holder.profile.visibility = View.VISIBLE
+
+            }
+
+            override fun onFailure() {
+                holder.badge.visibility= View.VISIBLE
+                holder.profile.visibility = View.GONE
+
+            }
+
+        },holder.profile)
 
 
         if(items[position].isGenerated){
@@ -464,6 +511,7 @@ class RecentActivityViewHolder (view: View,context: Context,var item:Transaction
     val badge = view.findViewById(R.id.badge) as TextView
     val additionalInfo = view.findViewById(R.id.additionalInfo) as TextView
     val logo = view.findViewById<ImageView>(R.id.logo)
+    val profile = view.profile
 
     init {
         view.setOnClickListener{

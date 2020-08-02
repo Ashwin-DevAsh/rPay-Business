@@ -60,17 +60,22 @@
                         android:textStyle="bold"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
-                <ImageButton
-                    android:layout_width="50dp"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="48dp"
                     android:layout_marginTop="21dp"
-                    android:scaleType="fitXY"
-                    android:id="@+id/profile"
-                    android:background="@android:color/transparent"
+                    app:cardCornerRadius="24dp"
+                    app:cardBackgroundColor="@color/colorPrimary"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/profile"
-                    android:padding="5dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="48dp">
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:scaleType="fitXY"
+                        android:id="@+id/profile"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/profile"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </LinearLayout>
 

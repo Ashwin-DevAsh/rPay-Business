@@ -59,6 +59,9 @@ class SingleObjectTransaction : AppCompatActivity() {
 
         }
 
+        loadAvatar()
+
+
         StateContext.model.allTransactions.observe(this,transactionObserver)
 
         badge.text = TransactionContext.selectedUser!!.name[0].toString()
@@ -101,7 +104,26 @@ class SingleObjectTransaction : AppCompatActivity() {
         }
 
 
+
+
     }
+
+    private fun loadAvatar(){
+        UiContext.loadProfileImage(context,TransactionContext.selectedUser?.id!!,object:LoadProfileCallBack{
+            override fun onSuccess() {
+                avatarContainer.visibility=View.GONE
+                profile.visibility = View.VISIBLE
+            }
+
+            override fun onFailure() {
+                avatarContainer.visibility= View.VISIBLE
+                profile.visibility = View.GONE
+
+            }
+
+        },profile)
+    }
+
 
 
     private fun getData(){

@@ -75,33 +75,42 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="55dp"
                             app:cardCornerRadius="27.5dp"
-                            app:cardElevation="0dp"
                             android:layout_height="55dp"
                             >
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_centerInParent="true"
-                                    android:gravity="center"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold"
-                                    android:background="@drawable/avatar"
-                                    android:textSize="20sp"
-                                    android:text="A"
-                                    android:textAllCaps="true"
-                                    android:paddingTop="5dp"
-                                    android:id="@+id/badge"
-                                    android:layout_height="match_parent"/>
                                 <ImageView
                                     android:layout_width="match_parent"
-                                    android:id="@+id/logoContainer"
-                                    android:visibility="gone"
-                                    android:background="@color/highlightButton"
-                                    android:src="@drawable/rpay_notification"
-                                    android:padding="13dp"
+                                    android:id="@+id/profile"
+                                    android:visibility="invisible"
                                     android:layout_height="match_parent"/>
+                                <FrameLayout
+                                    android:id="@+id/avatarContainer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_centerInParent="true"
+                                        android:gravity="center"
+                                        android:textColor="@android:color/white"
+                                        android:textStyle="bold"
+                                        android:background="@drawable/avatar"
+                                        android:textSize="20sp"
+                                        android:text="A"
+                                        android:textAllCaps="true"
+                                        android:paddingTop="5dp"
+                                        android:id="@+id/badge"
+                                        android:layout_height="match_parent"/>
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:id="@+id/logoContainer"
+                                        android:visibility="gone"
+                                        android:background="@color/highlightButton"
+                                        android:src="@drawable/rpay_notification"
+                                        android:padding="13dp"
+                                        android:layout_height="match_parent"/>
+                                </FrameLayout>
                             </FrameLayout>
 
                         </androidx.cardview.widget.CardView>

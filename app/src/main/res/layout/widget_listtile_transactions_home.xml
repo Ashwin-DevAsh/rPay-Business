@@ -13,7 +13,6 @@
         android:layout_height="match_parent">
 
 
-
         <LinearLayout
             android:layout_width="80dp"
             android:gravity="center"
@@ -23,16 +22,24 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="45dp"
                 app:cardCornerRadius="22.5dp"
-                app:cardElevation="0dp"
                 android:layout_height="45dp">
                 <RelativeLayout
                     android:layout_width="45dp"
                     android:id="@+id/avatarContainer"
                     android:layout_height="45dp"
                     >
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:id="@+id/profile"
+                        android:visibility="invisible"
+                        android:layout_height="match_parent"/>
 
                     <FrameLayout
                         android:layout_width="match_parent"
+                        android:id="@id/avatarContainer"
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_width="match_parent"
@@ -57,6 +64,7 @@
                             android:padding="13dp"
                             android:layout_height="match_parent"/>
 
+                    </FrameLayout>
                     </FrameLayout>
 
 

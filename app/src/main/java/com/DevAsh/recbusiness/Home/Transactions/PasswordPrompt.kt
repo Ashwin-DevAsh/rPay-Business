@@ -19,10 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.DevAsh.recbusiness.Context.ApiContext
-import com.DevAsh.recbusiness.Context.DetailsContext
-import com.DevAsh.recbusiness.Context.StateContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Context.TransactionContext.needToPay
 import com.DevAsh.recbusiness.Database.ExtraValues
 import com.DevAsh.recbusiness.Database.RealmHelper
@@ -132,6 +129,8 @@ class PasswordPrompt : AppCompatActivity() {
         selectedUserName.text = TransactionContext.selectedUser?.number
         amount.text = TransactionContext.amount
 
+        loadAvatar()
+
         back.setOnClickListener{
             super.onBackPressed()
         }
@@ -148,10 +147,11 @@ class PasswordPrompt : AppCompatActivity() {
                     transaction()
                 },500)
 
-                if(extraValues==null || extraValues.isEnteredPasswordOnce!!){
+                if(extraValues==null || !extraValues.isEnteredPasswordOnce){
                     Realm.getDefaultInstance().executeTransactionAsync{
-                        val extraValues = ExtraValues(true)
-                        it.insert(extraValues)
+                        it.where(ExtraValues::class.java).findAll()?.deleteAllFromRealm()
+                        val extraValues = ExtraValues(true,StateContext.timeIndex)
+                        it.insertOrUpdate(extraValues)
                     }
                 }
             }else{
@@ -164,6 +164,23 @@ class PasswordPrompt : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun loadAvatar(){
+        UiContext.loadProfileImage(context,TransactionContext.selectedUser?.id!!,object:
+            LoadProfileCallBack {
+            override fun onSuccess() {
+                avatarContainer.visibility=View.GONE
+                profile.visibility = View.VISIBLE
+            }
+
+            override fun onFailure() {
+                avatarContainer.visibility= View.VISIBLE
+                profile.visibility = View.GONE
+
+            }
+
+        },profile)
     }
 
     fun transaction(){

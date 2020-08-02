@@ -36,6 +36,9 @@ class TransactionDetails : AppCompatActivity() {
 
         transactionID.text = String.format("%020d", TransactionContext.selectedTransaction?.transactionId?.toInt())
 
+        loadAvatar()
+
+
         if(TransactionContext.selectedTransaction?.isGenerated!!){
             logoContainer.visibility=View.VISIBLE
             subText.text = "Added  ${TransactionContext.selectedTransaction?.amount} ${TransactionContext.currency}"
@@ -97,6 +100,24 @@ class TransactionDetails : AppCompatActivity() {
 
 
     }
+
+    private fun loadAvatar(){
+        UiContext.loadProfileImage(this, TransactionContext.selectedTransaction?.id!!,object:LoadProfileCallBack{
+            override fun onSuccess() {
+                avatarContainer.visibility=View.GONE
+                profile.visibility = View.VISIBLE
+            }
+
+            override fun onFailure() {
+                avatarContainer.visibility= View.VISIBLE
+                profile.visibility = View.GONE
+
+            }
+
+        },profile)
+    }
+
+
 
     private fun share(){
         val view = findViewById<View>(R.id.mainContent)

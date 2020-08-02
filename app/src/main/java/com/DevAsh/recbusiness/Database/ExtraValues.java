@@ -17,7 +17,10 @@ public class ExtraValues extends RealmObject {
 
     public ExtraValues(){}
 
-    public ExtraValues(Boolean isEnteredPasswordOnce){
+    public ExtraValues(Boolean isEnteredPasswordOnce,Integer timeIndex){
         this.isEnteredPasswordOnce = isEnteredPasswordOnce;
+        this.timeIndex = timeIndex;
     }
+
+
 }

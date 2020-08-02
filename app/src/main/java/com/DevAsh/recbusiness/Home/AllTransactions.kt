@@ -15,14 +15,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.DevAsh.recbusiness.Context.LoadProfileCallBack
 import com.DevAsh.recbusiness.Context.StateContext
 import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Context.UiContext.colors
 import com.DevAsh.recbusiness.Home.Transactions.TransactionDetails
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
 import kotlinx.android.synthetic.main.activity_all_transactions.*
 import kotlinx.android.synthetic.main.activity_all_transactions.activity
+import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
 import kotlin.collections.ArrayList
 
 
@@ -93,6 +96,21 @@ class AllActivityAdapter(private var items : ArrayList<Transaction>, val context
             colorIndex = (colorIndex+1)%colors.size
         }
 
+        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+            override fun onSuccess() {
+                holder.badge.visibility=View.GONE
+                holder.profile.visibility = View.VISIBLE
+
+            }
+
+            override fun onFailure() {
+                holder.badge.visibility= View.VISIBLE
+                holder.profile.visibility = View.GONE
+
+            }
+
+        },holder.profile)
+
 
 
         if(items[position].isGenerated){
@@ -130,6 +148,8 @@ class AllActivityViewHolder (view: View,context: Context,var item:Transaction?=n
     val badge = view.findViewById(R.id.badge) as TextView
     val additionalInfo = view.findViewById(R.id.additionalInfo) as TextView
     val logo = view.findViewById<ImageView>(R.id.logo)
+    val profile = view.profile
+
 
     init {
         view.setOnClickListener{

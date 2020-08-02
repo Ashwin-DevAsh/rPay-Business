@@ -12,15 +12,14 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.DevAsh.recbusiness.Context.ApiContext
-import com.DevAsh.recbusiness.Context.DetailsContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Context.UiContext.colors
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.R
@@ -170,6 +169,21 @@ class UserAdapter(private var items : ArrayList<Contacts>, val context: Context)
 
         holder.contact = items[position]
 
+        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+            override fun onSuccess() {
+                holder.avatarContainer.visibility=View.GONE
+                holder.profileImage.visibility = VISIBLE
+
+            }
+
+            override fun onFailure() {
+                holder.avatarContainer.visibility=VISIBLE
+                holder.profileImage.visibility = View.GONE
+
+            }
+
+        },holder.profileImage)
+
         if (items[position].name.startsWith("+")) {
             holder.badge.text = items[position].name.subSequence(1, 3)
             holder.badge.textSize = 18F
@@ -187,6 +201,7 @@ class ViewHolder (view: View,context: Context) : RecyclerView.ViewHolder(view) {
     val subtitle = view.findViewById(R.id.subtitle) as TextView
     val badge = view.findViewById(R.id.badge) as TextView
     val avatarContainer = view.findViewById(R.id.avatarContainer) as RelativeLayout
+    val profileImage: ImageView = view.findViewById(R.id.profile)
     lateinit var color: String
 
     var contact:Contacts?=null
