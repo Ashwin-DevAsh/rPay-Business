@@ -82,7 +82,6 @@ class SplashScreen : AppCompatActivity() {
                           credentials.storeName
                       )
                   }catch (e:Throwable){
-
                       Handler().postDelayed({
                           startActivity(Intent(context,Login::class.java))
                           finish()
@@ -100,9 +99,11 @@ class SplashScreen : AppCompatActivity() {
                                 StateContext.currentBalance = balance!!
                                 val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                 StateContext.setBalanceToModel(formatter.format(balance))
-                                val transactionObjectArray = response.getJSONArray("Transactions")
-                                TransactionsHelper.addTransaction(transactionObjectArray)
                                 startActivity(Intent(context, HomePage::class.java))
+                                Handler().postDelayed({
+                                    val transactionObjectArray = response.getJSONArray("Transactions")
+                                    TransactionsHelper.addTransaction(transactionObjectArray)
+                                },0)
                                 finish()
                             }
                             override fun onError(anError: ANError?) {
