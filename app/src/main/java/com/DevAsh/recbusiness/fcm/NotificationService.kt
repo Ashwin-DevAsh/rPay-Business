@@ -9,12 +9,16 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.DevAsh.recbusiness.Sync.SocketService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlin.random.Random
 
 
@@ -42,6 +46,19 @@ class NotificationService : FirebaseMessagingService() {
             } else {
                  startService(intent)
             }
+        }else if(p0.data["type"]?.startsWith("updateProfilePicture")!!){
+            println("Updated")
+            println(p0.data)
+            try{
+                val id = p0.data["type"]?.split(",")!![1]
+                Picasso.get().invalidate(UiContext.buildURL(id))
+                Picasso.get().load(UiContext.buildURL(id))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+            }catch (e:Throwable){
+                println(e)
+            }
+
         }else{
             TransactionContext.openTransactionPage = true
             val type =  p0.data["type"]!!.split(",")[0]

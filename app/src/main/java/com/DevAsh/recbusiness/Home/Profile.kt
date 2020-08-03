@@ -21,8 +21,10 @@ import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.LoadProfileCallBack
 import com.DevAsh.recbusiness.Context.UiContext
+import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Registration.Login
+import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -159,10 +161,15 @@ class Profile : AppCompatActivity() {
                     bytesUploaded, totalBytes -> println("$bytesUploaded $totalBytes")
             }.getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
-                    profilePicture.setImageBitmap(newImage)
                     println(response)
-                    UiContext.isProfilePictureChanged = true
-                    UiContext.newProfile = newImage
+                    if(response?.getString("message")=="done"){
+                        loadProfileNoCache()
+                        UiContext.isProfilePictureChanged = true
+                        UiContext.newProfile = newImage
+                        SocketHelper.updateProfilePicture()
+                    }else{
+                        AlertHelper.showError("Error while uploading",this@Profile)
+                    }
                 }
 
                 override fun onError(anError: ANError?) {
@@ -203,8 +210,27 @@ class Profile : AppCompatActivity() {
         }
     }
 
+
     private fun loadProfilePicture(){
         UiContext.loadProfileImage(
+            this,
+            DetailsContext.id,
+            object : LoadProfileCallBack {
+                override fun onSuccess() {
+
+                }
+
+                override fun onFailure() {
+
+                }
+            },
+            profilePicture,
+            R.drawable.profile
+        )
+    }
+
+    private fun loadProfileNoCache(){
+        UiContext.loadProfileNoCache(
             this,
             DetailsContext.id,
             object : LoadProfileCallBack {

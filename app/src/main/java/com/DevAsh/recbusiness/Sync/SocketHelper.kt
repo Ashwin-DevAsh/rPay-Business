@@ -50,6 +50,14 @@ object SocketHelper {
             getMyState()
         }
 
+
+
+    }
+
+    fun updateProfilePicture(){
+        socket?.emit("updateProfilePicture",JSONObject( mapOf(
+            "id" to DetailsContext.id
+        )))
     }
 
    fun getMyState(){
