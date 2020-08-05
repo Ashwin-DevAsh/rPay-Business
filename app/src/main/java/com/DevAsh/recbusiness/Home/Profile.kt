@@ -1,13 +1,15 @@
 package com.DevAsh.recbusiness.Home
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
@@ -22,6 +24,7 @@ import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.LoadProfileCallBack
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Helper.AlertHelper
+import com.DevAsh.recbusiness.Home.Recovery.SelectLogo
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Registration.Login
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -30,15 +33,13 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.zxing.WriterException
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
@@ -100,12 +101,15 @@ class Profile : AppCompatActivity() {
         }
 
         profilePicture.setOnClickListener{
-//            Handler().postDelayed({
-//                UiContext.removeFromCache(DetailsContext.id)
-//            },0)
-//            CropImage.activity()
-//                .setGuidelines(CropImageView.Guidelines.ON)
-//                .start(this)
+            Handler().postDelayed({
+                UiContext.removeFromCache(DetailsContext.id)
+            },0)
+            val permissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if(packageManager.checkPermission(android.Manifest.permission.READ_CONTACTS,this.packageName)==PackageManager.PERMISSION_GRANTED ){
+                startActivity(Intent(this,SelectLogo::class.java))
+            }else{
+                ActivityCompat.requestPermissions(this, permissions,1)
+            }
         }
 
         logout.setOnClickListener{
@@ -179,24 +183,6 @@ class Profile : AppCompatActivity() {
             })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == Activity.RESULT_OK) {
-                val resultUri = result.uri
-                val bitmap = Bitmap.createScaledBitmap(  MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri), 500, 500, true);
-                Handler().postDelayed({
-                    UiContext.removeFromCache(DetailsContext.id)
-                },0)
-                uploadImage(saveBitmapToFile(File(resultUri.path!!)),bitmap)
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                println(result.error)
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -206,6 +192,10 @@ class Profile : AppCompatActivity() {
         if(requestCode==0){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
                share()
+            }
+        }else if(requestCode==1){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
+                startActivity(Intent(this,SelectLogo::class.java))
             }
         }
     }
@@ -217,9 +207,9 @@ class Profile : AppCompatActivity() {
             DetailsContext.id,
             object : LoadProfileCallBack {
                 override fun onSuccess() {
-
+                    profilePicture.background=resources.getDrawable(R.drawable.image_avatar)
+                    profilePicture.setPadding(35,35,35,35)
                 }
-
                 override fun onFailure() {
 
                 }
@@ -235,9 +225,9 @@ class Profile : AppCompatActivity() {
             DetailsContext.id,
             object : LoadProfileCallBack {
                 override fun onSuccess() {
-
+                    profilePicture.background=resources.getDrawable(R.drawable.image_avatar)
+                    profilePicture.setPadding(35,35,35,35)
                 }
-
                 override fun onFailure() {
 
                 }
@@ -247,43 +237,42 @@ class Profile : AppCompatActivity() {
         )
     }
 
-
-    private fun saveBitmapToFile(file: File): File {
-        val realFile = file
-        return try {
-
-            // BitmapFactory options to downsize the image
-            val o: BitmapFactory.Options = BitmapFactory.Options()
-            o.inJustDecodeBounds = true
-            o.inSampleSize = 6
-            // factor of downsizing the image
-            var inputStream = FileInputStream(file)
-            //Bitmap selectedBitmap = null;
-            BitmapFactory.decodeStream(inputStream, null, o)
-            inputStream.close()
-
-            // The new size we want to scale to
-            val REQUIRED_SIZE = 75
-
-            // Find the correct scale value. It should be the power of 2.
-            var scale = 1
-            while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
-                o.outHeight / scale / 2 >= REQUIRED_SIZE
-            ) {
-                scale *= 2
+    override fun onResume() {
+        if(bitmapImage!=null){
+            val logo = convertToFile(bitmapImage!!)
+            if(logo!=null){
+                uploadImage(logo, bitmapImage!!)
+                bitmapImage=null
+            }else{
+                AlertHelper.showError("Error while uploading",this@Profile)
             }
-            val o2: BitmapFactory.Options = BitmapFactory.Options()
-            o2.inSampleSize = scale
-            inputStream = FileInputStream(file)
-            val selectedBitmap: Bitmap? = BitmapFactory.decodeStream(inputStream, null, o2)
-            inputStream.close()
+        }
+        super.onResume()
+    }
+
+    private fun convertToFile(bitmap: Bitmap):File?{
+        var file: File? = null
+        return try {
+            file = File(Environment.getExternalStorageDirectory().toString() + File.separator + "logo.jpg")
             file.createNewFile()
-            val outputStream = FileOutputStream(file)
-            selectedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            //Convert bitmap to byte array
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, bos)
+            val bitmapdata = bos.toByteArray()
+            //write the bytes in file
+            val fos = FileOutputStream(file)
+            fos.write(bitmapdata)
+            fos.flush()
+            fos.close()
             file
         } catch (e: Exception) {
-            println(e)
-            realFile
+            e.printStackTrace()
+            file
         }
+    }
+
+
+    companion object{
+        var bitmapImage:Bitmap? = null
     }
 }

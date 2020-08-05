@@ -105,10 +105,19 @@
                     app:cardCornerRadius="27.5dp"
                     android:layout_gravity="center"
                     android:layout_height="55dp">
+<!--                    <ImageView-->
+<!--                        android:layout_width="50dp"-->
+<!--                        android:id="@+id/logo"-->
+<!--                        android:scaleType="fitXY"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:tint="@color/textDark"-->
+<!--                        android:background="@drawable/image_avatar"-->
+<!--                        android:layout_height="50dp"/>-->
                     <ImageView
                         android:layout_width="match_parent"
                         android:id="@+id/profilePicture"
                         android:scaleType="fitXY"
+                        android:tint="@color/textDark"
                         android:background="@color/colorPrimary"
                         android:src="@drawable/profile"
                         android:layout_height="match_parent"/>

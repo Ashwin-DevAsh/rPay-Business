@@ -17,6 +17,7 @@ import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
+import com.DevAsh.recbusiness.Home.Profile
 import com.DevAsh.recbusiness.Registration.Login
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -88,7 +89,9 @@ class SplashScreen : AppCompatActivity() {
                       },2000)
                       return@postDelayed
                   }
-                  AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
+                startActivity(Intent(context, Profile::class.java))
+                finish()
+                AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                         .addHeaders("jwtToken",DetailsContext.token)
                         .setPriority(Priority.IMMEDIATE)
                         .build()

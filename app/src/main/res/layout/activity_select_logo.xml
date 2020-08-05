@@ -6,27 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     tools:context=".Home.AllTransactions">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:background="@color/colorPrimary"
-        android:layout_height="match_parent">
-        <com.agrawalsuneet.dotsloader.loaders.TashieLoader
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tashieloader_animDelay="100"
-            app:tashieloader_animDur="500"
-            app:tashieloader_dotsColor="@color/highlightButton"
-            app:tashieloader_dotsDist="5dp"
-            app:tashieloader_dotsRadius="10dp"
-            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"
-            app:tashieloader_noOfDots="4" />
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:gravity="center"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <com.agrawalsuneet.dotsloader.loaders.TashieLoader-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:tashieloader_animDelay="100"-->
+<!--            app:tashieloader_animDur="500"-->
+<!--            app:tashieloader_dotsColor="@color/highlightButton"-->
+<!--            app:tashieloader_dotsDist="5dp"-->
+<!--            app:tashieloader_dotsRadius="10dp"-->
+<!--            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"-->
+<!--            app:tashieloader_noOfDots="4" />-->
+<!--    </LinearLayout>-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:fillViewport="true"
-        android:visibility="invisible"
         android:background="@color/colorPrimaryDark"
 
         android:id="@+id/mainContent"
@@ -35,8 +34,6 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
-
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -56,34 +53,27 @@
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:textSize="45dp"
-                        android:text="Transaction"
+                        android:text="Merchant"
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:gravity="start"
-                        android:layout_marginLeft="6dp"
                         android:textColor="@android:color/black"
                         android:textSize="30dp"
                         android:textStyle="bold"
-                        android:text="History"
+                        android:text="Logos"
                         android:layout_height="wrap_content"/>
-
                 </LinearLayout>
 
             </RelativeLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:id="@+id/activity"
+                android:id="@+id/iconContainer"
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="none"
                 android:layout_height="match_parent"/>
-
         </LinearLayout>
-
-
-
     </androidx.core.widget.NestedScrollView>
 
 
