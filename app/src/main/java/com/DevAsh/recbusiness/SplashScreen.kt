@@ -89,8 +89,8 @@ class SplashScreen : AppCompatActivity() {
                       },2000)
                       return@postDelayed
                   }
-                startActivity(Intent(context, Profile::class.java))
-                finish()
+//                startActivity(Intent(context, Profile::class.java))
+//                finish()
                 AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                         .addHeaders("jwtToken",DetailsContext.token)
                         .setPriority(Priority.IMMEDIATE)
