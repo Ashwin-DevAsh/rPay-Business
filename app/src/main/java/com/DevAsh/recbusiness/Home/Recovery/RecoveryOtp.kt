@@ -37,7 +37,7 @@ class RecoveryOtp : AppCompatActivity() {
                 Handler().postDelayed({
                     mainContent.visibility = View.INVISIBLE
                 },300)
-            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.registrationPort + "/setRecoveryOtp")
+            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.registrationPort + "/setRecoveryOtpMerchant")
                 .addHeaders("token",DetailsContext.token)
                 .addBodyParameter("otpNumber", otpText)
                 .addBodyParameter(

@@ -64,7 +64,7 @@ class ChangePassword : AppCompatActivity() {
             mainContent.visibility=View.INVISIBLE
         },500)
         newHashedPassword = PasswordHashing.encryptMsg(newPasswordText)
-        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/changePassword")
+        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/changeMerchantPassword")
             .addHeaders("token",DetailsContext.token)
             .addBodyParameter(object{
                 val id = DetailsContext.id
@@ -97,7 +97,9 @@ class ChangePassword : AppCompatActivity() {
                 }
 
                 override fun onError(anError: ANError?) {
+                    println(anError?.errorCode)
                     mainContent.visibility=View.VISIBLE
+
                     showAlertDialog(
                         this@ChangePassword,
                         "Failed !",

@@ -50,7 +50,7 @@ class NewPassword : AppCompatActivity() {
             mainContent.visibility= View.INVISIBLE
         },500)
         newHashedPassword = PasswordHashing.encryptMsg(newPasswordText)
-        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/newPassword")
+        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/newPasswordMerchant")
             .addHeaders("token",DetailsContext.token)
             .addBodyParameter(object{
                 val id = DetailsContext.id

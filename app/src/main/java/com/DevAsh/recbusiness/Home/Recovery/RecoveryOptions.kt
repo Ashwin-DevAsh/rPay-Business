@@ -23,7 +23,7 @@ class RecoveryOptions : AppCompatActivity() {
 
         mail.setOnClickListener{
             mainContent.visibility= View.INVISIBLE
-            AndroidNetworking.get(ApiContext.apiUrl+ ApiContext.registrationPort+"/getRecoveryOtp/?emailID=${DetailsContext.email}")
+            AndroidNetworking.get(ApiContext.apiUrl+ ApiContext.registrationPort+"/getRecoveryOtpMerchant/?emailID=${DetailsContext.email}")
                 .addHeaders("token",DetailsContext.token)
                 .setPriority(Priority.IMMEDIATE)
                 .build()
