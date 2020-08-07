@@ -10,6 +10,7 @@ object DetailsContext {
    var id :String=""
    var storeName=""
    var status = ""
+   var isVerified = false
 
    fun setData(name: String, phoneNumber: String, email: String, password: String, token: String,status:String,storeName:String) {
       this.name = name

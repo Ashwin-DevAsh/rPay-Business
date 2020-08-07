@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
 import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
 import java.text.SimpleDateFormat
@@ -110,8 +111,6 @@ class HomePage : AppCompatActivity() {
             startActivity(Intent(context, AddMoney::class.java))
         }
 
-
-
         setTime.setOnClickListener{
              openTimeSheet()
         }
@@ -127,7 +126,6 @@ class HomePage : AppCompatActivity() {
             }else{
                 ActivityCompat.requestPermissions(this, permissions,1)
             }
-
         }
 
         qrCode.setOnClickListener{
@@ -248,7 +246,8 @@ class HomePage : AppCompatActivity() {
             DetailsContext.id,
             object :LoadProfileCallBack{
                 override fun onSuccess() {
-
+                    profile.background=resources.getDrawable(R.drawable.image_avatar)
+                    profile.setPadding(35,35,35,35)
                 }
 
                 override fun onFailure() {

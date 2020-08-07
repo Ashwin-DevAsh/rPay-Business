@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.telephony.TelephonyManager
 import android.view.View
+import android.view.animation.TranslateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
@@ -26,6 +27,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.jacksonandroidnetworking.JacksonParserFactory
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.ParseException
@@ -89,8 +91,10 @@ class SplashScreen : AppCompatActivity() {
                       },2000)
                       return@postDelayed
                   }
-//                startActivity(Intent(context, Profile::class.java))
-//                finish()
+
+                Handler().postDelayed({
+                    getStatus()
+                },0)
                 AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                         .addHeaders("jwtToken",DetailsContext.token)
                         .setPriority(Priority.IMMEDIATE)
@@ -139,5 +143,26 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
+    fun getStatus(){
+        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.registrationPort + "/getMerchant?id=${DetailsContext.id}")
+            .addHeaders("jwtToken",DetailsContext.token)
+            .setPriority(Priority.IMMEDIATE)
+            .build()
+            .getAsJSONObject(object: JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    print(response)
+                    try {
+
+                        DetailsContext.isVerified = response?.getString("status")=="active"
+                    }catch (e:Throwable){
+
+                    }
+                }
+                override fun onError(anError: ANError?) {
+                    println("err")
+                    println(anError?.localizedMessage)
+                }
+            })
+    }
 
 }

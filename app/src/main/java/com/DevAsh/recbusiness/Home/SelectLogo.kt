@@ -1,4 +1,4 @@
-package com.DevAsh.recbusiness.Home.Recovery
+package com.DevAsh.recbusiness.Home
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -24,25 +24,27 @@ class SelectLogo : AppCompatActivity() {
         setContentView(R.layout.activity_select_logo)
 
         iconContainer.layoutManager = GridLayoutManager(this,3)
-        iconContainer.adapter = IconsAdapter(arrayListOf(
-            resources.getDrawable(R.drawable.hut_cafe),
-            resources.getDrawable(R.drawable.tamil_cafe),
-            resources.getDrawable(R.drawable.rec_mart),
-            resources.getDrawable(R.drawable.rec_bill),
-            resources.getDrawable(R.drawable.ug),
-            resources.getDrawable(R.drawable.shop1),
-            resources.getDrawable(R.drawable.shop2),
-            resources.getDrawable(R.drawable.shop3),
-            resources.getDrawable(R.drawable.shop4),
-            resources.getDrawable(R.drawable.shop5),
-            resources.getDrawable(R.drawable.org1),
-            resources.getDrawable(R.drawable.org2),
-            resources.getDrawable(R.drawable.org3),
-            resources.getDrawable(R.drawable.org4),
-            resources.getDrawable(R.drawable.org5),
-            resources.getDrawable(R.drawable.org6),
-            resources.getDrawable(R.drawable.org7)
-            ),this)
+        iconContainer.adapter = IconsAdapter(
+            arrayListOf(
+                resources.getDrawable(R.drawable.hut_cafe),
+                resources.getDrawable(R.drawable.tamil_cafe),
+                resources.getDrawable(R.drawable.rec_mart),
+                resources.getDrawable(R.drawable.rec_bill),
+                resources.getDrawable(R.drawable.ug),
+                resources.getDrawable(R.drawable.shop1),
+                resources.getDrawable(R.drawable.shop2),
+                resources.getDrawable(R.drawable.shop3),
+                resources.getDrawable(R.drawable.shop4),
+                resources.getDrawable(R.drawable.shop5),
+                resources.getDrawable(R.drawable.org1),
+                resources.getDrawable(R.drawable.org2),
+                resources.getDrawable(R.drawable.org3),
+                resources.getDrawable(R.drawable.org4),
+                resources.getDrawable(R.drawable.org5),
+                resources.getDrawable(R.drawable.org6),
+                resources.getDrawable(R.drawable.org7)
+            ), this
+        )
     }
 }
 
@@ -54,7 +56,9 @@ class IconsAdapter(private var items : ArrayList<Drawable>, val context: Activit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconHolder {
-        return IconHolder(LayoutInflater.from(context).inflate(R.layout.widget_logo, parent, false),context)
+        return IconHolder(
+            LayoutInflater.from(context).inflate(R.layout.widget_logo, parent, false), context
+        )
     }
 
     override fun onBindViewHolder(holder: IconHolder, position: Int) {

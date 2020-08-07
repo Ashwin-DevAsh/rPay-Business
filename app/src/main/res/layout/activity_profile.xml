@@ -43,6 +43,8 @@
         <LinearLayout
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:id="@+id/status"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="50dp">
 
@@ -57,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center"
+
                     android:background="@android:color/holo_red_dark"
                     android:layout_height="match_parent">
                     <ImageView
@@ -74,7 +77,7 @@
                         android:layout_marginLeft="15dp"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
-                        android:text="Your account not verified yet"
+                        android:text="Your Account Not Activated Yet"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 

@@ -71,6 +71,7 @@
                     <ImageButton
                         android:layout_width="match_parent"
                         android:scaleType="fitXY"
+                        android:tint="@color/textDark"
                         android:id="@+id/profile"
                         android:background="@android:color/transparent"
                         android:src="@drawable/profile"

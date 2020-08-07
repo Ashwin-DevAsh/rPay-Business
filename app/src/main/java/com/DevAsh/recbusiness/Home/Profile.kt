@@ -3,16 +3,14 @@ package com.DevAsh.recbusiness.Home
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
@@ -24,7 +22,6 @@ import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.LoadProfileCallBack
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Helper.AlertHelper
-import com.DevAsh.recbusiness.Home.Recovery.SelectLogo
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Registration.Login
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -58,6 +55,10 @@ class Profile : AppCompatActivity() {
         email.text =DetailsContext.email
         phone.text =  "+"+DetailsContext.phoneNumber
 
+        if(!DetailsContext.isVerified){
+            status.visibility=View.VISIBLE
+        }
+
 
         val jwt = Jwts.builder().claim("name", DetailsContext.storeName)
             .claim("number", DetailsContext.phoneNumber)
@@ -76,6 +77,7 @@ class Profile : AppCompatActivity() {
         }
 
         loadProfilePicture()
+
 
         changePassword.setOnClickListener{
             startActivity(Intent(this,ChangePassword::class.java))
@@ -106,7 +108,8 @@ class Profile : AppCompatActivity() {
             },0)
             val permissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
             if(packageManager.checkPermission(android.Manifest.permission.READ_CONTACTS,this.packageName)==PackageManager.PERMISSION_GRANTED ){
-                startActivity(Intent(this,SelectLogo::class.java))
+                startActivity(Intent(this,
+                    SelectLogo::class.java))
             }else{
                 ActivityCompat.requestPermissions(this, permissions,1)
             }
@@ -195,7 +198,8 @@ class Profile : AppCompatActivity() {
             }
         }else if(requestCode==1){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
-                startActivity(Intent(this,SelectLogo::class.java))
+                startActivity(Intent(this,
+                    SelectLogo::class.java))
             }
         }
     }
@@ -220,6 +224,7 @@ class Profile : AppCompatActivity() {
     }
 
     private fun loadProfileNoCache(){
+        profilePicture.setPadding(0,0,0,0)
         UiContext.loadProfileNoCache(
             this,
             DetailsContext.id,
@@ -227,6 +232,7 @@ class Profile : AppCompatActivity() {
                 override fun onSuccess() {
                     profilePicture.background=resources.getDrawable(R.drawable.image_avatar)
                     profilePicture.setPadding(35,35,35,35)
+
                 }
                 override fun onFailure() {
 
@@ -257,7 +263,7 @@ class Profile : AppCompatActivity() {
             file.createNewFile()
             //Convert bitmap to byte array
             val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, bos)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
             val bitmapdata = bos.toByteArray()
             //write the bytes in file
             val fos = FileOutputStream(file)
@@ -275,4 +281,6 @@ class Profile : AppCompatActivity() {
     companion object{
         var bitmapImage:Bitmap? = null
     }
+
+
 }

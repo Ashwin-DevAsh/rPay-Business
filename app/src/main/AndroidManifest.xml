@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Home.Recovery.SelectLogo"></activity>
+        <activity android:name=".Home.SelectLogo"></activity>
         <activity android:name=".MyStore.MyStoreHome" />
         <activity android:name=".Home.DisplayQrcode" />
         <activity
