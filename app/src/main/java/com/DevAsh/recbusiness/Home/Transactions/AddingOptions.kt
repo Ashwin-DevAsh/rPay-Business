@@ -74,7 +74,7 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                 var from = p0
                 var to = DetailsContext.id
                 var amount = amount
-                var toName = DetailsContext.name
+                var toName = DetailsContext.storeName
                 var fromName = addingOption
             })
             .setPriority(Priority.IMMEDIATE)

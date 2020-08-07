@@ -203,7 +203,7 @@ class PasswordPrompt : AppCompatActivity() {
                     var to = TransactionContext.selectedUser?.id.toString().replace("+","")
                     var amount = TransactionContext.amount
                     var toName = TransactionContext.selectedUser?.name.toString()
-                    var fromName = DetailsContext.name
+                    var fromName = DetailsContext.storeName
                 })
                 .setPriority(Priority.IMMEDIATE)
                 .build()
