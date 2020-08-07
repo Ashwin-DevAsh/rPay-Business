@@ -113,6 +113,12 @@ class SingleObjectTransaction : AppCompatActivity() {
             override fun onSuccess() {
                 avatarContainer.visibility=View.GONE
                 profile.visibility = View.VISIBLE
+                if(!TransactionContext.selectedUser?.id!!.contains("rpay")){
+                    profile.setBackgroundColor( context.resources.getColor(R.color.textDark))
+                    profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
+                    profile.setPadding(35,35,35,35)
+                }
+
             }
 
             override fun onFailure() {

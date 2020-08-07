@@ -101,6 +101,12 @@ class AllActivityAdapter(private var items : ArrayList<Transaction>, val context
                 holder.badge.visibility=View.GONE
                 holder.profile.visibility = View.VISIBLE
 
+                if(!items[position].id.contains("rpay")){
+                    holder.profile.setBackgroundColor( context.resources.getColor(R.color.textDark))
+                    holder.profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
+                    holder.profile.setPadding(35,35,35,35)
+                }
+
             }
 
             override fun onFailure() {

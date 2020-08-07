@@ -33,6 +33,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
+import kotlinx.android.synthetic.main.activity_home_page.profile
+import kotlinx.android.synthetic.main.activity_password_prompt.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
 import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
@@ -303,9 +305,12 @@ class HomePage : AppCompatActivity() {
 
     override fun onResume() {
         if(UiContext.isProfilePictureChanged){
-            println("Uploaded")
             UiContext.UpdateImage(profile)
             UiContext.isProfilePictureChanged=false
+            profile.background=( context.resources.getDrawable(R.drawable.image_avatar))
+            profile.setColorFilter(context.resources.getColor(R.color.textDark),  android.graphics.PorterDuff.Mode.SRC_IN)
+            profile.setPadding(35,35,35,35)
+
         }
         super.onResume()
     }

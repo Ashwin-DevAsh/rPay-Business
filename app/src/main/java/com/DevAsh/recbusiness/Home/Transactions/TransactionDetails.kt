@@ -106,6 +106,12 @@ class TransactionDetails : AppCompatActivity() {
             override fun onSuccess() {
                 avatarContainer.visibility=View.GONE
                 profile.visibility = View.VISIBLE
+
+                if(!TransactionContext.selectedTransaction?.id!!.contains("rpay")){
+                    profile.setBackgroundColor( resources.getColor(R.color.textDark))
+                    profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
+                    profile.setPadding(35,35,35,35)
+                }
             }
 
             override fun onFailure() {
