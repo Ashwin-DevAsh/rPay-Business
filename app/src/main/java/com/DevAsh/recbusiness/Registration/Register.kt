@@ -71,7 +71,7 @@ class Register : AppCompatActivity() {
                 AlertHelper.showError("Invalid Credentials", this)
             }else if( checkUserName(name)){
                 AlertHelper.showError("Username should not contain symbols or numbers", this)
-            }else if(name.split(" ").size>2){
+            }else if(name.split(" ").size>4){
                 AlertHelper.showError("Username should not contain more white space", this)
             }
             else if(password.length<8){
