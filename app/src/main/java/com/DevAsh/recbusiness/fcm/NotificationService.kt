@@ -8,8 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.TransactionContext
 import com.DevAsh.recbusiness.Context.UiContext
+import com.DevAsh.recbusiness.Database.Credentials
+import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -19,6 +22,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import io.realm.Realm
 import kotlin.random.Random
 
 
@@ -30,6 +34,7 @@ class NotificationService : FirebaseMessagingService() {
     }
 
     override fun onCreate() {
+        RealmHelper.init(context = this)
         intent = Intent(this,SocketService::class.java)
         super.onCreate()
     }
@@ -57,6 +62,22 @@ class NotificationService : FirebaseMessagingService() {
                     .networkPolicy(NetworkPolicy.NO_CACHE)
             }catch (e:Throwable){
                 println(e)
+            }
+
+        }else if(p0.data["type"]?.startsWith("merchantStatus")!!){
+            println("Added New Merchant....")
+            val id = p0.data["type"]!!.split(",")[1]
+            val status = p0.data["type"]!!.split(",")[2]
+
+            val details = Realm.getDefaultInstance().where(Credentials::class.java).findFirst()
+            if("rbusiness@${details?.phoneNumber}"==id){
+                 if(status=="active"){
+                     showNotification("R Admin","Your account is successfully activated!")
+                     DetailsContext.isVerified=true
+                 }else{
+                     showNotification("R Admin","Your account is deactivated!")
+                     DetailsContext.isVerified=false
+                 }
             }
 
         }else{
