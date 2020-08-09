@@ -141,9 +141,8 @@ class SplashScreen : AppCompatActivity() {
 
             return timeStamp
         }
-    }
 
-    fun getStatus(){
+     fun getStatus(){
         AndroidNetworking.get(ApiContext.apiUrl + ApiContext.registrationPort + "/getMerchant?id=${DetailsContext.id}")
             .addHeaders("jwtToken",DetailsContext.token)
             .setPriority(Priority.IMMEDIATE)
@@ -152,7 +151,6 @@ class SplashScreen : AppCompatActivity() {
                 override fun onResponse(response: JSONObject?) {
                     print(response)
                     try {
-
                         DetailsContext.isVerified = response?.getString("status")=="active"
                     }catch (e:Throwable){
 
@@ -163,6 +161,7 @@ class SplashScreen : AppCompatActivity() {
                     println(anError?.localizedMessage)
                 }
             })
+     }
     }
 
 }

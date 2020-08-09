@@ -144,6 +144,9 @@ class Otp : AppCompatActivity() {
                                         credentials.storeName
                                     )
                                     Handler().postDelayed({
+                                        SplashScreen.getStatus()
+                                    },0)
+                                    Handler().postDelayed({
                                         AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                                             .addHeaders("jwtToken",DetailsContext.token)
                                             .setPriority(Priority.IMMEDIATE)
