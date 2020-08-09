@@ -170,6 +170,7 @@ class Profile : AppCompatActivity() {
                 override fun onResponse(response: JSONObject?) {
                     println(response)
                     if(response?.getString("message")=="done"){
+                        AlertHelper.showToast("Successfully Changed!",this@Profile)
                         loadProfileNoCache()
                         UiContext.isProfilePictureChanged = true
                         UiContext.newProfile = newImage

@@ -27,6 +27,20 @@ object AlertHelper {
 
     }
 
+    fun showToast(text: String, context: Activity){
+        SnackbarManager.show(
+            Snackbar.with(context) // context
+                .text(text) // text to be displayed
+                .textTypeface(Typeface.DEFAULT_BOLD)
+                .duration(2000)
+                .textColor(Color.WHITE) // change the text color
+                .color(Color.parseColor("#4caf50")) // change the background color
+            , context
+        )
+
+    }
+
+
     fun showAlertDialog(
         context:Activity,
         title:String,
