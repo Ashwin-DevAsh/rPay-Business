@@ -2,6 +2,7 @@ package com.DevAsh.recbusiness.Helper
 
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.Models.Merchant
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.SplashScreen
@@ -18,9 +19,9 @@ object TransactionsHelper {
                 transactionObjectArray.getJSONObject(i)["To"].toString()
             else transactionObjectArray.getJSONObject(i)["From"].toString()
 
-            val merchant = Merchant(name, "+${number.split("@")[number.split("@").size-1]}","$number")
+            val contacts = Contacts(name, "+${number.split("@")[number.split("@").size-1]}","$number","")
             if(!transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated"))
-                StateContext.addRecentContact(merchant)
+                StateContext.addRecentContact(contacts)
             transactions.add(
                 0, Transaction(
                     name = name,

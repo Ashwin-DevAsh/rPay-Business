@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Context.UiContext.colors
 import com.DevAsh.recbusiness.Helper.AlertHelper
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.R
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -123,6 +124,7 @@ class SendMoney : AppCompatActivity() {
                                response.getJSONObject(i)["name"].toString()
                               ,"+"+response.getJSONObject(i)["number"].toString()
                               ,response.getJSONObject(i)["id"].toString()
+                              ,response.getJSONObject(i)["email"].toString()
                           )
                           if(user.id!=DetailsContext.id) TransactionContext.allUsers.add(user)
                       }
@@ -204,28 +206,16 @@ class ViewHolder (view: View,context: Context) : RecyclerView.ViewHolder(view) {
     val profileImage: ImageView = view.findViewById(R.id.profile)
     lateinit var color: String
 
-    var contact:Contacts?=null
+    var contact: Contacts?=null
 
 
     init {
         view.setOnClickListener{
            TransactionContext.avatarColor = color
-           TransactionContext.selectedUser= Contacts(contact?.name!!,contact?.number!!,contact?.id!!)
+           TransactionContext.selectedUser= Contacts(contact?.name!!,contact?.number!!,contact?.id!!,contact?.email!!)
            startActivity(context,Intent(context,SingleObjectTransaction::class.java),null)
         }
     }
 }
 
-
-class Contacts(val name: String, val number: String,val id:String){
-    override fun equals(other: Any?): Boolean {
-        return (other as Contacts).id == this.id
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + id.hashCode()
-        return result
-    }
-}
 

@@ -28,6 +28,7 @@ import com.DevAsh.recbusiness.Helper.PasswordHashing
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
 import com.DevAsh.recbusiness.Home.Recovery.RecoveryOptions
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.Models.Merchant
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
@@ -199,11 +200,19 @@ class PasswordPrompt : AppCompatActivity() {
                 .setContentType("application/json; charset=utf-8")
                 .addHeaders("jwtToken", DetailsContext.token)
                 .addApplicationJsonBody(object{
-                    var from = DetailsContext.id
-                    var to = TransactionContext.selectedUser?.id.toString().replace("+","")
+                    var from = object {
+                        var id = DetailsContext.id
+                        var name = DetailsContext.storeName
+                        var number = DetailsContext.phoneNumber
+                        var email = DetailsContext.email
+                    }
+                    var to = object {
+                        var id =  TransactionContext.selectedUser?.id
+                        var name =  TransactionContext.selectedUser?.name
+                        var number =  TransactionContext.selectedUser?.number
+                        var email =  TransactionContext.selectedUser?.email
+                    }
                     var amount = TransactionContext.amount
-                    var toName = TransactionContext.selectedUser?.name.toString()
-                    var fromName = DetailsContext.storeName
                 })
                 .setPriority(Priority.IMMEDIATE)
                 .build()
@@ -289,7 +298,7 @@ class PasswordPrompt : AppCompatActivity() {
     }
 
     private fun addRecent(){
-        val account = Merchant(TransactionContext.selectedUser?.name!!,TransactionContext.selectedUser?.number!!,TransactionContext.selectedUser?.id!!)
+        val account = Contacts(TransactionContext.selectedUser?.name!!,TransactionContext.selectedUser?.number!!,TransactionContext.selectedUser?.id!!,TransactionContext.selectedUser?.email!!)
         StateContext.addRecentContact(account)
     }
 

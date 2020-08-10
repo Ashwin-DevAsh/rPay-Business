@@ -1,6 +1,7 @@
 package com.DevAsh.recbusiness.Context
 
-import com.DevAsh.recbusiness.Home.Transactions.Contacts
+
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.Models.Transaction
 
 object TransactionContext {

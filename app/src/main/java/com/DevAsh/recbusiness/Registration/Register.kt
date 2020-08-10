@@ -85,6 +85,7 @@ class Register : AppCompatActivity() {
                 },300)
                 val jwt = Jwts.builder().claim("name", storeName)
                     .claim("number", RegistrationContext.countryCode+RegistrationContext.phoneNumber)
+                    .claim("email",email)
                     .claim("id", "rbusiness@${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
                     .signWith(SignatureAlgorithm.HS256, ApiContext.qrKey)
                     .compact()
@@ -95,7 +96,7 @@ class Register : AppCompatActivity() {
                         .addBodyParameter("password",PasswordHashing.encryptMsg(password))
                         .addBodyParameter("fcmToken","fcmToken")
                         .addBodyParameter("qrCode",jwt)
-                        .addBodyParameter("storeName",storeName.toString())
+                        .addBodyParameter("storeName",storeName)
                         .setPriority(Priority.IMMEDIATE)
                         .build()
                         .getAsJSONArray(object:JSONArrayRequestListener {

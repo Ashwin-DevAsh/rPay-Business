@@ -1,6 +1,7 @@
 package com.DevAsh.recbusiness.Context
 
 import com.DevAsh.recbusiness.Home.ViewModels.BalanceViewModel
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.Models.Merchant
 import com.DevAsh.recbusiness.Models.Transaction
 
@@ -22,12 +23,12 @@ object StateContext {
         model.allTransactions.value = ArrayList(initList)
     }
 
-    fun initRecentContact(arrayList:ArrayList<Merchant>){
+    fun initRecentContact(arrayList:ArrayList<Contacts>){
         model.recentContacts.value=arrayList
     }
 
-    fun addRecentContact(contact: Merchant){
-        val temp:ArrayList<Merchant> = if(model.recentContacts.value!=null) model.recentContacts.value!! else ArrayList()
+    fun addRecentContact(contact: Contacts){
+        val temp:ArrayList<Contacts> = if(model.recentContacts.value!=null) model.recentContacts.value!! else ArrayList()
         if(!temp.contains(contact)){
             temp.add(0,contact)
             model.recentContacts.value=temp

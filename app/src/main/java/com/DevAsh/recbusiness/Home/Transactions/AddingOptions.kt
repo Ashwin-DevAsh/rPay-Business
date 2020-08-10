@@ -71,11 +71,19 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
             .setContentType("application/json; charset=utf-8")
             .addHeaders("jwtToken", DetailsContext.token)
             .addApplicationJsonBody(object{
-                var from = p0
-                var to = DetailsContext.id
                 var amount = amount
-                var toName = DetailsContext.storeName
-                var fromName = addingOption
+                var to = object {
+                    var id = DetailsContext.id
+                    var name = DetailsContext.name
+                    var number = DetailsContext.phoneNumber
+                    var email = DetailsContext.email
+                }
+                var from = object {
+                    var id = p0
+                    var name = addingOption
+                    var number = "None"
+                    var email = "None"
+                }
             })
             .setPriority(Priority.IMMEDIATE)
             .build()
@@ -108,7 +116,7 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                                 override fun onError(anError: ANError?) {
                                     AlertHelper.showAlertDialog(this@AddingOptions,
                                         "Failed !",
-                                        "your transaction of ${TransactionContext.amount} ${TransactionContext.currency} is failed. if any amount debited it will refund soon"
+                                        "your transaction of $amount ${TransactionContext.currency} is failed. if any amount debited it will refund soon"
                                     )
                                 }
                             })
