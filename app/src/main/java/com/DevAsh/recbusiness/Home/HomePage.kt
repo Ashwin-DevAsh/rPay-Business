@@ -439,29 +439,29 @@ class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context,
     }
 
     override fun onBindViewHolder(holder: RecentActivityViewHolder, position: Int) {
-        holder.title.text = items[position].name
+        holder.title.text = items[position].contacts.name
         holder.subtitle.text = items[position].time
-        holder.badge.text = items[position].name[0].toString()
+        holder.badge.text = items[position].contacts.name[0].toString()
 
-        if (items[position].name.startsWith("+")) {
-            holder.badge.text = items[position].name.subSequence(1, 3)
+        if (items[position].contacts.name.startsWith("+")) {
+            holder.badge.text = items[position].contacts.name.subSequence(1, 3)
             holder.badge.textSize = 18F
         }
 
         holder.item = items[position]
 
         try {
-            holder.badge.setBackgroundColor(Color.parseColor(colorMap[items[position].id]))
-            holder.color = colorMap[items[position].id]
+            holder.badge.setBackgroundColor(Color.parseColor(colorMap[items[position].contacts.id]))
+            holder.color = colorMap[items[position].contacts.id]
 
         }catch (e:Throwable){
             holder.badge.setBackgroundColor(Color.parseColor(UiContext.colors[colorIndex]))
-            colorMap[items[position].id] = UiContext.colors[colorIndex]
+            colorMap[items[position].contacts.id] = UiContext.colors[colorIndex]
             holder.color = UiContext.colors[colorIndex]
             colorIndex = (colorIndex+1)% UiContext.colors.size
         }
 
-        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+        UiContext.loadProfileImage(context,items[position].contacts.id,object: LoadProfileCallBack {
             override fun onSuccess() {
                 holder.badge.visibility=View.GONE
                 holder.profile.visibility = View.VISIBLE

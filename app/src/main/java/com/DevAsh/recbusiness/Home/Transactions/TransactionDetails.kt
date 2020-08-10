@@ -28,10 +28,10 @@ class TransactionDetails : AppCompatActivity() {
 
 
         amount.text ="${TransactionContext.selectedTransaction?.amount}"
-        selectedUserName.text = TransactionContext.selectedTransaction?.name
+        selectedUserName.text = TransactionContext.selectedTransaction?.contacts?.name
         badge.setBackgroundColor(Color.parseColor(TransactionContext.avatarColor))
-        badge.text = TransactionContext.selectedTransaction?.name?.substring(0,1)
-        badge.text = TransactionContext.selectedTransaction?.name.toString()[0].toString()
+        badge.text = TransactionContext.selectedTransaction?.contacts?.name?.substring(0,1)
+        badge.text = TransactionContext.selectedTransaction?.contacts?.name.toString()[0].toString()
 
 
         transactionID.text = String.format("%020d", TransactionContext.selectedTransaction?.transactionId?.toInt())
@@ -51,8 +51,8 @@ class TransactionDetails : AppCompatActivity() {
         }
 
         if (TransactionContext.selectedTransaction?.type=="Send"){
-            toDetails.text = "To: ${TransactionContext.selectedTransaction?.name}"
-            toID.text = "${TransactionContext.selectedTransaction?.id}"
+            toDetails.text = "To: ${TransactionContext.selectedTransaction?.contacts?.name}"
+            toID.text = "${TransactionContext.selectedTransaction?.contacts?.id}"
 
             fromDetails.text = "From: ${DetailsContext.name}"
             fromID.text = "${DetailsContext.id}"
@@ -60,11 +60,11 @@ class TransactionDetails : AppCompatActivity() {
             toDetails.text = "To: ${DetailsContext.name}"
             toID.text = "${DetailsContext.id}"
             if(TransactionContext.selectedTransaction?.isGenerated!!){
-                fromDetails.text = "${TransactionContext.selectedTransaction?.name} ID"
-                fromID.text = "${TransactionContext.selectedTransaction?.id}"
+                fromDetails.text = "${TransactionContext.selectedTransaction?.contacts?.name} ID"
+                fromID.text = "${TransactionContext.selectedTransaction?.contacts?.id}"
             }else{
-                fromDetails.text = "From: ${TransactionContext.selectedTransaction?.name}"
-                fromID.text = "${TransactionContext.selectedTransaction?.id}".trim()
+                fromDetails.text = "From: ${TransactionContext.selectedTransaction?.contacts?.name}"
+                fromID.text = "${TransactionContext.selectedTransaction?.contacts?.id}".trim()
             }
         }
 
@@ -90,8 +90,8 @@ class TransactionDetails : AppCompatActivity() {
 
 
 
-        if (TransactionContext.selectedTransaction?.name.toString().startsWith("+")) {
-           badge.text = TransactionContext.selectedTransaction?.name.toString().subSequence(1, 3)
+        if (TransactionContext.selectedTransaction?.contacts?.name.toString().startsWith("+")) {
+           badge.text = TransactionContext.selectedTransaction?.contacts?.name.toString().subSequence(1, 3)
            badge.textSize = 18F
         }
 
@@ -102,12 +102,12 @@ class TransactionDetails : AppCompatActivity() {
     }
 
     private fun loadAvatar(){
-        UiContext.loadProfileImage(this, TransactionContext.selectedTransaction?.id!!,object:LoadProfileCallBack{
+        UiContext.loadProfileImage(this, TransactionContext.selectedTransaction?.contacts?.id!!,object:LoadProfileCallBack{
             override fun onSuccess() {
                 avatarContainer.visibility=View.GONE
                 profile.visibility = View.VISIBLE
 
-                if(!TransactionContext.selectedTransaction?.id!!.contains("rpay")){
+                if(!TransactionContext.selectedTransaction?.contacts?.id!!.contains("rpay")){
                     profile.setBackgroundColor( resources.getColor(R.color.textDark))
                     profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
                     profile.setPadding(35,35,35,35)

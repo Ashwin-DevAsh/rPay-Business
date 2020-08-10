@@ -74,34 +74,34 @@ class AllActivityAdapter(private var items : ArrayList<Transaction>, val context
     }
 
     override fun onBindViewHolder(holder: AllActivityViewHolder, position: Int) {
-        holder.title.text = items[position].name
+        holder.title.text = items[position].contacts.name
         holder.subtitle.text = items[position].time
-        holder.badge.text = items[position].name[0].toString()
+        holder.badge.text = items[position].contacts.name[0].toString()
 
-        if (items[position].name.startsWith("+")) {
-            holder.badge.text = items[position].name.subSequence(1, 3)
+        if (items[position].contacts.name.startsWith("+")) {
+            holder.badge.text = items[position].contacts.name.subSequence(1, 3)
             holder.badge.textSize = 18F
         }
 
         holder.item = items[position]
 
         try {
-            holder.badge.setBackgroundColor(Color.parseColor(colorMap[items[position].id]))
-            holder.color = colorMap[items[position].id]
+            holder.badge.setBackgroundColor(Color.parseColor(colorMap[items[position].contacts.id]))
+            holder.color = colorMap[items[position].contacts.id]
 
         }catch (e:Throwable){
             holder.badge.setBackgroundColor(Color.parseColor(colors[colorIndex]))
-            colorMap[items[position].id] = colors[colorIndex]
+            colorMap[items[position].contacts.id] = colors[colorIndex]
             holder.color = colors[colorIndex]
             colorIndex = (colorIndex+1)%colors.size
         }
 
-        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+        UiContext.loadProfileImage(context,items[position].contacts.id,object: LoadProfileCallBack {
             override fun onSuccess() {
                 holder.badge.visibility=View.GONE
                 holder.profile.visibility = View.VISIBLE
 
-                if(!items[position].id.contains("rpay")){
+                if(!items[position].contacts.id.contains("rpay")){
                     holder.profile.setBackgroundColor( context.resources.getColor(R.color.textDark))
                     holder.profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
                     holder.profile.setPadding(35,35,35,35)
