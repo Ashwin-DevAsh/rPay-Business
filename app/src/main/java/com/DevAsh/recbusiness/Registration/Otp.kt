@@ -131,7 +131,7 @@ class Otp : AppCompatActivity() {
                                         otpObject["token"].toString(),
                                         true,
                                         user["status"].toString(),
-                                        user["storeName"].toString()
+                                        user["storename"].toString()
                                     )
                                     realm.insert(credentials)
                                     DetailsContext.setData(
