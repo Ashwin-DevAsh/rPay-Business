@@ -113,14 +113,36 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                                 override fun onError(anError: ANError?) {
                                     AlertHelper.showAlertDialog(this@AddingOptions,
                                         "Failed !",
-                                        "your transaction of $amount ${HelperVariables.currency} is failed. if any amount debited it will refund soon"
+                                        "your transaction of $amount ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
+                                        object: AlertHelper.AlertDialogCallback {
+                                            override fun onDismiss() {
+                                                loadingScreen.visibility=View.INVISIBLE
+                                                onBackPressed()
+                                            }
+
+                                            override fun onDone() {
+                                                loadingScreen.visibility=View.INVISIBLE
+                                                onBackPressed()
+                                            }
+                                        }
                                     )
                                 }
                             })
                     }else{
                         AlertHelper.showAlertDialog(this@AddingOptions,
                             "Failed !",
-                            "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon"
+                            "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
+                            object: AlertHelper.AlertDialogCallback {
+                                override fun onDismiss() {
+                                    loadingScreen.visibility=View.INVISIBLE
+                                    onBackPressed()
+                                }
+
+                                override fun onDone() {
+                                    loadingScreen.visibility=View.INVISIBLE
+                                    onBackPressed()
+                                }
+                            }
                         )
                     }
                 }

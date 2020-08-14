@@ -20,4 +20,6 @@ object HelperVariables {
 
     var selectedAccount: BankAccount?=null
 
+    var withdrawAmount = ""
+
 }

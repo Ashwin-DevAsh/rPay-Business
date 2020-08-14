@@ -9,5 +9,6 @@ class Transaction(
     var type: String,
     var transactionId:String,
     var isGenerated:Boolean,
-    var timeStamp:Any
+    var timeStamp:Any,
+    var isWithdraw:Boolean
 )

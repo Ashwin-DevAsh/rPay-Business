@@ -92,10 +92,16 @@ class NotificationService : FirebaseMessagingService() {
 
             }
 
-            if(type=="addedMoney"){
-                showNotification("Added Money","Your $amount ${HelperVariables.currency}s has been successfully added.")
-            }else{
-                showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.")
+            when (type) {
+                "addedMoney" -> {
+                    showNotification("Added Money","Your $amount ${HelperVariables.currency}s has been successfully added.")
+                }
+                "withdraw" -> {
+                    showNotification("withdraw","Your $amount ${HelperVariables.currency}s has been successfully withdraw.")
+                }
+                else -> {
+                    showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.")
+                }
             }
 
 

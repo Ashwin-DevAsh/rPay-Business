@@ -1,5 +1,6 @@
 package com.DevAsh.recbusiness.Home.Withdraw
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -34,6 +35,9 @@ class AccountDetails : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val isWithdraw = intent.getBooleanExtra("isWithdraw",false)
+
+
         RealmHelper.init(this)
         setContentView(R.layout.activity_account_details)
 
@@ -41,6 +45,10 @@ class AccountDetails : AppCompatActivity() {
         accountNumber.text = "A/c No: "+HelperVariables.selectedAccount?.accountNumber
         ifsc.text = "IFSC: "+HelperVariables.selectedAccount?.IFSC
         holderName.text = HelperVariables.selectedAccount?.holderName
+
+        if(isWithdraw){
+            delete.text = "Proceed"
+        }
 
         back.setOnClickListener{
             onBackPressed()
@@ -51,7 +59,11 @@ class AccountDetails : AppCompatActivity() {
         }
 
         delete.setOnClickListener {
-            showAlert()
+            if(isWithdraw){
+                startActivity(Intent(this,WithdrawPasswordPrompt::class.java))
+            }else{
+                showAlert()
+            }
         }
 
     }
@@ -67,8 +79,7 @@ class AccountDetails : AppCompatActivity() {
         val dialog = mBottomSheetDialog.show()
 
         cancel.setOnClickListener{
-
-            onBackPressed()
+            dialog.dismiss()
         }
         done.setOnClickListener{
             mainContent.visibility=View.INVISIBLE

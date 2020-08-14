@@ -21,7 +21,6 @@
        >
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -343,7 +342,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:id="@+id/merchant"
+                android:id="@+id/withdraw"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
@@ -512,23 +511,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:visibility="gone"
-
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_height="wrap_content">
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-
                     android:nestedScrollingEnabled="false"
                     android:layout_height="wrap_content"
-
                     android:minHeight="70.5dp"/>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:gravity="center"
-
                     android:layout_height="50dp">
                     <TextView
                         android:textStyle="bold"
@@ -545,7 +538,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-
                 android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="match_parent"

@@ -28,7 +28,7 @@ class TransactionDetails : AppCompatActivity() {
 
 
         amount.text ="${HelperVariables.selectedTransaction?.amount}"
-        selectedUserName.text = HelperVariables.selectedTransaction?.contacts?.name
+        number.text = HelperVariables.selectedTransaction?.contacts?.name
         badge.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
         badge.text = HelperVariables.selectedTransaction?.contacts?.name?.substring(0,1)
         badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString()[0].toString()
@@ -39,14 +39,20 @@ class TransactionDetails : AppCompatActivity() {
         loadAvatar()
 
 
-        if(HelperVariables.selectedTransaction?.isGenerated!!){
+        if(HelperVariables.selectedTransaction?.isWithdraw!!){
+            logoContainer.visibility=View.VISIBLE
+            logoContainer.setBackgroundColor(resources.getColor(R.color.textDark))
+            logoContainer.setImageDrawable(resources.getDrawable(R.drawable.bank_symbol))
+            subText.text = "Withdraw  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
+            name.text = "Withdraw to"
+        }else if(HelperVariables.selectedTransaction?.isGenerated!!){
             logoContainer.visibility=View.VISIBLE
             subText.text = "Added  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
-            type.text = "Added by"
+            name.text = "Added by"
         }else{
             subText.text =
                 "${if (HelperVariables.selectedTransaction?.type=="Send") "Paid" else HelperVariables.selectedTransaction?.type}  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
-            type.text = if (HelperVariables.selectedTransaction?.type=="Send") "Paid to" else "Received from"
+            name.text = if (HelperVariables.selectedTransaction?.type=="Send") "Paid to" else "Received from"
 
         }
 

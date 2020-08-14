@@ -19,11 +19,18 @@ class Successful : AppCompatActivity() {
 
         type = intent.getStringExtra("type")!!
         val amount = intent.getStringExtra("amount")
-        if(type=="addMoney"){
-            message.text = "The amount $amount ${HelperVariables.currency}s has been successfully added in your wallet"
-        }else{
-            image.setImageDrawable(getDrawable(R.drawable.transaction_successful))
-            message.text = "Your transaction of $amount ${HelperVariables.currency}s has been successfully completed"
+        when (type) {
+            "addMoney" -> {
+                message.text = "The amount $amount ${HelperVariables.currency}s has been successfully added in your wallet"
+            }
+            "withdraw" -> {
+                image.setImageDrawable(getDrawable(R.drawable.withdraw_successfull))
+                message.text = "The amount $amount ${HelperVariables.currency}s has been successfully transfered to your bank"
+            }
+            else -> {
+                image.setImageDrawable(getDrawable(R.drawable.transaction_successful))
+                message.text = "Your transaction of $amount ${HelperVariables.currency}s has been successfully completed"
+            }
         }
 
         val ring: MediaPlayer = MediaPlayer.create(this, R.raw.success)
@@ -35,7 +42,7 @@ class Successful : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(type=="addMoney"){
+        if(type=="addMoney" || type=="withdraw"){
             try{
                 startActivity(Intent(this,HomePage::class.java))
                 finish()

@@ -176,7 +176,8 @@ class SingleObjectTransaction : AppCompatActivity() {
                                     else "Received",
                                     transactionId =  transactionObjectArray.getJSONObject(i)["TransactionID"].toString(),
                                     isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated"),
-                                    timeStamp = transactionObjectArray.getJSONObject(i).get("TimeStamp")
+                                    timeStamp = transactionObjectArray.getJSONObject(i).get("TimeStamp"),
+                                    isWithdraw = transactionObjectArray.getJSONObject(i).getBoolean("IsWithdraw")
                                 )
                             )
                         }

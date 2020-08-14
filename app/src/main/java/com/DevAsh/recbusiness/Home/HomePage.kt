@@ -26,6 +26,7 @@ import com.DevAsh.recbusiness.Home.Transactions.SendMoney
 import com.DevAsh.recbusiness.Home.Transactions.TransactionDetails
 import com.DevAsh.recbusiness.Home.Withdraw.AccountDetails
 import com.DevAsh.recbusiness.Home.Withdraw.AddAccounts
+import com.DevAsh.recbusiness.Home.Withdraw.WithdrawAmountPrompt
 import com.DevAsh.recbusiness.Models.BankAccount
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.MyStore.MyStoreHome
@@ -151,6 +152,11 @@ class HomePage : AppCompatActivity() {
                 startActivity(Intent(context,AddAccounts::class.java))
             }
 
+        }
+
+        withdraw.setOnClickListener{
+            val intent = Intent(this, WithdrawAmountPrompt::class.java)
+            startActivity(intent)
         }
 
         hideButton()

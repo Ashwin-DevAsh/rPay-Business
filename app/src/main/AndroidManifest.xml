@@ -28,9 +28,23 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Home.Withdraw.WithdrawPasswordPrompt"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            android:name=".Home.Withdraw.AccountDetails"/>
+            />
+        <activity
+            android:name=".Home.Withdraw.WithdrawOptions"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".Home.Withdraw.WithdrawAmountPrompt"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home.Withdraw.AccountDetails"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Home.Withdraw.AddAccounts"
             android:screenOrientation="portrait"

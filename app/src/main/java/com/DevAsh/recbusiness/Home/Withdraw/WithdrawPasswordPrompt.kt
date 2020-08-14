@@ -1,6 +1,7 @@
-package com.DevAsh.recbusiness.Home.Transactions
+package com.DevAsh.recbusiness.Home.Withdraw
 
-import android.Manifest.permission.USE_FINGERPRINT
+
+import android.Manifest
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.hardware.fingerprint.FingerprintManager
 import android.os.*
+import androidx.appcompat.app.AppCompatActivity
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
@@ -17,17 +19,19 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.DevAsh.recbusiness.Context.*
-import com.DevAsh.recbusiness.Context.HelperVariables.needToPay
+import com.DevAsh.recbusiness.Context.ApiContext
+import com.DevAsh.recbusiness.Context.DetailsContext
+import com.DevAsh.recbusiness.Context.HelperVariables
+import com.DevAsh.recbusiness.Context.StateContext
 import com.DevAsh.recbusiness.Database.ExtraValues
-import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.PasswordHashing
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.Recovery.RecoveryOptions
-import com.DevAsh.recbusiness.Models.Contacts
+import com.DevAsh.recbusiness.Home.Transactions.CallBack
+import com.DevAsh.recbusiness.Home.Transactions.FingerprintHelper
+import com.DevAsh.recbusiness.Home.Transactions.Successful
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.androidnetworking.AndroidNetworking
@@ -35,9 +39,16 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_amount_prompt.back
-import kotlinx.android.synthetic.main.activity_amount_prompt.done
-import kotlinx.android.synthetic.main.activity_password_prompt.*
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.amount
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.back
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.done
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.errorMessage
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.fingerPrint
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.forget
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.loadingScreen
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.name
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.number
+import kotlinx.android.synthetic.main.activity_withdraw_password_prompt.password
 import org.json.JSONObject
 import java.io.IOException
 import java.security.*
@@ -48,8 +59,7 @@ import javax.crypto.KeyGenerator
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.SecretKey
 
-
-class PasswordPrompt : AppCompatActivity() {
+class WithdrawPasswordPrompt : AppCompatActivity() {
 
     var context: Context = this
     private lateinit var keyStore: KeyStore
@@ -63,21 +73,18 @@ class PasswordPrompt : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_prompt)
-        RealmHelper.init(context)
+        setContentView(R.layout.activity_withdraw_password_prompt)
 
         val extraValues = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()
 
-
         if (checkLockScreen()) {
-
             generateKey()
             if (initCipher()) {
                 var cryptoObject:FingerprintManager.CryptoObject
                 cipher.let {
                     cryptoObject = FingerprintManager.CryptoObject(it)
                 }
-                val helper = FingerprintHelper(this,object :CallBack{
+                val helper = FingerprintHelper(this,object : CallBack {
                     override fun onSuccess(){
                         if(extraValues==null || !extraValues.isEnteredPasswordOnce!!){
                             animateBell("Enter password to enable fingerprint")
@@ -118,14 +125,9 @@ class PasswordPrompt : AppCompatActivity() {
         }
 
 
-
-        badge.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
-        badge.text = HelperVariables.selectedUser?.name?.substring(0,1)
-        name.text = "${HelperVariables.selectedUser?.name}"
-        number.text = HelperVariables.selectedUser?.number
-        amount.text = HelperVariables.amount
-
-        loadAvatar()
+        name.text = HelperVariables.selectedAccount?.bankName
+        number.text = HelperVariables.selectedAccount?.accountNumber
+        amount.text = HelperVariables.withdrawAmount
 
         back.setOnClickListener{
             super.onBackPressed()
@@ -135,63 +137,34 @@ class PasswordPrompt : AppCompatActivity() {
             startActivity(Intent(this, RecoveryOptions::class.java))
         }
 
-
-        done.setOnClickListener{v->
+        done.setOnClickListener { view ->
             if(PasswordHashing.decryptMsg(DetailsContext.password!!)==password.text.toString()){
-                hideKeyboardFrom(context,v)
+                hideKeyboardFrom(this,view)
                 Handler().postDelayed({
                     transaction()
                 },500)
 
-                if(extraValues==null || !extraValues.isEnteredPasswordOnce){
+                if(extraValues==null || extraValues.isEnteredPasswordOnce!!){
                     Realm.getDefaultInstance().executeTransactionAsync{
-                        it.where(ExtraValues::class.java).findAll()?.deleteAllFromRealm()
                         val extraValues = ExtraValues(true,StateContext.timeIndex)
-                        it.insertOrUpdate(extraValues)
+                        it.insert(extraValues)
                     }
                 }
             }else{
                 println(PasswordHashing.decryptMsg(DetailsContext.password!!)+" actual password")
                 println(password.text.toString()+" actual password")
-//                AlertHelper.showAlertDialog(this,"Incorrect Password !","The password you entered is incorrect, kindly check your password")
-                AlertHelper.showError("Invalid Password",this@PasswordPrompt)
+                AlertHelper.showError("Invalid Password",this@WithdrawPasswordPrompt)
             }
-
         }
 
-
-    }
-
-    private fun loadAvatar(){
-        UiContext.loadProfileImage(context,HelperVariables.selectedUser?.id!!,object:
-            LoadProfileCallBack {
-            override fun onSuccess() {
-                avatarContainer.visibility=View.GONE
-                profile.visibility = View.VISIBLE
-
-                if(!HelperVariables.selectedUser?.id!!.contains("rpay")){
-                    profile.setBackgroundColor( context.resources.getColor(R.color.textDark))
-                    profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
-                    profile.setPadding(35,35,35,35)
-                }
-
-            }
-
-            override fun onFailure() {
-                avatarContainer.visibility= View.VISIBLE
-                profile.visibility = View.GONE
-
-            }
-
-        },profile)
     }
 
     fun transaction(){
-        if(needToPay){
+        if(HelperVariables.needToPay){
             loadingScreen.visibility= View.VISIBLE
-            needToPay=false
+            HelperVariables.needToPay =false
 
-            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.paymentPort + "/pay")
+            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.paymentPort + "/withdraw")
                 .setContentType("application/json; charset=utf-8")
                 .addHeaders("jwtToken", DetailsContext.token)
                 .addApplicationJsonBody(object{
@@ -202,12 +175,12 @@ class PasswordPrompt : AppCompatActivity() {
                         var email = DetailsContext.email
                     }
                     var to = object {
-                        var id =  HelperVariables.selectedUser?.id
-                        var name =  HelperVariables.selectedUser?.name
-                        var number =  HelperVariables.selectedUser?.number
-                        var email =  HelperVariables.selectedUser?.email
+                        var id =  HelperVariables.selectedAccount?.accountNumber
+                        var name =  HelperVariables.selectedAccount?.bankName
+                        var number =  HelperVariables.selectedAccount?.IFSC
+                        var email =  HelperVariables.selectedAccount?.holderName
                     }
-                    var amount = HelperVariables.amount
+                    var amount = HelperVariables.withdrawAmount
                 })
                 .setPriority(Priority.IMMEDIATE)
                 .build()
@@ -233,15 +206,14 @@ class PasswordPrompt : AppCompatActivity() {
                                         TransactionsHelper.addTransaction(transactionObjectArray)
                                     }
                                     override fun onError(anError: ANError?) {
-                                        AlertHelper.showServerError(this@PasswordPrompt)
+                                        AlertHelper.showServerError(this@WithdrawPasswordPrompt)
                                     }
-
                                 })
 
                         }else{
-                            AlertHelper.showAlertDialog(this@PasswordPrompt,
+                            AlertHelper.showAlertDialog(this@WithdrawPasswordPrompt,
                                 "Failed !",
-                                "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
+                                "your transaction of ${HelperVariables.withdrawAmount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
                                 object: AlertHelper.AlertDialogCallback {
                                     override fun onDismiss() {
                                         loadingScreen.visibility=View.INVISIBLE
@@ -259,9 +231,9 @@ class PasswordPrompt : AppCompatActivity() {
 
                     override fun onError(anError: ANError?) {
                         loadingScreen.visibility= View.VISIBLE
-                        AlertHelper.showAlertDialog(this@PasswordPrompt,
+                        AlertHelper.showAlertDialog(this@WithdrawPasswordPrompt,
                             "Failed !",
-                            "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
+                            "your transaction of ${HelperVariables.withdrawAmount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
                             object: AlertHelper.AlertDialogCallback {
                                 override fun onDismiss() {
                                     loadingScreen.visibility=View.INVISIBLE
@@ -280,47 +252,66 @@ class PasswordPrompt : AppCompatActivity() {
         }
     }
 
-
     fun transactionSuccessful(){
-        val intent = Intent(this,Successful::class.java)
-        intent.putExtra("type","transaction")
-        intent.putExtra("amount",HelperVariables.amount)
-        Handler().postDelayed({
-            addRecent()
-        },0)
+        val intent = Intent(this, Successful::class.java)
+        intent.putExtra("type","withdraw")
+        intent.putExtra("amount",HelperVariables.withdrawAmount)
         startActivity(intent)
         finish()
     }
 
-    private fun addRecent(){
-        val account = Contacts(HelperVariables.selectedUser?.name!!,HelperVariables.selectedUser?.number!!,HelperVariables.selectedUser?.id!!,HelperVariables.selectedUser?.email!!)
-        StateContext.addRecentContact(account)
+    private fun startVibrate(time:Long){
+        val v: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            //deprecated in API 26
+            v.vibrate(time)
+        }
     }
 
-    private fun hideKeyboardFrom(context: Context, view: View) {
-        val imm: InputMethodManager =
-            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    val handler= Handler()
+
+    fun animateBell(message:String="Authentication Failed") {
+
+        val imgBell: ImageView = findViewById<View>(R.id.fingerPrint) as ImageView
+        imgBell.setColorFilter(Color.RED)
+        errorMessage.text=message
+        errorMessage.visibility=View.VISIBLE
+        errorMessage.setTextColor(Color.RED)
+
+        val shake: Animation = AnimationUtils.loadAnimation(this, R.anim.shakeanimation)
+        imgBell.animation = shake
+        imgBell.startAnimation(shake)
+
+        handler.postDelayed({
+            if(!isTooManyAttempts && !message.startsWith("Enter")){
+                imgBell.setColorFilter(resources.getColor(R.color.textDark))
+                errorMessage.text="Touch the fingerprint sensor"
+                errorMessage.setTextColor(resources.getColor(R.color.textDark))
+            }
+        },1500)
     }
 
     private fun checkLockScreen(): Boolean {
         keyguardManager = getSystemService(Context.KEYGUARD_SERVICE)
                 as KeyguardManager
-         fingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE)
+        fingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE)
                 as FingerprintManager
         if (!keyguardManager.isKeyguardSecure) {
-           AlertHelper.showError(
+            AlertHelper.showError(
                 "Lock screen security not enabled",
-               this)
+                this)
             return false
         }
 
         if (ActivityCompat.checkSelfPermission(this,
-                USE_FINGERPRINT) !=
+                Manifest.permission.USE_FINGERPRINT
+            ) !=
             PackageManager.PERMISSION_GRANTED) {
-          AlertHelper.showError(
+            AlertHelper.showError(
                 "Permission not enabled (Fingerprint)",
-              this)
+                this)
 
             return false
         }
@@ -409,79 +400,11 @@ class PasswordPrompt : AppCompatActivity() {
         }
     }
 
-    private fun startVibrate(time:Long){
-        val v: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            //deprecated in API 26
-            v.vibrate(time)
-        }
+
+
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
-    val handler= Handler()
-
-    fun animateBell(message:String="Authentication Failed") {
-
-        val imgBell: ImageView = findViewById<View>(R.id.fingerPrint) as ImageView
-        imgBell.setColorFilter(Color.RED)
-        errorMessage.text=message
-        errorMessage.visibility=View.VISIBLE
-        errorMessage.setTextColor(Color.RED)
-
-        val shake: Animation = AnimationUtils.loadAnimation(this, R.anim.shakeanimation)
-        imgBell.animation = shake
-        imgBell.startAnimation(shake)
-
-        handler.postDelayed({
-            if(!isTooManyAttempts && !message.startsWith("Enter")){
-                imgBell.setColorFilter(resources.getColor(R.color.textDark))
-                errorMessage.text="Touch the fingerprint sensor"
-                errorMessage.setTextColor(resources.getColor(R.color.textDark))
-             }
-        },1500)
-    }
-}
-
-class FingerprintHelper(private val appContext: Activity, private val callBack: CallBack) : FingerprintManager.AuthenticationCallback() {
-
-    private lateinit var cancellationSignal: CancellationSignal
-
-    fun startAuth(manager: FingerprintManager,
-                  cryptoObject: FingerprintManager.CryptoObject) {
-
-        cancellationSignal = CancellationSignal()
-
-        if (ActivityCompat.checkSelfPermission(appContext,
-                USE_FINGERPRINT) !=
-            PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-        manager.authenticate(cryptoObject, cancellationSignal, 0, this, null)
-    }
-
-    override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
-        callBack.onTooManyAttempt()
-    }
-
-    override fun onAuthenticationHelp(helpMsgId: Int,helpString: CharSequence) {
-        callBack.onDirtyRead()
-
-    }
-
-    override fun onAuthenticationFailed() {
-        callBack.onFailed()
-    }
-
-    override fun onAuthenticationSucceeded(
-        result: FingerprintManager.AuthenticationResult) {
-        callBack.onSuccess()
-    }
-}
-
-interface CallBack{
-    fun onSuccess()
-    fun onFailed()
-    fun onDirtyRead()
-    fun onTooManyAttempt()
 }

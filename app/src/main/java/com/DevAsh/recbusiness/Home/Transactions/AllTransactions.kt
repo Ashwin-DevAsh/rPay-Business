@@ -138,6 +138,17 @@ class AllActivityAdapter(private var items : ArrayList<Transaction>, val context
             holder.badge.setBackgroundColor(context.getColor(R.color.highlightButton))
             holder.color = "#035aa6"
 
+        }else if(items[position].isWithdraw){
+
+            holder.badge.text = "RC"
+            holder.logo.visibility = View.VISIBLE
+            holder.logo.setBackgroundColor(context.resources.getColor(R.color.textDark))
+            holder.logo.setImageDrawable(context.resources.getDrawable(R.drawable.bank_symbol))
+            holder.additionalInfo.setTextColor(Color.parseColor("#8B008B"))
+            holder.additionalInfo.setBackgroundColor(Color.parseColor("#258B008B"))
+            holder.additionalInfo.text= "-${items[position].amount} ${HelperVariables.currency}"
+            holder.badge.setBackgroundColor(context.getColor(R.color.highlightButton))
+            holder.color = "#035aa6"
         }else if(items[position].type=="Received"){
             holder.additionalInfo.setTextColor(Color.parseColor("#1b5e20"))
             holder.additionalInfo.setBackgroundColor(Color.parseColor("#151b5e20"))

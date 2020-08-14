@@ -53,7 +53,7 @@ class Profile : AppCompatActivity() {
         qrName.text = DetailsContext.name
         name.text =DetailsContext.name
         email.text =DetailsContext.email
-        phone.text =  "+"+DetailsContext.phoneNumber
+        phone.text = DetailsContext.phoneNumber
 
         if(!DetailsContext.isVerified){
             status.visibility=View.VISIBLE
