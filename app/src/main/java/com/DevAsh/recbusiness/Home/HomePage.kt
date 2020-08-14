@@ -16,14 +16,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Database.ExtraValues
 import com.DevAsh.recbusiness.Home.Transactions.AddMoney
+import com.DevAsh.recbusiness.Home.Transactions.AllTransactions
 import com.DevAsh.recbusiness.Home.Transactions.SendMoney
 import com.DevAsh.recbusiness.Home.Transactions.TransactionDetails
+import com.DevAsh.recbusiness.Home.Withdraw.AccountDetails
+import com.DevAsh.recbusiness.Home.Withdraw.AddAccounts
+import com.DevAsh.recbusiness.Models.BankAccount
 import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.MyStore.MyStoreHome
 import com.DevAsh.recbusiness.R
@@ -34,9 +37,9 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.activity_home_page.profile
-import kotlinx.android.synthetic.main.activity_password_prompt.*
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.bank_accounts.view.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
+import kotlinx.android.synthetic.main.widget_accounts.view.*
 import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -98,7 +101,8 @@ class HomePage : AppCompatActivity() {
         loadObservers()
 
         balance.setOnClickListener{
-            startActivity(Intent(this,AllTransactions::class.java))
+            startActivity(Intent(this,
+                AllTransactions::class.java))
         }
 
         profile.setOnClickListener{
@@ -136,6 +140,17 @@ class HomePage : AppCompatActivity() {
 
         myStore.setOnClickListener{
             startActivity(Intent(this,MyStoreHome::class.java))
+        }
+
+        bankAccounts.setOnClickListener{
+
+            val totalAccounts = StateContext.model.bankAccounts.value?.size
+            if(totalAccounts!=null && totalAccounts!=0){
+                BottomSheetAccounts(this).openBottomSheet()
+            }else{
+                startActivity(Intent(context,AddAccounts::class.java))
+            }
+
         }
 
         hideButton()
@@ -213,7 +228,6 @@ class HomePage : AppCompatActivity() {
             recentPaymentsAdapter.updateList(ArrayList(updateListTemp.subList(0,5)))
 
         }
-
 
         recentPayments.smoothScrollToPosition(0)
         return updateListTemp
@@ -404,6 +418,33 @@ class HomePage : AppCompatActivity() {
 
 }
 
+class BottomSheetAccounts(val context:Context):BottomSheet{
+    private val mBottomSheetDialog = BottomSheetDialog(context)
+    private val sheetView: View = LayoutInflater.from(context).inflate(R.layout.bank_accounts, null)
+    private val bankAccounts = if(StateContext.model.bankAccounts.value!=null)
+        StateContext.model.bankAccounts.value
+    else arrayListOf()
+    init {
+        val accountsContainer = sheetView.findViewById<RecyclerView>(R.id.accountsContainer)
+        sheetView.addAccounts.setOnClickListener{
+            closeBottomSheet()
+            context.startActivity(Intent(context, AddAccounts::class.java))
+        }
+        accountsContainer.layoutManager = LinearLayoutManager(context)
+        accountsContainer.adapter = AccountsViewAdapter(
+            bankAccounts!!,
+            context,this)
+        mBottomSheetDialog.setContentView(sheetView)
+    }
+    override fun openBottomSheet(){
+        mBottomSheetDialog.show()
+    }
+
+    override fun closeBottomSheet() {
+        mBottomSheetDialog.cancel()
+    }
+}
+
 class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>):BottomSheet{
     private val mBottomSheetDialog = BottomSheetDialog(context)
     private val sheetView: View = LayoutInflater.from(context).inflate(R.layout.payments_bottom_sheet, null)
@@ -485,18 +526,18 @@ class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context,
             holder.badge.textSize = 14F
             holder.additionalInfo.setTextColor(Color.parseColor("#ff9100"))
             holder.additionalInfo.setBackgroundColor(Color.parseColor("#25ff9100"))
-            holder.additionalInfo.text= "+${items[position].amount} ${TransactionContext.currency}"
+            holder.additionalInfo.text= "+${items[position].amount} ${HelperVariables.currency}"
             holder.badge.setBackgroundColor(context.getColor(R.color.highlightButton))
             holder.color = "#035aa6"
 
         }else if(items[position].type=="Received"){
             holder.additionalInfo.setTextColor(Color.parseColor("#1b5e20"))
             holder.additionalInfo.setBackgroundColor(Color.parseColor("#151b5e20"))
-            holder.additionalInfo.text= "+${items[position].amount} ${TransactionContext.currency}"
+            holder.additionalInfo.text= "+${items[position].amount} ${HelperVariables.currency}"
         }else if(items[position].type=="Send"){
             holder.additionalInfo.setTextColor(Color.parseColor("#d50000"))
             holder.additionalInfo.setBackgroundColor(Color.parseColor("#15d50000"))
-            holder.additionalInfo.text= "-${items[position].amount} ${TransactionContext.currency}"
+            holder.additionalInfo.text= "-${items[position].amount} ${HelperVariables.currency}"
         }
     }
 
@@ -519,10 +560,49 @@ class RecentActivityViewHolder (view: View,context: Context,var item:Transaction
 
     init {
         view.setOnClickListener{
-            TransactionContext.selectedTransaction = item
-            TransactionContext.avatarColor = color!!
+            HelperVariables.selectedTransaction = item
+            HelperVariables.avatarColor = color!!
             context.startActivity(Intent(context, TransactionDetails::class.java))
             openSheet?.closeBottomSheet()
+        }
+    }
+}
+
+class AccountsViewAdapter(private var items : ArrayList<BankAccount>, val context: Context, private val openBottomSheetCallback: BottomSheet?) : RecyclerView.Adapter<AccountsViewHolder>() {
+
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountsViewHolder {
+        return AccountsViewHolder(LayoutInflater.from(context).inflate(R.layout.widget_accounts, parent, false),context,openBottomSheetCallback)
+    }
+
+    override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
+        holder.account= items[position]
+        holder.accountName.text = items[position].bankName
+        holder.accountNumber.text = "XXXX XXXX XXXX "+items[position].accountNumber.substring(
+            items[position].accountNumber.length-4,
+            items[position].accountNumber.length)
+    }
+}
+
+class AccountsViewHolder (view: View, context: Context, private val openBottomSheetCallback: BottomSheet?) : RecyclerView.ViewHolder(view){
+
+    var account:BankAccount?=null
+    val accountName = view.accountName
+    val accountNumber = view.accountNumber
+
+    init {
+
+        view.setOnClickListener{
+            openBottomSheetCallback?.closeBottomSheet()
+            HelperVariables.selectedAccount = account
+            context.startActivity(Intent(context, AccountDetails::class.java))
+        }
+
+        view.edit.setOnClickListener{
+            openBottomSheetCallback?.closeBottomSheet()
         }
     }
 }

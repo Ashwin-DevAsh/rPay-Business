@@ -10,7 +10,6 @@ import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
@@ -22,6 +21,7 @@ import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.LoadProfileCallBack
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Helper.AlertHelper
+import com.DevAsh.recbusiness.Home.Transactions.AllTransactions
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Registration.Login
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -100,7 +100,8 @@ class Profile : AppCompatActivity() {
         }
 
         transactions.setOnClickListener{
-            startActivity(Intent(this,AllTransactions::class.java))
+            startActivity(Intent(this,
+                AllTransactions::class.java))
         }
 
         profilePicture.setOnClickListener{

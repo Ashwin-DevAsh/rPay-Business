@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.DevAsh.recbusiness.Context.StateContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.HelperVariables
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.R
 import kotlinx.android.synthetic.main.activity_amount_prompt.*
@@ -23,8 +23,8 @@ class AmountPrompt : AppCompatActivity() {
 
         context=this
 
-        paymentText.text = "Paying ${TransactionContext.selectedUser?.name}"
-        paymentBrief.text = "Your transaction to ${TransactionContext.selectedUser?.number} will be verify by our server"
+        paymentText.text = "Paying ${HelperVariables.selectedUser?.name}"
+        paymentBrief.text = "Your transaction to ${HelperVariables.selectedUser?.number} will be verify by our server"
 
 
 
@@ -38,18 +38,18 @@ class AmountPrompt : AppCompatActivity() {
 
         done.setOnClickListener{v->
 
-            TransactionContext.amount = amount.text.toString()
-            if(TransactionContext.amount==""){
+            HelperVariables.amount = amount.text.toString()
+            if(HelperVariables.amount==""){
                 return@setOnClickListener
             }
-            if(TransactionContext.amount!!.toInt()>StateContext.currentBalance){
+            if(HelperVariables.amount!!.toInt()>StateContext.currentBalance){
                 AlertHelper.showError("Insufficient Balance !", this)
                 return@setOnClickListener
             }
 
             try {
-               if(TransactionContext.amount!!.toInt()>0){
-                   TransactionContext.needToPay = true
+               if(HelperVariables.amount!!.toInt()>0){
+                   HelperVariables.needToPay = true
 
                    startActivity(Intent(context,PasswordPrompt::class.java))
                     finish()

@@ -36,7 +36,7 @@ import kotlin.collections.ArrayList
 
 
 class SendMoney : AppCompatActivity() {
-    var userAdapter: UserAdapter = UserAdapter(TransactionContext.allUsers,this)
+    var userAdapter: UserAdapter = UserAdapter(HelperVariables.allUsers,this)
     lateinit var context:Context
     lateinit var searchHandler: Handler
     lateinit var usersContainer: RecyclerView
@@ -73,7 +73,7 @@ class SendMoney : AppCompatActivity() {
                 searchHandler = Handler()
                 searchHandler.postDelayed({
                     val updatedList = ArrayList<Contacts>()
-                    for(i in TransactionContext.allUsers) {
+                    for(i in HelperVariables.allUsers) {
                         if(i.name.toLowerCase(Locale.ROOT).contains((s.toString().toLowerCase(Locale.ROOT)))
                             || i.number.contains((s.toString().toLowerCase(Locale.ROOT)))
                         ) {
@@ -102,7 +102,7 @@ class SendMoney : AppCompatActivity() {
     }
 
     override fun onResume(){
-        if(TransactionContext.allUsers.isEmpty()){
+        if(HelperVariables.allUsers.isEmpty()){
             peopleHeading.visibility=INVISIBLE
         }else{
             peopleHeading.visibility=VISIBLE
@@ -112,7 +112,7 @@ class SendMoney : AppCompatActivity() {
 
 
     private fun getAllUsers(){
-        TransactionContext.allUsers.clear()
+        HelperVariables.allUsers.clear()
         AndroidNetworking.get(ApiContext.apiUrl+ApiContext.registrationPort+"/getUsers")
             .setPriority(Priority.IMMEDIATE)
             .build()
@@ -126,13 +126,13 @@ class SendMoney : AppCompatActivity() {
                               ,response.getJSONObject(i)["id"].toString()
                               ,response.getJSONObject(i)["email"].toString()
                           )
-                          if(user.id!=DetailsContext.id) TransactionContext.allUsers.add(user)
+                          if(user.id!=DetailsContext.id) HelperVariables.allUsers.add(user)
                       }
                         usersContainer.layoutManager = LinearLayoutManager(context)
-                        userAdapter = UserAdapter(TransactionContext.allUsers,context)
+                        userAdapter = UserAdapter(HelperVariables.allUsers,context)
                         usersContainer.adapter = userAdapter
 
-                        if(TransactionContext.allUsers.isEmpty()){
+                        if(HelperVariables.allUsers.isEmpty()){
                             peopleHeading.visibility= INVISIBLE
                         }else{
                             peopleHeading.visibility= VISIBLE
@@ -211,8 +211,8 @@ class ViewHolder (view: View,context: Context) : RecyclerView.ViewHolder(view) {
 
     init {
         view.setOnClickListener{
-           TransactionContext.avatarColor = color
-           TransactionContext.selectedUser= Contacts(contact?.name!!,contact?.number!!,contact?.id!!,contact?.email!!)
+           HelperVariables.avatarColor = color
+           HelperVariables.selectedUser= Contacts(contact?.name!!,contact?.number!!,contact?.id!!,contact?.email!!)
            startActivity(context,Intent(context,SingleObjectTransaction::class.java),null)
         }
     }

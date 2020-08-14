@@ -13,13 +13,10 @@ import android.view.View
 import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.HelperVariables
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
-import com.DevAsh.recbusiness.Home.HomePage
-import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
-import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -99,7 +96,7 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                                 override fun onResponse(response: JSONObject?) {
                                     val jsonData = JSONObject()
                                     jsonData.put("to",
-                                        TransactionContext.selectedUser?.number.toString().replace("+",""))
+                                        HelperVariables.selectedUser?.number.toString().replace("+",""))
                                     SocketHelper.socket?.emit("notifyPayment",jsonData)
                                     val balance = response?.getInt("Balance")
                                     val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
@@ -116,14 +113,14 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                                 override fun onError(anError: ANError?) {
                                     AlertHelper.showAlertDialog(this@AddingOptions,
                                         "Failed !",
-                                        "your transaction of $amount ${TransactionContext.currency} is failed. if any amount debited it will refund soon"
+                                        "your transaction of $amount ${HelperVariables.currency} is failed. if any amount debited it will refund soon"
                                     )
                                 }
                             })
                     }else{
                         AlertHelper.showAlertDialog(this@AddingOptions,
                             "Failed !",
-                            "your transaction of ${TransactionContext.amount} ${TransactionContext.currency} is failed. if any amount debited it will refund soon"
+                            "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon"
                         )
                     }
                 }

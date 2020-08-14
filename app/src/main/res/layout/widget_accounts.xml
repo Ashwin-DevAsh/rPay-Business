@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:layout_height="70dp">
+    <ImageView
+        android:layout_width="50dp"
+        android:id="@+id/avatar"
+        android:tint="@android:color/black"
+        android:src="@drawable/bank_symbol"
+        android:scaleType="fitXY"
+        android:padding="12dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_height="50dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Indian bank"
+            android:id="@+id/accountName"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="**** **** **** 1234"
+            android:textStyle="bold"
+            android:id="@+id/accountNumber"
+            android:textSize="13dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ios_forward_arrow"
+        android:id="@+id/edit"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_height="20dp"/>
+
+
+</RelativeLayout>

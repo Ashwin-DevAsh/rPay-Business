@@ -1,7 +1,7 @@
 package com.DevAsh.recbusiness.Context
 
-import com.DevAsh.recbusiness.Home.Transactions.AllActivityAdapter
+import com.DevAsh.recbusiness.Home.Transactions.TransactionsAdapter
 
 object Cache {
-    val singleObjecttransactionCache = HashMap<String,AllActivityAdapter>()
+    val singleObjecttransactionCache = HashMap<String,TransactionsAdapter>()
 }

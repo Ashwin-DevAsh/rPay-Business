@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Registration.Register">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent">
+        <com.agrawalsuneet.dotsloader.loaders.TashieLoader
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tashieloader_animDelay="100"
+            app:tashieloader_animDur="500"
+            app:tashieloader_dotsColor="@color/highlightButton"
+            app:tashieloader_dotsDist="5dp"
+            app:tashieloader_dotsRadius="10dp"
+            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"
+            app:tashieloader_noOfDots="4" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/mainContent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:scrollbars="none"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingHorizontal="15dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="150dp">
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:gravity="start"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:textSize="45dp"
+                            android:text="Add Bank"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:gravity="start"
+                            android:textColor="@android:color/black"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="3dp"
+                            android:text="Account"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edit_text"
+                    android:layout_marginBottom="12dp"
+                    android:weightSum="100"
+                    android:layout_gravity="center"
+                    android:layout_height="45dp">
+                    <EditText
+                        android:hint="Holder Name"
+                        android:id="@+id/holderName"
+                        android:layout_weight="15"
+                        android:layout_width="match_parent"
+                        android:singleLine="true"
+                        android:inputType="textCapWords"
+                        android:textSize="15dp"
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="30dp"
+                        android:layout_height="45dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edit_text"
+                    android:layout_marginVertical="12dp"
+                    android:weightSum="100"
+                    android:layout_gravity="center"
+                    android:layout_height="45dp">
+                    <EditText
+                        android:hint="Bank Name"
+                        android:id="@+id/bankName"
+                        android:layout_weight="15"
+                        android:layout_width="match_parent"
+                        android:singleLine="true"
+                        android:inputType="textCapWords"
+                        android:textSize="15dp"
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="30dp"
+                        android:layout_height="45dp"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edit_text"
+                    android:layout_marginVertical="12dp"
+                    android:weightSum="100"
+                    android:textSize="15dp"
+                    android:layout_gravity="center"
+                    android:layout_height="45dp">
+                    <EditText
+                        android:id="@+id/accountNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="15"
+                        android:background="@android:color/transparent"
+                        android:hint="Account Number"
+                        android:textSize="15dp"
+                        android:inputType="number"
+                        android:paddingLeft="30dp"
+                        android:singleLine="true" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edit_text"
+                    android:layout_marginVertical="12dp"
+                    android:weightSum="100"
+                    android:layout_gravity="center"
+                    android:layout_height="45dp">
+
+                    <EditText
+                        android:id="@+id/ifsc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="15"
+                        android:background="@android:color/transparent"
+                        android:hint="IFSC"
+                        android:textSize="15dp"
+                        android:inputType="textCapCharacters"
+                        android:paddingLeft="30dp"
+                        android:singleLine="true" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="60dp"
+            app:cardElevation="10dp"
+            android:background="?android:attr/windowBackground"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:translationZ="200dp"
+                app:elevation="200dp"
+                android:elevation="200dp"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical"
+                    android:translationZ="200dp"
+                    app:elevation="200dp"
+                    android:elevation="200dp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@id/cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="Cancel"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_marginHorizontal="30dp"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginVertical="12dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Done"
+                            android:id="@+id/done"
+                            android:paddingTop="2dp"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+
+                            android:background="@drawable/button_ripple_gradient"
+                            android:layout_height="match_parent"/>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

@@ -13,6 +13,7 @@ import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.RegistrationContext
 import com.DevAsh.recbusiness.Context.StateContext
+import com.DevAsh.recbusiness.Database.BankAccount
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
@@ -119,7 +120,7 @@ class Otp : AppCompatActivity() {
                         if (otpObject != null && otpObject["message"] == "verified") {
                             try {
 
-                                println(otpObject["user"])
+
                                 val user: JSONObject = otpObject["user"] as JSONObject
                                 Realm.getDefaultInstance().executeTransaction { realm ->
                                     realm.delete(Credentials::class.java)
@@ -143,6 +144,15 @@ class Otp : AppCompatActivity() {
                                         credentials.status,
                                         credentials.storeName
                                     )
+
+                                    Handler().postDelayed({
+                                        try {
+                                            addBankAccounts( user.getJSONArray("accountinfo"))
+                                        }catch (e:Throwable){
+
+                                        }
+                                    },0)
+
                                     Handler().postDelayed({
                                         SplashScreen.getStatus()
                                     },0)
@@ -193,6 +203,33 @@ class Otp : AppCompatActivity() {
             mainContent.visibility = VISIBLE
         }
     }
+
+    fun addBankAccounts(bankAccounts:JSONArray){
+        val bankAccountsDatabase = ArrayList<BankAccount>()
+        for(i in 0 until bankAccounts.length()){
+            val account = bankAccounts.getJSONObject(i)
+            val bankAccount =  com.DevAsh.recbusiness.Models.BankAccount(
+                holderName = account.getString("holderName"),
+                bankName = account.getString("bankName"),
+                accountNumber = account.getString("accountNumber"),
+                IFSC = account.getString("ifsc")
+            )
+            val bankAccountDatabase =  BankAccount(
+                account.getString("holderName"),
+                account.getString("bankName"),
+                account.getString("ifsc"),
+                account.getString("accountNumber")
+            )
+            bankAccountsDatabase.add(bankAccountDatabase)
+            StateContext.addBankAccounts(
+                bankAccount
+            )
+        }
+        Realm.getDefaultInstance().executeTransactionAsync{
+            it.insert(bankAccountsDatabase)
+        }
+    }
+
 
     override fun onBackPressed() {
         val startMain = Intent(Intent.ACTION_MAIN)

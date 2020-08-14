@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".Home.Transactions.AllTransactions">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent">
+        <com.agrawalsuneet.dotsloader.loaders.TashieLoader
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tashieloader_animDelay="100"
+            app:tashieloader_animDur="500"
+            app:tashieloader_dotsColor="@color/highlightButton"
+            app:tashieloader_dotsDist="5dp"
+            app:tashieloader_dotsRadius="10dp"
+            app:tashieloader_interpolator="@android:anim/accelerate_interpolator"
+            app:tashieloader_noOfDots="4" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/mainContent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:id="@+id/appBar"
+            android:background="@color/colorPrimary"
+            android:layout_height="65dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:translationZ="2dp"
+                android:background="@color/colorPrimary"
+                android:layout_height="65dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="18dp"
+                    android:src="@drawable/back"
+                    android:id="@+id/back"
+                    android:clickable="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:focusable="true"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@+id/appBar"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+
+
+                <!--            <RelativeLayout-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_marginTop="10dp"-->
+                <!--                android:layout_marginLeft="20dp"-->
+                <!--                android:layout_marginBottom="10dp"-->
+                <!--                android:layout_height="150dp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_centerInParent="true"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_marginLeft="10dp"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:layout_height="wrap_content">-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:gravity="start"-->
+                <!--                        android:textStyle="bold"-->
+                <!--                        android:textColor="@android:color/black"-->
+                <!--                        android:textSize="45dp"-->
+                <!--                        android:text="Account"-->
+                <!--                        android:layout_height="wrap_content"/>-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:gravity="start"-->
+                <!--                        android:textColor="@android:color/black"-->
+                <!--                        android:textSize="25dp"-->
+                <!--                        android:textStyle="bold"-->
+                <!--                        android:text="Details"-->
+                <!--                        android:layout_height="wrap_content"/>-->
+
+                <!--                </LinearLayout>-->
+
+                <!--            </RelativeLayout>-->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:paddingVertical="20dp"
+
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="18dp"
+                            android:id="@+id/bankName"
+
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:text="Lakshmi Vilas Bank"
+                            android:layout_height="wrap_content"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="A/c No: 1234567890"
+                                android:id="@+id/accountNumber"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="IFSC: QWERTYUIOO"
+                                android:id="@+id/ifsc"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="Ashwin"
+                                android:id="@+id/holderName"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:id="@+id/avatar"
+                        android:tint="@android:color/black"
+                        android:src="@drawable/bank_symbol"
+                        android:scaleType="fitXY"
+                        android:padding="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="50dp"/>
+                </RelativeLayout>
+                <!--            <LinearLayout-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_marginBottom="20dp"-->
+                <!--                android:layout_margin="20dp"-->
+                <!--                android:orientation="vertical"-->
+                <!--                android:background="@drawable/container_background"-->
+                <!--                android:layout_height="wrap_content">-->
+
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:id="@+id/transactions"-->
+                <!--                    android:layout_height="50dp">-->
+
+
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:orientation="vertical"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:layout_height="match_parent">-->
+
+                <!--                        <TextView-->
+                <!--                            android:layout_marginLeft="20dp"-->
+                <!--                            android:gravity="center_vertical"-->
+                <!--                            android:text="Edit Account"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            android:id="@+id/editAccount"-->
+                <!--                            android:textColor="@android:color/black"-->
+                <!--                            android:textSize="15dp"-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="wrap_content"/>-->
+
+
+                <!--                    </LinearLayout>-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="50dp"-->
+                <!--                        android:src="@drawable/ios_forward_arrow"-->
+                <!--                        android:layout_alignParentRight="true"-->
+                <!--                        android:padding="14dp"-->
+                <!--                        android:tint="@color/textNormal"-->
+                <!--                        android:layout_height="match_parent"/>-->
+
+                <!--                </RelativeLayout>-->
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:layout_marginBottom="10dp"-->
+                <!--                    android:id="@+id/changePassword"-->
+                <!--                    android:layout_height="50dp">-->
+
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:orientation="vertical"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:layout_height="match_parent">-->
+
+                <!--                        <TextView-->
+                <!--                            android:layout_marginLeft="20dp"-->
+                <!--                            android:gravity="center_vertical"-->
+                <!--                            android:text="Remove Account"-->
+                <!--                            android:id="@+id/removeAccount"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            android:textColor="@android:color/black"-->
+                <!--                            android:textSize="15dp"-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="wrap_content"/>-->
+
+
+                <!--                    </LinearLayout>-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="50dp"-->
+                <!--                        android:src="@drawable/ios_forward_arrow"-->
+                <!--                        android:layout_alignParentRight="true"-->
+                <!--                        android:padding="14dp"-->
+                <!--                        android:tint="@color/textNormal"-->
+                <!--                        android:layout_height="match_parent"/>-->
+
+                <!--                </RelativeLayout>-->
+
+                <!--            </LinearLayout>-->
+
+            </LinearLayout>
+
+
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="60dp"
+            app:cardElevation="10dp"
+            android:background="?android:attr/windowBackground"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:translationZ="200dp"
+                app:elevation="200dp"
+                android:elevation="200dp"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical"
+                    android:translationZ="200dp"
+                    app:elevation="200dp"
+                    android:elevation="200dp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Cancel"
+                            android:gravity="center"
+                            android:id="@+id/cancel"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_marginHorizontal="30dp"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginVertical="12dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Delete"
+                            android:id="@+id/delete"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_ripple_gradient"
+                            android:layout_height="match_parent"/>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

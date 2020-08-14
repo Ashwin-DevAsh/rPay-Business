@@ -9,7 +9,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.DevAsh.recbusiness.Context.DetailsContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.HelperVariables
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.RealmHelper
@@ -81,7 +81,7 @@ class NotificationService : FirebaseMessagingService() {
             }
 
         }else{
-            TransactionContext.openTransactionPage = true
+            HelperVariables.openTransactionPage = true
             val type =  p0.data["type"]!!.split(",")[0]
             val amount = p0.data["type"]!!.split(",")[3]
             val fromName = p0.data["type"]!!.split(",")[1]
@@ -93,9 +93,9 @@ class NotificationService : FirebaseMessagingService() {
             }
 
             if(type=="addedMoney"){
-                showNotification("Added Money","Your $amount ${TransactionContext.currency}s has been successfully added.")
+                showNotification("Added Money","Your $amount ${HelperVariables.currency}s has been successfully added.")
             }else{
-                showNotification(fromName,"You have received $amount ${TransactionContext.currency}s from $fromName.")
+                showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.")
             }
 
 

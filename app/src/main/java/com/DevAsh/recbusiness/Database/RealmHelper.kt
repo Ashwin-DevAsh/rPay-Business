@@ -7,14 +7,11 @@ import io.realm.RealmConfiguration
 object RealmHelper {
     fun init(context:Context){
         Realm.init(context)
-
         val mConfiguration = RealmConfiguration.Builder()
             .name("RealmData.realm")
-            .schemaVersion(11)
+            .schemaVersion(12)
             .migration(Migrations())
             .build()
         Realm.setDefaultConfiguration(mConfiguration)
     }
-
-
 }

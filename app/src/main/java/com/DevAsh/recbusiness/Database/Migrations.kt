@@ -56,6 +56,13 @@ open class Migrations : RealmMigration {
                     obj -> obj.set("timeIndex",0)
                 }
             }
+            11L -> {
+                val bankAccounts= schema.create("BankAccount")
+                bankAccounts.addField("holderName",String::class.javaObjectType)
+                bankAccounts.addField("bankName",String::class.javaObjectType)
+                bankAccounts.addField("IFSC",String::class.javaObjectType)
+                bankAccounts.addField("accountNumber",String::class.javaObjectType)
+            }
         }
 
     }

@@ -1,24 +1,21 @@
 package com.DevAsh.recbusiness
 
-import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.telephony.TelephonyManager
 import android.view.View
-import android.view.animation.TranslateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
-import com.DevAsh.recbusiness.Context.TransactionContext
+import com.DevAsh.recbusiness.Context.HelperVariables
+import com.DevAsh.recbusiness.Database.BankAccount
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
-import com.DevAsh.recbusiness.Home.Profile
 import com.DevAsh.recbusiness.Registration.Login
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -26,8 +23,6 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.jacksonandroidnetworking.JacksonParserFactory
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_profile.*
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.ParseException
@@ -43,7 +38,7 @@ class SplashScreen : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             if (extras.containsKey("openTransactionPage")) {
-                TransactionContext.openTransactionPage=true
+                HelperVariables.openTransactionPage=true
             }
         }
         super.onNewIntent(intent)
@@ -73,6 +68,21 @@ class SplashScreen : AppCompatActivity() {
 
         if(credentials!=null && credentials.isLogin==true){
             StateContext.initRecentContact(arrayListOf())
+
+            Handler().postDelayed({
+                val bankAccounts= Realm.getDefaultInstance().where(BankAccount::class.java).findAll()
+                for(i in bankAccounts){
+                    StateContext.addBankAccounts(
+                        com.DevAsh.recbusiness.Models.BankAccount(
+                            holderName = i.holderName,
+                            bankName = i.bankName,
+                            IFSC = i.IFSC,
+                            accountNumber = i.accountNumber
+                        )
+                    )
+                }
+            },0)
+
             Handler().postDelayed({
                   try {
                       DetailsContext.setData(

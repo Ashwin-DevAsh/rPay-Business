@@ -27,44 +27,44 @@ class TransactionDetails : AppCompatActivity() {
         setContentView(R.layout.activity_transaction_status)
 
 
-        amount.text ="${TransactionContext.selectedTransaction?.amount}"
-        selectedUserName.text = TransactionContext.selectedTransaction?.contacts?.name
-        badge.setBackgroundColor(Color.parseColor(TransactionContext.avatarColor))
-        badge.text = TransactionContext.selectedTransaction?.contacts?.name?.substring(0,1)
-        badge.text = TransactionContext.selectedTransaction?.contacts?.name.toString()[0].toString()
+        amount.text ="${HelperVariables.selectedTransaction?.amount}"
+        selectedUserName.text = HelperVariables.selectedTransaction?.contacts?.name
+        badge.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
+        badge.text = HelperVariables.selectedTransaction?.contacts?.name?.substring(0,1)
+        badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString()[0].toString()
 
 
-        transactionID.text = String.format("%020d", TransactionContext.selectedTransaction?.transactionId?.toInt())
+        transactionID.text = String.format("%020d", HelperVariables.selectedTransaction?.transactionId?.toInt())
 
         loadAvatar()
 
 
-        if(TransactionContext.selectedTransaction?.isGenerated!!){
+        if(HelperVariables.selectedTransaction?.isGenerated!!){
             logoContainer.visibility=View.VISIBLE
-            subText.text = "Added  ${TransactionContext.selectedTransaction?.amount} ${TransactionContext.currency}"
+            subText.text = "Added  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
             type.text = "Added by"
         }else{
             subText.text =
-                "${if (TransactionContext.selectedTransaction?.type=="Send") "Paid" else TransactionContext.selectedTransaction?.type}  ${TransactionContext.selectedTransaction?.amount} ${TransactionContext.currency}"
-            type.text = if (TransactionContext.selectedTransaction?.type=="Send") "Paid to" else "Received from"
+                "${if (HelperVariables.selectedTransaction?.type=="Send") "Paid" else HelperVariables.selectedTransaction?.type}  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
+            type.text = if (HelperVariables.selectedTransaction?.type=="Send") "Paid to" else "Received from"
 
         }
 
-        if (TransactionContext.selectedTransaction?.type=="Send"){
-            toDetails.text = "To: ${TransactionContext.selectedTransaction?.contacts?.name}"
-            toID.text = "${TransactionContext.selectedTransaction?.contacts?.id}"
+        if (HelperVariables.selectedTransaction?.type=="Send"){
+            toDetails.text = "To: ${HelperVariables.selectedTransaction?.contacts?.name}"
+            toID.text = "${HelperVariables.selectedTransaction?.contacts?.id}"
 
             fromDetails.text = "From: ${DetailsContext.name}"
             fromID.text = "${DetailsContext.id}"
         }else{
             toDetails.text = "To: ${DetailsContext.name}"
             toID.text = "${DetailsContext.id}"
-            if(TransactionContext.selectedTransaction?.isGenerated!!){
-                fromDetails.text = "${TransactionContext.selectedTransaction?.contacts?.name} ID"
-                fromID.text = "${TransactionContext.selectedTransaction?.contacts?.id}"
+            if(HelperVariables.selectedTransaction?.isGenerated!!){
+                fromDetails.text = "${HelperVariables.selectedTransaction?.contacts?.name} ID"
+                fromID.text = "${HelperVariables.selectedTransaction?.contacts?.id}"
             }else{
-                fromDetails.text = "From: ${TransactionContext.selectedTransaction?.contacts?.name}"
-                fromID.text = "${TransactionContext.selectedTransaction?.contacts?.id}".trim()
+                fromDetails.text = "From: ${HelperVariables.selectedTransaction?.contacts?.name}"
+                fromID.text = "${HelperVariables.selectedTransaction?.contacts?.id}".trim()
             }
         }
 
@@ -90,8 +90,8 @@ class TransactionDetails : AppCompatActivity() {
 
 
 
-        if (TransactionContext.selectedTransaction?.contacts?.name.toString().startsWith("+")) {
-           badge.text = TransactionContext.selectedTransaction?.contacts?.name.toString().subSequence(1, 3)
+        if (HelperVariables.selectedTransaction?.contacts?.name.toString().startsWith("+")) {
+           badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString().subSequence(1, 3)
            badge.textSize = 18F
         }
 
@@ -102,12 +102,12 @@ class TransactionDetails : AppCompatActivity() {
     }
 
     private fun loadAvatar(){
-        UiContext.loadProfileImage(this, TransactionContext.selectedTransaction?.contacts?.id!!,object:LoadProfileCallBack{
+        UiContext.loadProfileImage(this, HelperVariables.selectedTransaction?.contacts?.id!!,object:LoadProfileCallBack{
             override fun onSuccess() {
                 avatarContainer.visibility=View.GONE
                 profile.visibility = View.VISIBLE
 
-                if(!TransactionContext.selectedTransaction?.contacts?.id!!.contains("rpay")){
+                if(!HelperVariables.selectedTransaction?.contacts?.id!!.contains("rpay")){
                     profile.setBackgroundColor( resources.getColor(R.color.textDark))
                     profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
                     profile.setPadding(35,35,35,35)
