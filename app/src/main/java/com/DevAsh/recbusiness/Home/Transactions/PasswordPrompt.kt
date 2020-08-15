@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Context.HelperVariables.needToPay
+import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.ExtraValues
 import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.Helper.AlertHelper
@@ -29,6 +30,7 @@ import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.Recovery.RecoveryOptions
 import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.R
+import com.DevAsh.recbusiness.Registration.Login
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -67,6 +69,18 @@ class PasswordPrompt : AppCompatActivity() {
         RealmHelper.init(context)
 
         val extraValues = Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()
+
+        if(intent.getBooleanExtra("isExternalApp",false)){
+            needToPay=true
+            loadingScreen.visibility=View.VISIBLE
+            loadToData()
+            loadFromData()
+            Handler().postDelayed({
+                loadingScreen.visibility=View.GONE
+            },1000)
+
+        }
+
 
 
         if (checkLockScreen()) {
@@ -214,6 +228,10 @@ class PasswordPrompt : AppCompatActivity() {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
                         if(response?.get("message")=="done"){
+                            if(intent.getBooleanExtra("isExternalApp",false)){
+                                sendResult(true)
+                                return
+                            }
                             transactionSuccessful()
                             AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                                 .addHeaders("jwtToken",DetailsContext.token)
@@ -239,6 +257,10 @@ class PasswordPrompt : AppCompatActivity() {
                                 })
 
                         }else{
+                            if(intent.getBooleanExtra("isExternalApp",false)){
+                                sendResult(false)
+                                return
+                            }
                             AlertHelper.showAlertDialog(this@PasswordPrompt,
                                 "Failed !",
                                 "your transaction of ${HelperVariables.amount} ${HelperVariables.currency} is failed. if any amount debited it will refund soon",
@@ -258,6 +280,10 @@ class PasswordPrompt : AppCompatActivity() {
                     }
 
                     override fun onError(anError: ANError?) {
+                        if(intent.getBooleanExtra("isExternalApp",false)){
+                            sendResult(false)
+                            return
+                        }
                         loadingScreen.visibility= View.VISIBLE
                         AlertHelper.showAlertDialog(this@PasswordPrompt,
                             "Failed !",
@@ -281,6 +307,41 @@ class PasswordPrompt : AppCompatActivity() {
     }
 
 
+    private fun loadToData(){
+        HelperVariables.amount = intent.getStringExtra("amount")
+        HelperVariables.selectedUser= Contacts(
+            intent.getStringExtra("name"),
+            intent.getStringExtra("number"),
+            intent.getStringExtra("id"),
+            intent.getStringExtra("email"),
+            null
+        )
+    }
+
+    private fun loadFromData(){
+        val credentials: Credentials? =  Realm.getDefaultInstance().where(Credentials::class.java).findFirst()
+        try {
+            DetailsContext.setData(
+                credentials!!.name,
+                credentials.phoneNumber,
+                credentials.email,
+                credentials.password,
+                credentials.token,
+                credentials.status,
+                credentials.storeName
+            )
+        }catch (e:Throwable){
+            Handler().postDelayed({
+                startActivity(Intent(context, Login::class.java))
+                finish()
+            },2000)
+            return
+        }
+    }
+
+
+
+
     fun transactionSuccessful(){
         val intent = Intent(this,Successful::class.java)
         intent.putExtra("type","transaction")
@@ -291,6 +352,22 @@ class PasswordPrompt : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+
+    fun sendResult(result: Boolean){
+        val resultIntent = Intent()
+        resultIntent.putExtra("isTransactionSuccess",result )
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
+
+    override fun onBackPressed() {
+        if(loadingScreen.visibility==View.GONE){
+            super.onBackPressed()
+        }
+    }
+
 
     private fun addRecent(){
         val account = Contacts(HelperVariables.selectedUser?.name!!,HelperVariables.selectedUser?.number!!,HelperVariables.selectedUser?.id!!,HelperVariables.selectedUser?.email!!)

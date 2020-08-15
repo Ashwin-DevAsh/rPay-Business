@@ -45,7 +45,6 @@
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:background="@color/highlightButton"
-
                                 android:textSize="20sp"
                                 android:text="A"
                                 android:textColor="@android:color/white"
@@ -57,11 +56,11 @@
                                 android:layout_width="match_parent"
                                 android:id="@+id/logo"
                                 android:visibility="gone"
+                                android:tint="@android:color/white"
                                 android:background="@color/highlightButton"
                                 android:src="@drawable/rpay_notification"
                                 android:padding="13dp"
                                 android:layout_height="match_parent"/>
-
                         </FrameLayout>
 
 

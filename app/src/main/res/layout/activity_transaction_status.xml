@@ -106,6 +106,7 @@
                                         android:layout_width="match_parent"
                                         android:id="@+id/logoContainer"
                                         android:visibility="gone"
+                                        android:tint="@android:color/white"
                                         android:background="@color/highlightButton"
                                         android:src="@drawable/rpay_notification"
                                         android:padding="13dp"

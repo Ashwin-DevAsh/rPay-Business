@@ -109,6 +109,7 @@
             android:name=".Home.Transactions.TransactionDetails" />
         <activity
             android:screenOrientation="portrait"
+            android:exported="true"
             android:name=".Home.Transactions.PasswordPrompt"
             android:windowSoftInputMode="adjustResize" />
         <activity

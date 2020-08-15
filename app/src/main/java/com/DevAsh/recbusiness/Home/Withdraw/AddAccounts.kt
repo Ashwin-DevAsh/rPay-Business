@@ -180,7 +180,7 @@ class AddAccounts : AppCompatActivity() {
             AlertHelper.showError("Invalid Bank Name",this)
             return false
         }
-        if (accountNumber.text.length<7){
+        if (accountNumber.text.length<5){
             AlertHelper.showError("Invalid Account Number",this)
             return false
         }

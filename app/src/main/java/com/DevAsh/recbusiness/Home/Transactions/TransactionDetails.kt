@@ -34,7 +34,7 @@ class TransactionDetails : AppCompatActivity() {
         badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString()[0].toString()
 
 
-        transactionID.text = String.format("%020d", HelperVariables.selectedTransaction?.transactionId?.toInt())
+        transactionID.text =HelperVariables.selectedTransaction?.transactionId
 
         loadAvatar()
 

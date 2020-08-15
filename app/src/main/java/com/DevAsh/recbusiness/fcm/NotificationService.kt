@@ -43,7 +43,6 @@ class NotificationService : FirebaseMessagingService() {
 
     override fun onMessageReceived(p0: RemoteMessage) {
 
-        println(p0.data["type"])
         if (p0.data["type"]=="awake"){
             stopService(intent)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -52,8 +51,6 @@ class NotificationService : FirebaseMessagingService() {
                  startService(intent)
             }
         }else if(p0.data["type"]?.startsWith("updateProfilePicture")!!){
-            println("Updated")
-            println(p0.data)
             try{
                 val id = p0.data["type"]?.split(",")!![1]
                 Picasso.get().invalidate(UiContext.buildURL(id))
@@ -65,7 +62,7 @@ class NotificationService : FirebaseMessagingService() {
             }
 
         }else if(p0.data["type"]?.startsWith("merchantStatus")!!){
-            println("Added New Merchant....")
+
             val id = p0.data["type"]!!.split(",")[1]
             val status = p0.data["type"]!!.split(",")[2]
 
