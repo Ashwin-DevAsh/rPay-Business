@@ -73,8 +73,8 @@ class PasswordPrompt : AppCompatActivity() {
         if(intent.getBooleanExtra("isExternalApp",false)){
             needToPay=true
             loadingScreen.visibility=View.VISIBLE
-            loadToData()
             loadFromData()
+            loadToData()
             Handler().postDelayed({
                 loadingScreen.visibility=View.GONE
             },1000)
@@ -331,10 +331,10 @@ class PasswordPrompt : AppCompatActivity() {
                 credentials.storeName
             )
         }catch (e:Throwable){
-            Handler().postDelayed({
-                startActivity(Intent(context, Login::class.java))
-                finish()
-            },2000)
+            if(intent.getBooleanExtra("isExternalApp",false)){
+                sendResult(false)
+                return
+            }
             return
         }
     }
