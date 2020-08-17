@@ -31,14 +31,30 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:gravity="start"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:textSize="45dp"
-                        android:text="Payment"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:gravity="start"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:textSize="45dp"
+                            android:text="Payment"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:id="@+id/share"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginRight="20dp"
+                            android:src="@drawable/share"
+                            android:tint="@android:color/black"
+                            app:srcCompat="@android:drawable/ic_menu_share" />
+                    </RelativeLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:gravity="start"

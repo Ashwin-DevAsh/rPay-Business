@@ -8,6 +8,10 @@ import com.DevAsh.recbusiness.Context.StateContext
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.R
 import kotlinx.android.synthetic.main.activity_amount_prompt.*
+import kotlinx.android.synthetic.main.activity_amount_prompt.amount
+import kotlinx.android.synthetic.main.activity_amount_prompt.back
+import kotlinx.android.synthetic.main.activity_amount_prompt.done
+import kotlinx.android.synthetic.main.activity_withdraw_amount_prompt.*
 
 class WithdrawAmountPrompt : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +23,11 @@ class WithdrawAmountPrompt : AppCompatActivity() {
             super.onBackPressed()
         }
 
-        cancel.setOnClickListener{
-            super.onBackPressed()
+        fullAmount.setOnClickListener{
+            HelperVariables.withdrawAmount=StateContext.currentBalance.toString()
+            HelperVariables.needToPay = true
+            startActivity(Intent(this, WithdrawOptions::class.java))
+            finish()
         }
 
         done.setOnClickListener{

@@ -54,7 +54,6 @@ class TransactionDetails : AppCompatActivity() {
             subText.text =
                 "${if (HelperVariables.selectedTransaction?.type=="Send") "Paid" else HelperVariables.selectedTransaction?.type} Successfully!"
             name.text = HelperVariables.selectedTransaction?.contacts?.name
-
         }
 
 

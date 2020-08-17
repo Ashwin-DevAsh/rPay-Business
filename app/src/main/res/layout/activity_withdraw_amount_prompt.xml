@@ -83,7 +83,6 @@
                 android:id="@+id/amount"
                 android:inputType="number"
                 android:gravity="center"
-
                 android:layout_height="50dp"/>
 
         </LinearLayout>
@@ -126,9 +125,9 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:text="Cancel"
+                        android:text="Full Amount"
                         android:gravity="center"
-                        android:id="@+id/cancel"
+                        android:id="@+id/fullAmount"
                         android:textStyle="bold"
                         android:clickable="true"
                         android:focusable="true"

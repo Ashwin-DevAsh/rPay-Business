@@ -1,10 +1,15 @@
 package com.DevAsh.recbusiness.Home
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +17,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
@@ -35,13 +41,17 @@ import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.iid.FirebaseInstanceId
+import com.opencsv.CSVWriter
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_home_page.*
-import kotlinx.android.synthetic.main.activity_home_page.profile
 import kotlinx.android.synthetic.main.bank_accounts.view.*
+import kotlinx.android.synthetic.main.payments_bottom_sheet.view.*
 import kotlinx.android.synthetic.main.set_time_bottomsheet.view.*
 import kotlinx.android.synthetic.main.widget_accounts.view.*
 import kotlinx.android.synthetic.main.widget_listtile_transaction.view.*
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -67,12 +77,16 @@ class HomePage : AppCompatActivity() {
     lateinit var recentPaymentsAdapter: RecentPaymentsAdapter
     lateinit var extraValues: ExtraValues
 
+    var bottomSheetPeople:BottomSheetPeople?=null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+        val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
         extraValues = try{
             Realm.getDefaultInstance().where(ExtraValues::class.java).findFirst()!!
         }catch (e:Throwable){
@@ -123,7 +137,8 @@ class HomePage : AppCompatActivity() {
         }
 
         viewPayments.setOnClickListener{
-             BottomSheetPeople(context, updatePaymentsListener()).openBottomSheet()
+            bottomSheetPeople = BottomSheetPeople(this, updatePaymentsListener())
+            bottomSheetPeople?.openBottomSheet()
         }
 
         scan.setOnClickListener{
@@ -294,7 +309,11 @@ class HomePage : AppCompatActivity() {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
                 startActivity(Intent(context, QrScanner::class.java))
             }
+        }else if(requestCode==10){
+         if(grantResults[0]==PackageManager.PERMISSION_GRANTED ){
+             bottomSheetPeople?.exportCsv()
         }
+    }
     }
 
     private fun getText():String{
@@ -436,6 +455,8 @@ class BottomSheetAccounts(val context:Context):BottomSheet{
             closeBottomSheet()
             context.startActivity(Intent(context, AddAccounts::class.java))
         }
+
+
         accountsContainer.layoutManager = LinearLayoutManager(context)
         accountsContainer.adapter = AccountsViewAdapter(
             bankAccounts!!,
@@ -449,9 +470,10 @@ class BottomSheetAccounts(val context:Context):BottomSheet{
     override fun closeBottomSheet() {
         mBottomSheetDialog.cancel()
     }
+
 }
 
-class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>):BottomSheet{
+class BottomSheetPeople(val context:Activity,val transactions:ArrayList<Transaction>):BottomSheet{
     private val mBottomSheetDialog = BottomSheetDialog(context)
     private val sheetView: View = LayoutInflater.from(context).inflate(R.layout.payments_bottom_sheet, null)
     init {
@@ -459,6 +481,17 @@ class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>)
         peopleContainer.adapter = RecentPaymentsAdapter(transactions,context,this)
         peopleContainer.layoutManager = LinearLayoutManager(context)
         mBottomSheetDialog.setContentView(sheetView)
+        sheetView.share.setOnClickListener{
+            val permissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if(context.packageManager.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,context.packageName)== PackageManager.PERMISSION_GRANTED ){
+                Handler().postDelayed({
+                    exportCsv((peopleContainer.adapter as RecentPaymentsAdapter).items)
+                },0)
+            }else{
+                ActivityCompat.requestPermissions(context, permissions,10)
+            }
+
+        }
     }
     override fun openBottomSheet(){
         mBottomSheetDialog.show()
@@ -467,12 +500,44 @@ class BottomSheetPeople(val context:Context,transactions:ArrayList<Transaction>)
     override fun closeBottomSheet() {
         mBottomSheetDialog.cancel()
     }
+
+     fun exportCsv(transaction:List<Transaction> = transactions) {
+        try {
+            val root = File(Environment.getExternalStorageDirectory(), "rBusiness")
+            if (!root.exists()) {
+                root.mkdirs()
+            }
+            val gpxfile = File(root, "Payments.csv")
+            val writer =  CSVWriter(FileWriter(gpxfile))
+            val data = arrayListOf(
+                arrayOf("Name","id","email","amount","time")
+            )
+            for(i in transaction){
+                println(i.time)
+                data.add(
+                    arrayOf(i.contacts.name,i.contacts.id,i.contacts.email,i.amount+" Rc",
+                        i.time)
+                )
+            }
+            writer.writeAll(data)
+            writer.close()
+            val emailIntent = Intent(Intent.ACTION_SEND)
+            emailIntent.type = "text/plain"
+            val uri: Uri = Uri.fromFile(gpxfile)
+            emailIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            context.startActivity(Intent.createChooser(emailIntent, "Pick a provider"))
+        } catch ( e: IOException) {
+            e.printStackTrace()
+        }
+
+
+    }
+
 }
 
 
 
 class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context, private val openSheet: BottomSheet?=null) : RecyclerView.Adapter<RecentActivityViewHolder>() {
-
 
     private var colorIndex = 0
 
