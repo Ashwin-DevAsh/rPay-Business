@@ -61,7 +61,7 @@ class SingleObjectTransaction : AppCompatActivity() {
         handelSocket()
 
         avatarContainer.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
-
+        Cache.socketListnerCache[this] = HelperVariables.selectedUser!!.id
         smoothScroller = object : LinearSmoothScroller(context) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_END
@@ -167,9 +167,8 @@ class SingleObjectTransaction : AppCompatActivity() {
     private fun handelSocket(){
         try{
             SocketHelper.socket?.on("receivedMessage") { it->
-                println("reciveded message"+it.get(0))
                 val messageData = it[0] as JSONObject
-                if( HelperVariables.selectedUser?.id==messageData.getJSONObject("from")["id"]){
+                if( Cache.socketListnerCache[this]==messageData.getJSONObject("from")["id"]){
                     val objectTransactions =  ObjectTransactions(
                         message = Message(
                             contacts = HelperVariables.selectedUser,
@@ -181,10 +180,12 @@ class SingleObjectTransaction : AppCompatActivity() {
                         transaction.add(
                             objectTransactions
                         )
-                        allActivityAdapter?.updateList(transaction)
-                        smoothScroller.targetPosition = transaction.size
-                        (transactionContainer.layoutManager as RecyclerView.LayoutManager).startSmoothScroll(smoothScroller)
+                        allActivityAdapter?.updateList(transaction,transactionContainer)
+
                     }
+
+                    smoothScroller.targetPosition = transaction.size
+                    (transactionContainer.layoutManager as RecyclerView.LayoutManager).startSmoothScroll(smoothScroller)
 
                 }
 
@@ -192,11 +193,6 @@ class SingleObjectTransaction : AppCompatActivity() {
             }
 
             SocketHelper.socket?.on("receivedSingleObjectTransaction") { it->
-
-
-
-                println("reciveded single object payment"+it.get(0))
-
                 val transactionData = it[0] as JSONObject
                 val from = transactionData.getJSONObject("from")
                 val to = transactionData.getJSONObject("to")
@@ -207,8 +203,8 @@ class SingleObjectTransaction : AppCompatActivity() {
                 val id = if (isSend) to.getString("id") else from.getString("id")
                 val contacts = Contacts(name, number,id,email)
                 if(
-                    from["id"]==DetailsContext.id && to["id"]==HelperVariables.selectedUser?.id ||
-                    to["id"]==DetailsContext.id && from["id"]==HelperVariables.selectedUser?.id
+                    from["id"]==DetailsContext.id && to["id"]==Cache.socketListnerCache[this] ||
+                    to["id"]==DetailsContext.id && from["id"]==Cache.socketListnerCache[this]
                 ){
                     val transactionObject = Transaction(
                         contacts = contacts,
@@ -231,10 +227,11 @@ class SingleObjectTransaction : AppCompatActivity() {
                         transaction.add(
                             objectTransactions
                         )
-                        allActivityAdapter?.updateList(transaction)
-                        smoothScroller.targetPosition = transaction.size
-                        (transactionContainer.layoutManager as RecyclerView.LayoutManager).startSmoothScroll(smoothScroller)
+                        allActivityAdapter?.updateList(transaction,transactionContainer)
+
                     }
+                    smoothScroller.targetPosition = transaction.size
+                    (transactionContainer.layoutManager as RecyclerView.LayoutManager).startSmoothScroll(smoothScroller)
 
                 }
             }
@@ -259,7 +256,7 @@ class SingleObjectTransaction : AppCompatActivity() {
             )
 
             messageEditText.setText("")
-            allActivityAdapter?.updateList(transaction)
+            allActivityAdapter?.updateList(transaction,transactionContainer)
             smoothScroller.targetPosition = transaction.size
             (transactionContainer.layoutManager as RecyclerView.LayoutManager).startSmoothScroll(smoothScroller)
 
@@ -437,10 +434,11 @@ class TransactionsAdapter(var items : ArrayList<ObjectTransactions>, val context
         }
     }
 
-    fun updateList(updatedList : ArrayList<ObjectTransactions>){
+    fun updateList(updatedList : ArrayList<ObjectTransactions>,view:RecyclerView){
         this.items = updatedList
         try{
             notifyItemInserted(updatedList.size)
+            view.scrollToPosition(updatedList.size+1)
         }catch (e:Throwable){
             e.printStackTrace()
         }
