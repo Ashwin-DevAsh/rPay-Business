@@ -26,35 +26,37 @@ class TransactionDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_status)
 
-
         amount.text ="${HelperVariables.selectedTransaction?.amount}"
-        number.text = HelperVariables.selectedTransaction?.contacts?.name
+        number.text = HelperVariables.selectedTransaction?.contacts?.number
         badge.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
         badge.text = HelperVariables.selectedTransaction?.contacts?.name?.substring(0,1)
         badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString()[0].toString()
 
 
-        transactionID.text =HelperVariables.selectedTransaction?.transactionId
+        transactionID.text =  HelperVariables.selectedTransaction?.transactionId
 
         loadAvatar()
-
 
         if(HelperVariables.selectedTransaction?.isWithdraw!!){
             logoContainer.visibility=View.VISIBLE
             logoContainer.setBackgroundColor(resources.getColor(R.color.textDark))
             logoContainer.setImageDrawable(resources.getDrawable(R.drawable.bank_symbol))
-            subText.text = "Withdraw  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
+            subText.text = "Withdraw Successfully!"
             name.text = "Withdraw to"
+            number.text = HelperVariables.selectedTransaction?.contacts?.name
         }else if(HelperVariables.selectedTransaction?.isGenerated!!){
             logoContainer.visibility=View.VISIBLE
-            subText.text = "Added  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
+            subText.text = "Added Successfully!"
             name.text = "Added by"
-        }else{
+            number.text = HelperVariables.selectedTransaction?.contacts?.name
+        }
+        else{
             subText.text =
-                "${if (HelperVariables.selectedTransaction?.type=="Send") "Paid" else HelperVariables.selectedTransaction?.type}  ${HelperVariables.selectedTransaction?.amount} ${HelperVariables.currency}"
-            name.text = if (HelperVariables.selectedTransaction?.type=="Send") "Paid to" else "Received from"
+                "${if (HelperVariables.selectedTransaction?.type=="Send") "Paid" else HelperVariables.selectedTransaction?.type} Successfully!"
+            name.text = HelperVariables.selectedTransaction?.contacts?.name
 
         }
+
 
         if (HelperVariables.selectedTransaction?.type=="Send"){
             toDetails.text = "To: ${HelperVariables.selectedTransaction?.contacts?.name}"
