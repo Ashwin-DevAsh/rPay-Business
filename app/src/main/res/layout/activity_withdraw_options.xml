@@ -61,11 +61,11 @@
                     android:layout_height="match_parent">
                     <ImageView
                         android:layout_width="800dp"
-                        android:src="@drawable/withdraw_bank"
+                        android:src="@drawable/paypal"
                         android:id="@+id/icon1"
                         android:background="@color/colorPrimary"
 
-                        android:padding="12dp"
+                        android:padding="14dp"
                         android:layout_height="80dp"/>
                     <TextView
                         android:layout_width="match_parent"

@@ -77,6 +77,10 @@ class NotificationService : FirebaseMessagingService() {
                  }
             }
 
+        }else if(p0.data["type"]?.startsWith("message")!!){
+            val amount = p0.data["type"]!!.split(",")[3]
+            val fromName = p0.data["type"]!!.split(",")[1]
+            showNotification(fromName,"$amount")
         }else{
             HelperVariables.openTransactionPage = true
             val type =  p0.data["type"]!!.split(",")[0]

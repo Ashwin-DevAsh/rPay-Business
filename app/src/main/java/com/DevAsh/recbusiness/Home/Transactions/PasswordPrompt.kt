@@ -232,6 +232,29 @@ class PasswordPrompt : AppCompatActivity() {
                                 sendResult(true)
                                 return
                             }
+                            SocketHelper.socket?.emit("notifySingleObjectTransaction",JSONObject(
+                                mapOf(
+                                    "from"  to JSONObject(
+                                        mapOf(
+                                            "id" to DetailsContext.id ,
+                                            "name" to DetailsContext.name,
+                                            "number" to DetailsContext.phoneNumber,
+                                            "email" to DetailsContext.email
+                                        )
+                                    ),
+                                    "to" to JSONObject(
+                                        mapOf(
+                                            "id" to HelperVariables.selectedUser?.id ,
+                                            "name" to HelperVariables.selectedUser?.name,
+                                            "number" to  HelperVariables.selectedUser?.number,
+                                            "email" to HelperVariables.selectedUser?.email
+                                        )
+                                    ),
+                                    "amount" to HelperVariables.amount,
+                                    "transactionID" to response.get("transactionID"),
+                                    "transactionTime" to response.get("transactionTime")
+                                )
+                            ))
                             transactionSuccessful()
                             AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
                                 .addHeaders("jwtToken",DetailsContext.token)
