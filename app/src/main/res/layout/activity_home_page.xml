@@ -343,6 +343,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:id="@+id/withdraw"
+                android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
