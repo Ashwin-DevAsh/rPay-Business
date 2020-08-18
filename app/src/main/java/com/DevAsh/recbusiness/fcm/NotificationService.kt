@@ -16,6 +16,7 @@ import com.DevAsh.recbusiness.Database.RealmHelper
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
+import com.DevAsh.recbusiness.Sync.SocketHelper.socketIntent
 import com.DevAsh.recbusiness.Sync.SocketService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -35,20 +36,20 @@ class NotificationService : FirebaseMessagingService() {
 
     override fun onCreate() {
         RealmHelper.init(context = this)
-        intent = Intent(this,SocketService::class.java)
+        socketIntent = Intent(this,SocketService::class.java)
         super.onCreate()
     }
 
-    lateinit var intent :Intent
+
 
     override fun onMessageReceived(p0: RemoteMessage) {
 
         if (p0.data["type"]=="awake"){
-            stopService(intent)
+            stopService(socketIntent)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                 startForegroundService(intent)
+                 startForegroundService(socketIntent)
             } else {
-                 startService(intent)
+                 startService(socketIntent)
             }
         }else if(p0.data["type"]?.startsWith("updateProfilePicture")!!){
             try{

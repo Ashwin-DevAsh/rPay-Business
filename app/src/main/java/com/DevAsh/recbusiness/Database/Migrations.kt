@@ -63,6 +63,11 @@ open class Migrations : RealmMigration {
                 bankAccounts.addField("IFSC",String::class.javaObjectType)
                 bankAccounts.addField("accountNumber",String::class.javaObjectType)
             }
+            12L->{
+                val ledger = schema.create("Ledger")
+                ledger.addField("id",String::class.javaObjectType)
+                ledger.addField("balance",String::class.javaObjectType)
+            }
         }
 
     }

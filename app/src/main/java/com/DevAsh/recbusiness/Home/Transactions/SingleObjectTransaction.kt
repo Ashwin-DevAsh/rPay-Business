@@ -52,14 +52,11 @@ class SingleObjectTransaction : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SocketHelper.connect()
         setContentView(R.layout.activity_single_object_transaction)
-
         context=this
-
         badge = findViewById(R.id.badge)
-
         handelSocket()
-
         avatarContainer.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
         Cache.socketListnerCache[this] = HelperVariables.selectedUser!!.id
         smoothScroller = object : LinearSmoothScroller(context) {

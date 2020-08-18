@@ -1,5 +1,7 @@
 package com.DevAsh.recbusiness.Sync
 
+import android.content.Context
+import android.content.Intent
 import com.DevAsh.recbusiness.Context.ApiContext
 import com.DevAsh.recbusiness.Context.DetailsContext
 import com.DevAsh.recbusiness.Context.StateContext
@@ -20,6 +22,8 @@ object SocketHelper {
     private val url = ApiContext.apiUrl+ ApiContext.syncPort
     var socket:Socket? = null
     var newUser:Boolean = false
+    var context: Context?=null
+    var socketIntent : Intent?=null
 
     fun connect(){
         socket = IO.socket(url)
@@ -43,6 +47,7 @@ object SocketHelper {
 
 
         socket?.on("disconnect"){
+            context?.stopService(socketIntent)
             println("disconnecting...")
         }
 
