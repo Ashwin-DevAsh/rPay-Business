@@ -256,8 +256,8 @@ class PasswordPrompt : AppCompatActivity() {
                                 )
                             ))
                             transactionSuccessful()
-                            AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
-                                .addHeaders("jwtToken",DetailsContext.token)
+                            AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/init/${DetailsContext.id}")
+                                .addHeaders("token", DetailsContext.token)
                                 .setPriority(Priority.IMMEDIATE)
                                 .build()
                                 .getAsJSONObject(object: JSONObjectRequestListener {
@@ -266,11 +266,11 @@ class PasswordPrompt : AppCompatActivity() {
                                         jsonData.put("to",
                                             HelperVariables.selectedUser?.id.toString().replace("+",""))
                                         SocketHelper.socket?.emit("notifyPayment",jsonData)
-                                        val balance = response?.getInt("Balance")
+                                        val balance = response?.getInt("balance")
                                         StateContext.currentBalance = balance!!
                                         val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                         StateContext.setBalanceToModel(formatter.format(balance))
-                                        val transactionObjectArray = response.getJSONArray("Transactions")
+                                        val transactionObjectArray = response.getJSONArray("transactions")
                                         TransactionsHelper.addTransaction(transactionObjectArray)
                                     }
                                     override fun onError(anError: ANError?) {

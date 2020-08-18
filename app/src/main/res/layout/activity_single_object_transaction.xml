@@ -51,7 +51,7 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:id="@+id/profile"
-                                    android:scaleType="fitXY"
+                                    android:scaleType="centerCrop"
                                     android:visibility="invisible"
                                     android:layout_height="match_parent"/>
                                 <RelativeLayout

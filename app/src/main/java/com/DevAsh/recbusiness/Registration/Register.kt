@@ -17,6 +17,7 @@ import com.DevAsh.recbusiness.Context.StateContext
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.PasswordHashing
+import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -89,7 +90,7 @@ class Register : AppCompatActivity() {
                     .claim("id", "rbusiness@${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
                     .signWith(SignatureAlgorithm.HS256, ApiContext.qrKey)
                     .compact()
-                    AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/addMerchant")
+                    AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.profilePort+"/addMerchant")
                         .addBodyParameter("name",name)
                         .addBodyParameter("email",email)
                         .addBodyParameter("number",RegistrationContext.countryCode+RegistrationContext.phoneNumber)
@@ -147,18 +148,22 @@ class Register : AppCompatActivity() {
                                     )
 
                                     Handler().postDelayed({
-                                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getState")
-                                            .addHeaders("jwtToken",DetailsContext.token)
+                                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/init/${DetailsContext.id}")
+                                            .addHeaders("token",DetailsContext.token)
                                             .setPriority(Priority.IMMEDIATE)
                                             .build()
                                             .getAsJSONObject(object:
                                                 JSONObjectRequestListener {
                                                 override fun onResponse(response: JSONObject?) {
-                                                    SocketHelper.newUser=true
-                                                    val formatter = DecimalFormat("##,##,##,##,##,##,###")
-                                                    StateContext.currentBalance=0
-                                                    StateContext.setBalanceToModel(formatter.format(0))
-                                                    startActivity(Intent(context,HomePage::class.java))
+                                                    val balance = response?.getInt("balance")
+                                                    StateContext.currentBalance = balance!!
+                                                    val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
+                                                    StateContext.setBalanceToModel(formatter.format(balance))
+                                                    startActivity(Intent(context, HomePage::class.java))
+                                                    Handler().postDelayed({
+                                                        val transactionObjectArray = response.getJSONArray("transactions")
+                                                        TransactionsHelper.addTransaction(transactionObjectArray)
+                                                    },0)
                                                     finish()
                                                 }
                                                 override fun onError(anError: ANError?) {

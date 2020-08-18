@@ -13,8 +13,8 @@ object TransactionsHelper {
         val transactions = ArrayList<Transaction>()
         for (i in 0 until transactionObjectArray.length()) {
 
-            val from = transactionObjectArray.getJSONObject(i).getJSONObject("From")
-            val to = transactionObjectArray.getJSONObject(i).getJSONObject("To")
+            val from = transactionObjectArray.getJSONObject(i).getJSONObject("frommetadata")
+            val to = transactionObjectArray.getJSONObject(i).getJSONObject("tometadata")
             val isSend = isSend(DetailsContext.id,from.getString("Id"))
 
             val name = if (isSend) to.getString("Name") else from.getString("Name")
@@ -25,19 +25,19 @@ object TransactionsHelper {
             val contacts = Contacts(name, number,id,email)
             val transaction = Transaction(
                 contacts=contacts,
-                amount = transactionObjectArray.getJSONObject(i)["Amount"].toString(),
+                amount = transactionObjectArray.getJSONObject(i)["amount"].toString(),
                 time = SplashScreen.dateToString(
                     transactionObjectArray.getJSONObject(
                         i
-                    )["TransactionTime"].toString()
+                    )["transactiontime"].toString()
                 ),
                 type = if (isSend)
                     "Send"
                 else "Received",
-                transactionId =  transactionObjectArray.getJSONObject(i)["TransactionID"].toString(),
-                isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("IsGenerated"),
-                timeStamp = transactionObjectArray.getJSONObject(i).get("TimeStamp"),
-                isWithdraw = transactionObjectArray.getJSONObject(i).getBoolean("IsWithdraw")
+                transactionId =  transactionObjectArray.getJSONObject(i)["transactionid"].toString(),
+                isGenerated = transactionObjectArray.getJSONObject(i).getBoolean("isgenerated"),
+                timeStamp = transactionObjectArray.getJSONObject(i).get("timestamp"),
+                isWithdraw = transactionObjectArray.getJSONObject(i).getBoolean("iswithdraw")
             )
 
             transactions.add(0, transaction)

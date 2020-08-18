@@ -64,7 +64,7 @@ class ChangePassword : AppCompatActivity() {
             mainContent.visibility=View.INVISIBLE
         },500)
         newHashedPassword = PasswordHashing.encryptMsg(newPasswordText)
-        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/changeMerchantPassword")
+        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.profilePort+"/changeMerchantPassword")
             .addHeaders("token",DetailsContext.token)
             .addBodyParameter(object{
                 val id = DetailsContext.id

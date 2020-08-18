@@ -57,7 +57,7 @@ class Login : AppCompatActivity() {
                 mainContent.visibility= View.GONE
             },500)
             RegistrationContext.phoneNumber = phoneNumber.text.toString()
-            AndroidNetworking.get(ApiContext.apiUrl+ApiContext.registrationPort+"/getOtpMerchant?number=${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
+            AndroidNetworking.get(ApiContext.apiUrl+ApiContext.profilePort+"/getOtpMerchant?number=${RegistrationContext.countryCode+RegistrationContext.phoneNumber}")
                 .setPriority(Priority.IMMEDIATE)
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {

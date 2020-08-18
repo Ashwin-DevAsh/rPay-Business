@@ -113,7 +113,7 @@ class SendMoney : AppCompatActivity() {
 
     private fun getAllUsers(){
         HelperVariables.allUsers.clear()
-        AndroidNetworking.get(ApiContext.apiUrl+ApiContext.registrationPort+"/getUsers")
+        AndroidNetworking.get(ApiContext.apiUrl+ApiContext.profilePort+"/getUsers")
             .setPriority(Priority.IMMEDIATE)
             .build()
             .getAsJSONArray(object :JSONArrayRequestListener{

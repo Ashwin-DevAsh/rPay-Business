@@ -88,8 +88,8 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                 override fun onResponse(response: JSONObject?) {
                     loadingScreen.visibility = View.VISIBLE
                     if(response?.get("message")=="done"){
-                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
-                            .addHeaders("jwtToken", DetailsContext.token)
+                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/init/${DetailsContext.id}")
+                            .addHeaders("token", DetailsContext.token)
                             .setPriority(Priority.IMMEDIATE)
                             .build()
                             .getAsJSONObject(object: JSONObjectRequestListener {
@@ -98,11 +98,11 @@ class AddingOptions : AppCompatActivity(), PaymentResultListener {
                                     jsonData.put("to",
                                         HelperVariables.selectedUser?.number.toString().replace("+",""))
                                     SocketHelper.socket?.emit("notifyPayment",jsonData)
-                                    val balance = response?.getInt("Balance")
+                                    val balance = response?.getInt("balance")
                                     val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                     StateContext.setBalanceToModel(formatter.format(balance))
                                     StateContext.currentBalance= balance!!
-                                    val transactionObjectArray = response.getJSONArray("Transactions")
+                                    val transactionObjectArray = response.getJSONArray("transactions")
                                     TransactionsHelper.addTransaction(transactionObjectArray)
                                     val intent = Intent(context,Successful::class.java)
                                     intent.putExtra("type","addMoney")

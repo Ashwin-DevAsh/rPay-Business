@@ -161,7 +161,7 @@ class Profile : AppCompatActivity() {
     }
 
     private fun uploadImage(file:File,newImage:Bitmap){
-        AndroidNetworking.upload(ApiContext.apiUrl+ApiContext.registrationPort+"/addProfilePicture/"+DetailsContext.id)
+        AndroidNetworking.upload(ApiContext.apiUrl+ApiContext.profilePort+"/addProfilePicture/"+DetailsContext.id)
             .addHeaders("token", DetailsContext.token)
             .addMultipartFile("profilePicture",file)
             .setPriority(Priority.HIGH)

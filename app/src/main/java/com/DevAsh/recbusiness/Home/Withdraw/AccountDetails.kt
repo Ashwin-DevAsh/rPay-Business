@@ -26,8 +26,6 @@ import kotlinx.android.synthetic.main.activity_account_details.cancel
 import kotlinx.android.synthetic.main.activity_account_details.holderName
 import kotlinx.android.synthetic.main.activity_account_details.ifsc
 import kotlinx.android.synthetic.main.activity_account_details.mainContent
-import kotlinx.android.synthetic.main.activity_add_accounts.*
-import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.confirm_sheet.view.*
 import org.json.JSONObject
 
@@ -119,7 +117,7 @@ class AccountDetails : AppCompatActivity() {
 
     private fun deleteFromServer(){
 
-        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.registrationPort+"/deleteBankAccountMerchant")
+        AndroidNetworking.post(ApiContext.apiUrl+ ApiContext.profilePort+"/deleteBankAccountMerchant")
             .addHeaders("token", DetailsContext.token)
             .addBodyParameter( object{
                 var id = DetailsContext.id

@@ -107,26 +107,25 @@ class SplashScreen : AppCompatActivity() {
                 Handler().postDelayed({
                     getStatus()
                 },0)
-                AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
-                        .addHeaders("jwtToken",DetailsContext.token)
+                AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/init/${DetailsContext.id}")
+                        .addHeaders("token",DetailsContext.token)
                         .setPriority(Priority.IMMEDIATE)
                         .build()
                         .getAsJSONObject(object: JSONObjectRequestListener {
                             override fun onResponse(response: JSONObject?) {
-                                println(DetailsContext.token)
-                                val balance = response?.getInt("Balance")
+                                val balance = response?.getInt("balance")
                                 StateContext.currentBalance = balance!!
                                 val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                 StateContext.setBalanceToModel(formatter.format(balance))
                                 startActivity(Intent(context, HomePage::class.java))
                                 Handler().postDelayed({
-                                    val transactionObjectArray = response.getJSONArray("Transactions")
+                                    val transactionObjectArray = response.getJSONArray("transactions")
                                     TransactionsHelper.addTransaction(transactionObjectArray)
                                 },0)
                                 finish()
                             }
                             override fun onError(anError: ANError?) {
-                                  AlertHelper.showServerError(this@SplashScreen)
+                                AlertHelper.showServerError(this@SplashScreen)
                             }
                         })
             },0)
@@ -155,7 +154,7 @@ class SplashScreen : AppCompatActivity() {
         }
 
      fun getStatus(){
-        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.registrationPort + "/getMerchant?id=${DetailsContext.id}")
+        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/getMerchant?id=${DetailsContext.id}")
             .addHeaders("jwtToken",DetailsContext.token)
             .setPriority(Priority.IMMEDIATE)
             .build()

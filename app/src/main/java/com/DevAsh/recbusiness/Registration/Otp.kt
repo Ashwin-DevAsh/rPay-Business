@@ -18,8 +18,6 @@ import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Helper.AlertHelper
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.HomePage
-import com.DevAsh.recbusiness.Models.Merchant
-import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.SplashScreen
 import com.androidnetworking.AndroidNetworking
@@ -106,7 +104,7 @@ class Otp : AppCompatActivity() {
                 mainContent.visibility = INVISIBLE
 
             },300)
-            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.registrationPort + "/setOtpMerchant")
+            AndroidNetworking.post(ApiContext.apiUrl + ApiContext.profilePort + "/setOtpMerchant")
                 .addBodyParameter("otpNumber", otp.text.toString())
                 .addBodyParameter(
                     "number",
@@ -157,23 +155,27 @@ class Otp : AppCompatActivity() {
                                         SplashScreen.getStatus()
                                     },0)
                                     Handler().postDelayed({
-                                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.paymentPort + "/getMyState?id=${DetailsContext.id}")
-                                            .addHeaders("jwtToken",DetailsContext.token)
+                                        AndroidNetworking.get(ApiContext.apiUrl + ApiContext.profilePort + "/init/${DetailsContext.id}")
+                                            .addHeaders("token",DetailsContext.token)
                                             .setPriority(Priority.IMMEDIATE)
                                             .build()
                                             .getAsJSONObject(object: JSONObjectRequestListener {
                                                 override fun onResponse(response: JSONObject?) {
-                                                    val balance = response?.getInt("Balance")
+                                                    val balance = response?.getInt("balance")
                                                     StateContext.currentBalance = balance!!
                                                     val formatter = DecimalFormat("##,##,##,##,##,##,##,###")
                                                     StateContext.setBalanceToModel(formatter.format(balance))
-                                                    val transactionObjectArray = response.getJSONArray("Transactions")
-                                                    TransactionsHelper.addTransaction(transactionObjectArray)
                                                     startActivity(Intent(context, HomePage::class.java))
+                                                    Handler().postDelayed({
+                                                        val transactionObjectArray = response.getJSONArray("transactions")
+                                                        TransactionsHelper.addTransaction(transactionObjectArray)
+                                                    },0)
                                                     finish()
                                                 }
 
                                                 override fun onError(anError: ANError?) {
+                                                    println(anError?.errorCode)
+                                                    anError?.printStackTrace()
                                                     AlertHelper.showServerError(this@Otp)
                                                 }
 
