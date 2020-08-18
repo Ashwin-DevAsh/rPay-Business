@@ -13,6 +13,8 @@ import com.DevAsh.recbusiness.Context.HelperVariables
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.RealmHelper
+import com.DevAsh.recbusiness.Home.Transactions.SingleObjectTransaction
+import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
@@ -69,11 +71,12 @@ class NotificationService : FirebaseMessagingService() {
 
             val details = Realm.getDefaultInstance().where(Credentials::class.java).findFirst()
             if("rbusiness@${details?.phoneNumber}"==id){
-                 if(status=="active"){
-                     showNotification("R Admin","Your account is successfully activated!")
+                val intent = Intent(applicationContext,SplashScreen::class.java)
+                if(status=="active"){
+                     showNotification("R Admin","Your account is successfully activated!",intent)
                      DetailsContext.isVerified=true
                  }else{
-                     showNotification("R Admin","Your account is deactivated!")
+                     showNotification("R Admin","Your account is deactivated!",intent)
                      DetailsContext.isVerified=false
                  }
             }
@@ -81,12 +84,19 @@ class NotificationService : FirebaseMessagingService() {
         }else if(p0.data["type"]?.startsWith("message")!!){
             val amount = p0.data["type"]!!.split(",")[3]
             val fromName = p0.data["type"]!!.split(",")[1]
-            showNotification(fromName,"$amount")
+            val fromID =  p0.data["type"]!!.split(",")[2]
+            val fromEmail = p0.data["type"]!!.split(",")[4]
+            HelperVariables.selectedUser = Contacts(fromName,"+"+fromID.split("@")[1],fromID,fromEmail)
+            val intent = Intent(applicationContext, SingleObjectTransaction::class.java)
+            intent.putExtra("openSingleObjectTransactions",true)
+            showNotification(fromName, amount,intent)
         }else{
             HelperVariables.openTransactionPage = true
             val type =  p0.data["type"]!!.split(",")[0]
             val amount = p0.data["type"]!!.split(",")[3]
             val fromName = p0.data["type"]!!.split(",")[1]
+            val fromID =  p0.data["type"]!!.split(",")[2]
+            val fromEmail = p0.data["type"]!!.split(",")[4]
 
             try {
                 SocketHelper.getMyState()
@@ -94,15 +104,25 @@ class NotificationService : FirebaseMessagingService() {
 
             }
 
+            HelperVariables.selectedUser = Contacts(fromName,"+"+fromID.split("@")[1],fromID,fromEmail)
+
             when (type) {
                 "addedMoney" -> {
-                    showNotification("Added Money","Your $amount ${HelperVariables.currency}s has been successfully added.")
+                    val intent = Intent(applicationContext,SplashScreen::class.java)
+                    intent.putExtra("openSingleObjectTransactions",true)
+                    showNotification(
+                        "Added Money",
+                        "Your $amount ${HelperVariables.currency}s has been successfully added.",intent)
                 }
                 "withdraw" -> {
-                    showNotification("withdraw","Your $amount ${HelperVariables.currency}s has been successfully withdraw.")
+                    val intent = Intent(applicationContext,SplashScreen::class.java)
+                    intent.putExtra("openSingleObjectTransactions",true)
+                    showNotification("withdraw","Your $amount ${HelperVariables.currency}s has been successfully withdraw.",intent)
                 }
                 else -> {
-                    showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.")
+                    val intent = Intent(applicationContext,SingleObjectTransaction::class.java)
+                    intent.putExtra("openSingleObjectTransactions",true)
+                    showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.",intent)
                 }
             }
 
@@ -111,9 +131,8 @@ class NotificationService : FirebaseMessagingService() {
         super.onMessageReceived(p0)
     }
 
-    private fun showNotification(title:String, subTitle:String){
+    private fun showNotification(title:String, subTitle:String,intent:Intent){
         var notificationID = Random.nextInt(1000000000)
-        val intent = Intent(applicationContext,SplashScreen::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channelId = "Payment"
