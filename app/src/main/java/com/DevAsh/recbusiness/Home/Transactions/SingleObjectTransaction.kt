@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.DevAsh.recbusiness.Context.*
 import com.DevAsh.recbusiness.Helper.AlertHelper
+import com.DevAsh.recbusiness.Helper.NotificationObserver
 import com.DevAsh.recbusiness.Helper.PaymentObserver
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Models.Contacts
@@ -111,6 +112,19 @@ class SingleObjectTransaction : AppCompatActivity() {
                 sendMessage()
             }catch (e:Throwable){
                 e.printStackTrace()
+            }
+        }
+
+        TransactionsHelper.notificationObserver[HelperVariables.selectedUser!!.id] = object:
+            NotificationObserver {
+            override fun check() {
+                try {
+                    Handler().postDelayed({
+                        getData()
+                    },0)
+                }catch (e:Throwable){
+                    e.printStackTrace()
+                }
             }
         }
 

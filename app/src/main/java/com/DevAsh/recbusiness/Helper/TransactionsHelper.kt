@@ -9,7 +9,10 @@ import com.DevAsh.recbusiness.SplashScreen
 import org.json.JSONArray
 
 object TransactionsHelper {
+
     var paymentObserver:PaymentObserver?=null
+    var notificationObserver = HashMap<String,NotificationObserver>()
+
     fun addTransaction(transactionObjectArray:JSONArray){
         val transactions = ArrayList<Transaction>()
         for (i in 0 until transactionObjectArray.length()) {
@@ -50,6 +53,10 @@ object TransactionsHelper {
 
     fun isSend(myId:String,fromId:String):Boolean = myId == fromId
 
+}
+
+interface NotificationObserver{
+    fun check()
 }
 
 interface PaymentObserver{

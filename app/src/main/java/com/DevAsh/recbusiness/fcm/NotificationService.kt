@@ -13,6 +13,7 @@ import com.DevAsh.recbusiness.Context.HelperVariables
 import com.DevAsh.recbusiness.Context.UiContext
 import com.DevAsh.recbusiness.Database.Credentials
 import com.DevAsh.recbusiness.Database.RealmHelper
+import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.Transactions.SingleObjectTransaction
 import com.DevAsh.recbusiness.Models.Contacts
 import com.DevAsh.recbusiness.R
@@ -86,6 +87,9 @@ class NotificationService : FirebaseMessagingService() {
             val fromName = p0.data["type"]!!.split(",")[1]
             val fromID =  p0.data["type"]!!.split(",")[2]
             val fromEmail = p0.data["type"]!!.split(",")[4]
+
+            TransactionsHelper.notificationObserver[fromID]?.check()
+
             HelperVariables.selectedUser = Contacts(fromName,"+"+fromID.split("@")[1],fromID,fromEmail)
             val intent = Intent(applicationContext, SingleObjectTransaction::class.java)
             intent.putExtra("openSingleObjectTransactions",true)
@@ -120,6 +124,7 @@ class NotificationService : FirebaseMessagingService() {
                     showNotification("withdraw","Your $amount ${HelperVariables.currency}s has been successfully withdraw.",intent)
                 }
                 else -> {
+                    TransactionsHelper.notificationObserver[fromID]?.check()
                     val intent = Intent(applicationContext,SingleObjectTransaction::class.java)
                     intent.putExtra("openSingleObjectTransactions",true)
                     showNotification(fromName,"You have received $amount ${HelperVariables.currency}s from $fromName.",intent)
