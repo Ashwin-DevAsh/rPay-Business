@@ -29,8 +29,10 @@ import com.DevAsh.recbusiness.Helper.PasswordHashing
 import com.DevAsh.recbusiness.Helper.TransactionsHelper
 import com.DevAsh.recbusiness.Home.Recovery.RecoveryOptions
 import com.DevAsh.recbusiness.Models.Contacts
+import com.DevAsh.recbusiness.Models.Transaction
 import com.DevAsh.recbusiness.R
 import com.DevAsh.recbusiness.Registration.Login
+import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -232,6 +234,20 @@ class PasswordPrompt : AppCompatActivity() {
                                 sendResult(true)
                                 return
                             }
+
+                            TransactionsHelper.paymentObserver?.update(
+                                Transaction(
+                                    contacts = HelperVariables.selectedUser!!,
+                                    amount = HelperVariables.amount!!,
+                                    time = "Paid  "+ SplashScreen.dateToString(
+                                        response.getString("transactionTime")) ,
+                                    transactionId =  response.getString("transactionID"),
+                                    isWithdraw =  false,isGenerated = false,
+                                    type = "Send",
+                                    timeStamp = response.getString("transactionTime")
+                                )
+                            )
+
                             SocketHelper.socket?.emit("notifySingleObjectTransaction",JSONObject(
                                 mapOf(
                                     "from"  to JSONObject(
