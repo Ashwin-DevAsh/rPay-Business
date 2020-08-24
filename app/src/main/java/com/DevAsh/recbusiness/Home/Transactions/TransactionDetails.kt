@@ -28,6 +28,10 @@ class TransactionDetails : AppCompatActivity() {
 
         amount.text ="${HelperVariables.selectedTransaction?.amount}"
         number.text = HelperVariables.selectedTransaction?.contacts?.number
+        time.text = HelperVariables.selectedTransaction?.time
+            .toString()
+            .replace("Received ","")
+            .replace("Paid ","")
         badge.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
         badge.text = HelperVariables.selectedTransaction?.contacts?.name?.substring(0,1)
         badge.text = HelperVariables.selectedTransaction?.contacts?.name.toString()[0].toString()
