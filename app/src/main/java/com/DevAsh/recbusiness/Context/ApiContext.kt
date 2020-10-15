@@ -1,7 +1,7 @@
 package com.DevAsh.recbusiness.Context
 
 object ApiContext {
-    var apiUrl:String = "http://139.59.23.88"
+    var apiUrl:String = "http://3.17.161.20"
     var profilePort=":8000"
     var syncPort=":7000"
     var paymentPort=":10000"
