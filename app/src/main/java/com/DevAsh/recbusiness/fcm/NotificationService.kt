@@ -21,6 +21,7 @@ import com.DevAsh.recbusiness.SplashScreen
 import com.DevAsh.recbusiness.Sync.SocketHelper
 import com.DevAsh.recbusiness.Sync.SocketHelper.socketIntent
 import com.DevAsh.recbusiness.Sync.SocketService
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.squareup.picasso.MemoryPolicy
@@ -31,6 +32,7 @@ import kotlin.random.Random
 
 
 class NotificationService : FirebaseMessagingService() {
+
 
     override fun onNewToken(p0: String) {
         println("new token $p0")
@@ -46,6 +48,8 @@ class NotificationService : FirebaseMessagingService() {
 
 
     override fun onMessageReceived(p0: RemoteMessage) {
+
+        println("New Notification")
 
         if (p0.data["type"]=="awake"){
             stopService(socketIntent)
@@ -67,8 +71,12 @@ class NotificationService : FirebaseMessagingService() {
 
         }else if(p0.data["type"]?.startsWith("merchantStatus")!!){
 
+
             val id = p0.data["type"]!!.split(",")[1]
             val status = p0.data["type"]!!.split(",")[2]
+
+            println(status)
+
 
             val details = Realm.getDefaultInstance().where(Credentials::class.java).findFirst()
             if("rbusiness@${details?.phoneNumber}"==id){
