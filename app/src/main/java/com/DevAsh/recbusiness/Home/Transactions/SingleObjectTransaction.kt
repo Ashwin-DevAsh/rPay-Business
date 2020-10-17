@@ -46,8 +46,6 @@ import java.sql.Timestamp
 class SingleObjectTransaction : AppCompatActivity() {
 
     var allActivityAdapter: TransactionsAdapter?=null
-    private lateinit var badge: TextView
-    lateinit var context: Context
     lateinit var smoothScroller:SmoothScroller
 
     var needToScroll = false
@@ -55,14 +53,16 @@ class SingleObjectTransaction : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(intent!!.getBooleanExtra("fromNotification",false)){
+            HelperVariables.selectedUser = Contacts.fromIntent(intent)
+            println( HelperVariables.selectedUser)
+        }
         SocketHelper.connect()
         setContentView(R.layout.activity_single_object_transaction)
-        context=this
-        badge = findViewById(R.id.badge)
         handelSocket()
         avatarContainer.setBackgroundColor(Color.parseColor(HelperVariables.avatarColor))
         Cache.socketListnerCache[this] = HelperVariables.selectedUser!!.id
-        smoothScroller = object : LinearSmoothScroller(context) {
+        smoothScroller = object : LinearSmoothScroller(this) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_END
             }
@@ -80,7 +80,7 @@ class SingleObjectTransaction : AppCompatActivity() {
         try {
             if(!intent.getBooleanExtra("openSingleObjectTransactions",false)){
                 allActivityAdapter = Cache.singleObjectTransactionCache[HelperVariables.selectedUser!!.id]!!
-                val layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                val layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
                 layoutManager.stackFromEnd=true
                 transactionContainer.layoutManager = layoutManager
                 transactionContainer.adapter = allActivityAdapter
@@ -140,7 +140,7 @@ class SingleObjectTransaction : AppCompatActivity() {
                 }
 
             }
-            startActivity(Intent(context,AmountPrompt::class.java))
+            startActivity(Intent(this,AmountPrompt::class.java))
         }
     }
 
@@ -156,10 +156,10 @@ class SingleObjectTransaction : AppCompatActivity() {
 
 
     private fun loadAvatar(){
-        UiContext.loadProfileImage(context,HelperVariables.selectedUser?.id!!,object:LoadProfileCallBack {
+        UiContext.loadProfileImage(this,HelperVariables.selectedUser?.id!!,object:LoadProfileCallBack {
             override fun onSuccess() {
                 if(!HelperVariables.selectedUser?.id!!.contains("rpay")){
-                    profile.setBackgroundColor( context.resources.getColor(R.color.textDark))
+                    profile.setBackgroundColor( this@SingleObjectTransaction.resources.getColor(R.color.textDark))
                     profile.setColorFilter(Color.WHITE,  android.graphics.PorterDuff.Mode.SRC_IN)
                     profile.setPadding(35,35,35,35)
                 }
@@ -409,10 +409,10 @@ class SingleObjectTransaction : AppCompatActivity() {
 
                         if(transactions.size!=allActivityAdapter?.itemCount) {
                             transaction = transactions
-                            val layoutManager =  LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                            val layoutManager =  LinearLayoutManager(this@SingleObjectTransaction,LinearLayoutManager.VERTICAL,false)
                             layoutManager.stackFromEnd=true
                             transactionContainer.layoutManager =layoutManager
-                            allActivityAdapter = TransactionsAdapter(transaction, context)
+                            allActivityAdapter = TransactionsAdapter(transaction, this@SingleObjectTransaction)
                             transactionContainer.adapter = allActivityAdapter
 
                             Cache.singleObjectTransactionCache[HelperVariables.selectedUser!!.id.replace("+","")] = allActivityAdapter!!
