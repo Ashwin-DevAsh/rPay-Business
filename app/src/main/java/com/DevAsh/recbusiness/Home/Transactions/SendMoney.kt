@@ -153,6 +153,9 @@ class SendMoney : AppCompatActivity() {
 
 class UserAdapter(private var items : ArrayList<Contacts>, val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
+    var isImageLoadedMap = hashMapOf<Contacts,Boolean>()
+
+
     override fun getItemCount(): Int {
         return items.size
     }
@@ -171,25 +174,26 @@ class UserAdapter(private var items : ArrayList<Contacts>, val context: Context)
 
         holder.contact = items[position]
 
-        UiContext.loadProfileImage(context,items[position].id,object: LoadProfileCallBack {
+        val isImageLoaded = isImageLoadedMap[holder.contact!!]
+
+        if(isImageLoaded==null || !isImageLoaded){
+            holder.avatarContainer.visibility=VISIBLE
+            holder.profileImage.visibility = View.GONE
+        }
+        UiContext.loadProfileImageWithoutPlaceHolder(context,items[position].id,object:LoadProfileCallBack{
             override fun onSuccess() {
                 holder.avatarContainer.visibility=View.GONE
                 holder.profileImage.visibility = VISIBLE
-
+                isImageLoadedMap[holder.contact!!]=true
             }
 
             override fun onFailure() {
                 holder.avatarContainer.visibility=VISIBLE
                 holder.profileImage.visibility = View.GONE
-
+                isImageLoadedMap[holder.contact!!]=false
             }
 
         },holder.profileImage)
-
-        if (items[position].name.startsWith("+")) {
-            holder.badge.text = items[position].name.subSequence(1, 3)
-            holder.badge.textSize = 18F
-        }
     }
 
     fun updateList(updatedList : ArrayList<Contacts>){

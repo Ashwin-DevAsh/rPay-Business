@@ -45,6 +45,29 @@ object UiContext {
 
     }
 
+    fun loadProfileImageWithoutPlaceHolder(context: Context,
+                                           id:String,
+                                           loadProfileCallBack: LoadProfileCallBack,
+                                           imageView:ImageView,
+                                           errorPlaceHolder:Int= R.drawable.place_holder
+    ){
+        Picasso.get()
+            .load(buildURL(id))
+            .error(errorPlaceHolder)
+            .into(imageView, object : Callback {
+                override fun onSuccess() {
+                    loadProfileCallBack.onSuccess()
+                }
+                override fun onError(e: Exception?) {
+                    loadProfileCallBack.onFailure()
+                }
+
+            })
+
+    }
+
+
+
     fun loadProfileNoCache(context: Context,
                            id:String,
                            loadProfileCallBack: LoadProfileCallBack,

@@ -573,7 +573,7 @@ class RecentPaymentsAdapter(var items : List<Transaction>, val context: Context,
             colorIndex = (colorIndex+1)% UiContext.colors.size
         }
 
-        UiContext.loadProfileImage(context,items[position].contacts.id,object: LoadProfileCallBack {
+        UiContext.loadProfileImageWithoutPlaceHolder(context,items[position].contacts.id,object: LoadProfileCallBack {
             override fun onSuccess() {
                 holder.badge.visibility=View.GONE
                 holder.profile.visibility = View.VISIBLE
