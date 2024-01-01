@@ -56,3 +56,8 @@ To get started with rPay Business, follow these steps:
 
 6. **Shared Features with rPay:**
    - Explore additional features shared with the [rPay app](https://github.com/yourusername/rPay), such as wallet management and payment history.
+  
+## Dependency Repositories
+- [rPay-Backend](https://github.com/Ashwin-DevAsh/rPay-Backend): Microservice handling backend functionality.
+- [rPay](https://github.com/Ashwin-DevAsh/rPay): An application for students to pay and make transactions.
+- [rPay-Admin](https://github.com/Ashwin-DevAsh/rPay-Admin): An admin console for managing users and transactions.
